@@ -39,6 +39,13 @@ namespace VisualDijkstraRemake.Controllers
         }
 
 
+        public void moveNode(Node node, Point location)
+        {
+            _graph.moveNode(node, location);
+            _view.Refresh();
+        }
+
+
 
 
 

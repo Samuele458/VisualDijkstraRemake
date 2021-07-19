@@ -11,6 +11,7 @@ namespace VisualDijkstraRemake.Views
     class GraphView : PictureBox
     {
         private GraphController _controller;
+        private Node nodeToMove;
 
         public GraphController Controller
         {
@@ -21,8 +22,10 @@ namespace VisualDijkstraRemake.Views
         public GraphView()
         {
             this.BackColor = Color.White;
-            Controller = null;
             this.Cursor = System.Windows.Forms.Cursors.Default;
+
+            this.Controller = null;
+            this.nodeToMove = null;
 
         }
 
@@ -52,21 +55,59 @@ namespace VisualDijkstraRemake.Views
                 List<Node> nodes = graph.Nodes;
 
 
-                //pen for painting
-                Pen pen = new Pen(Color.Black, 10);
-
+                //tools for painting
+                Pen borderPen = new Pen(Color.Black, 10);
+                SolidBrush borderBrush = new SolidBrush(Color.White);
+                Font font = new Font("Arial", 30);
+                TextFormatFlags fontFormat = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter;
 
                 //painting nodes
                 foreach (Node node in nodes)
                 {
-                    e.Graphics.DrawEllipse(pen, new Rectangle(node.Location, new Size(Node.Size, Node.Size)));
+                    e.Graphics.DrawEllipse(borderPen, new Rectangle(node.Location, new Size(Node.Size, Node.Size)));
+                    e.Graphics.FillEllipse(borderBrush, new Rectangle(node.Location, new Size(Node.Size, Node.Size)));
+                    TextRenderer.DrawText(e.Graphics, "A", font, new Rectangle(node.Location, new Size(Node.Size, Node.Size)), Color.Blue, fontFormat);
                 }
-
             }
-
 
             base.OnPaint(e);
         }
 
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            base.OnMouseDown(e);
+
+            if (Controller != null)
+            {
+                List<Node> nodes = Controller.Graph.Nodes;
+                foreach (Node node in nodes)
+                {
+                    if (node.Contains(e.Location))
+                    {
+                        Debug.WriteLine("Clicked node");
+                        nodeToMove = node;
+                    }
+                }
+            }
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+
+            if (Controller != null && nodeToMove != null)
+            {
+                Controller.moveNode(nodeToMove, e.Location);
+            }
+        }
+
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            base.OnMouseUp(e);
+
+            //releasing node under move
+            nodeToMove = null;
+            Debug.WriteLine("Node released");
+        }
     }
 }

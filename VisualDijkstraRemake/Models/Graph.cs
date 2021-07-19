@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 
 namespace VisualDijkstraRemake.Models
 {
-
     class Graph
     {
 
@@ -25,7 +25,23 @@ namespace VisualDijkstraRemake.Models
         {
             Debug.WriteLine("model:  node created: " + nodeName + " " + location);
             _nodes.Add(new Node(nodeName, location));
-
         }
+
+        public void moveNode(Node node, Point location)
+        {
+            if (_nodes.Contains(node))
+            {
+                node.Location = new Point(location.X, location.Y);
+            }
+            else
+            {
+                throw new NodeNotFoundException("Node \"" + node.Name + "\" not found.");
+            }
+        }
+    }
+
+    class NodeNotFoundException : Exception
+    {
+        public NodeNotFoundException(string message) : base(message) { }
     }
 }

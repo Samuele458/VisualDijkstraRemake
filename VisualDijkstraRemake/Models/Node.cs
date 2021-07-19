@@ -5,7 +5,7 @@ namespace VisualDijkstraRemake.Models
     class Node
     {
         //Node size
-        public const int Size = 100;
+        public const int Size = 50;
 
         //up-right node angle
         private Point _location;
@@ -32,6 +32,18 @@ namespace VisualDijkstraRemake.Models
         }
 
         public Node(string nodeName, int x, int y) : this(nodeName, new Point(x, y)) { }
+
+
+        public bool Contains(Point location)
+        {
+            return (
+                location.X > Location.X &&
+                location.Y > Location.Y &&
+                location.X < (Location.X + Size) &&
+                location.Y < (Location.Y + Size)
+            );
+        }
+
 
     }
 }
