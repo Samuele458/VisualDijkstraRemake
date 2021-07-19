@@ -30,11 +30,11 @@ namespace VisualDijkstraRemake
         private void InitializeComponent()
         {
             this.mainSplitContainer = new System.Windows.Forms.SplitContainer();
-            this.graphView1 = new VisualDijkstraRemake.Views.GraphView();
+            this.graphPictureBox = new VisualDijkstraRemake.Views.GraphView();
             ((System.ComponentModel.ISupportInitialize)(this.mainSplitContainer)).BeginInit();
             this.mainSplitContainer.Panel1.SuspendLayout();
             this.mainSplitContainer.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.graphView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.graphPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // mainSplitContainer
@@ -46,20 +46,21 @@ namespace VisualDijkstraRemake
             // 
             // mainSplitContainer.Panel1
             // 
-            this.mainSplitContainer.Panel1.Controls.Add(this.graphView1);
+            this.mainSplitContainer.Panel1.Controls.Add(this.graphPictureBox);
             this.mainSplitContainer.Size = new System.Drawing.Size(800, 450);
-            this.mainSplitContainer.SplitterDistance = 331;
+            this.mainSplitContainer.SplitterDistance = 415;
             this.mainSplitContainer.TabIndex = 0;
             // 
-            // graphView1
+            // graphPictureBox
             // 
-            this.graphView1.BackColor = System.Drawing.Color.Red;
-            this.graphView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.graphView1.Location = new System.Drawing.Point(0, 0);
-            this.graphView1.Name = "graphView1";
-            this.graphView1.Size = new System.Drawing.Size(331, 450);
-            this.graphView1.TabIndex = 0;
-            this.graphView1.TabStop = false;
+            this.graphPictureBox.BackColor = System.Drawing.Color.White;
+            this.graphPictureBox.Controller = null;
+            this.graphPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.graphPictureBox.Location = new System.Drawing.Point(0, 0);
+            this.graphPictureBox.Name = "graphPictureBox";
+            this.graphPictureBox.Size = new System.Drawing.Size(415, 450);
+            this.graphPictureBox.TabIndex = 0;
+            this.graphPictureBox.TabStop = false;
             // 
             // MainForm
             // 
@@ -72,7 +73,7 @@ namespace VisualDijkstraRemake
             this.mainSplitContainer.Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.mainSplitContainer)).EndInit();
             this.mainSplitContainer.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.graphView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.graphPictureBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -80,7 +81,7 @@ namespace VisualDijkstraRemake
         #endregion
 
         private System.Windows.Forms.SplitContainer mainSplitContainer;
-        private Views.GraphView graphView1;
+        private Views.GraphView graphPictureBox;
     }
 }
 

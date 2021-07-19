@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
+using VisualDijkstraRemake.Controllers;
+using VisualDijkstraRemake.Models;
 
 namespace VisualDijkstraRemake
 {
@@ -15,7 +9,16 @@ namespace VisualDijkstraRemake
         public MainForm()
         {
             InitializeComponent();
+
+
+
+            Graph graphModel = new Graph();
+            GraphController graphController = new GraphController(this.graphPictureBox, graphModel);
+
         }
+
+
+
 
     }
 }
