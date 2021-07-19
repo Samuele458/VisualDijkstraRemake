@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Drawing;
+﻿using System.Drawing;
 using VisualDijkstraRemake.Models;
 using VisualDijkstraRemake.Views;
 
@@ -31,13 +30,22 @@ namespace VisualDijkstraRemake.Controllers
 
         }
 
-        public void newNode(string nodeName, Point location)
+        public void newNode(Node node)
         {
-            Debug.WriteLine("Controller:  node created");
-            _graph.createNewNode(nodeName, location);
+            _graph.addNewNode(node);
             _view.Refresh();
         }
 
+        public void newNode(string nodeName, Point location)
+        {
+            newNode(new Node(nodeName, location));
+        }
+
+        public void newEdge(Node a, Node b)
+        {
+            _graph.createNewEdge(a, b);
+            _view.Refresh();
+        }
 
         public void moveNode(Node node, Point location)
         {

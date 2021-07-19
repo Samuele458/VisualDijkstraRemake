@@ -38,5 +38,16 @@ namespace VisualDijkstraRemake.Models.Tests
 
             Assert.IsFalse(node.Contains(locationToTest));
         }
+
+        [TestMethod()]
+        public void Contains_LocationExceedsWidthAndHeight_ReturnsFalse()
+        {
+
+            Node node = new Node("A", new Point(100, 200));
+
+            Point locationToTest = new Point(0, 0);
+
+            Assert.IsFalse(node.Contains(locationToTest));
+        }
     }
 }

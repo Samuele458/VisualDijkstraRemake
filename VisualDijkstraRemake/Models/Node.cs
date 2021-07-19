@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 
 namespace VisualDijkstraRemake.Models
 {
@@ -13,6 +15,7 @@ namespace VisualDijkstraRemake.Models
         //node name
         private string _name;
 
+        List<Edge> _edges;
 
         public Point Location
         {
@@ -26,10 +29,18 @@ namespace VisualDijkstraRemake.Models
             set { _name = value; }
         }
 
+        public List<Edge> Edges
+        {
+            get { return _edges; }
+        }
+
         public Node(string nodeName, Point loc)
         {
             Location = loc;
+            _edges = new List<Edge>();
+            Name = nodeName;
         }
+
 
         public Node(string nodeName, int x, int y) : this(nodeName, new Point(x, y)) { }
 
@@ -44,6 +55,18 @@ namespace VisualDijkstraRemake.Models
             );
         }
 
+        public void addEdge(Edge edge)
+        {
+            if (!Edges.Contains(edge))
+            {
+                Edges.Add(edge);
+            }
+        }
 
+    }
+
+    class DuplicatedNodeException : Exception
+    {
+        public DuplicatedNodeException(string message) : base(message) { }
     }
 }

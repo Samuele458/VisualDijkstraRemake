@@ -53,8 +53,9 @@ namespace VisualDijkstraRemake
             // 
             // graphPictureBox
             // 
-            this.graphPictureBox.BackColor = System.Drawing.Color.White;
+            this.graphPictureBox.BackColor = System.Drawing.SystemColors.InactiveBorder;
             this.graphPictureBox.Controller = null;
+            this.graphPictureBox.Cursor = System.Windows.Forms.Cursors.Default;
             this.graphPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.graphPictureBox.Location = new System.Drawing.Point(0, 0);
             this.graphPictureBox.Name = "graphPictureBox";

@@ -10,21 +10,33 @@ namespace VisualDijkstraRemake.Models
 
         private List<Node> _nodes;
 
+        private List<Edge> _edges;
+
         public List<Node> Nodes
         {
             get { return _nodes; }
+        }
+
+        public List<Edge> Edges
+        {
+            get { return _edges; }
         }
 
         public Graph()
         {
             Debug.WriteLine("Graph model created");
             _nodes = new List<Node>();
+            _edges = new List<Edge>();
         }
 
-        public void createNewNode(string nodeName, Point location)
+        public void addNewNode(Node node)
         {
-            Debug.WriteLine("model:  node created: " + nodeName + " " + location);
-            _nodes.Add(new Node(nodeName, location));
+            _nodes.Add(node);
+        }
+
+        public void addNewNode(string nodeName, Point location)
+        {
+            this.addNewNode(new Node(nodeName, location));
         }
 
         public void moveNode(Node node, Point location)
@@ -37,6 +49,14 @@ namespace VisualDijkstraRemake.Models
             {
                 throw new NodeNotFoundException("Node \"" + node.Name + "\" not found.");
             }
+        }
+
+        public void createNewEdge(Node a, Node b)
+        {
+            Edge edge = new Edge(a, b);
+            a.addEdge(edge);
+            b.addEdge(edge);
+            Edges.Add(edge);
         }
     }
 

@@ -21,7 +21,7 @@ namespace VisualDijkstraRemake.Views
 
         public GraphView()
         {
-            this.BackColor = Color.White;
+            this.BackColor = Color.Blue;
             this.Cursor = System.Windows.Forms.Cursors.Default;
 
             this.Controller = null;
@@ -45,29 +45,44 @@ namespace VisualDijkstraRemake.Views
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            //if controller and graph exist
             if (Controller != null && Controller.Graph != null)
             {
+                //anti alias
                 e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-                Debug.WriteLine("Refresh graph view...");
-                Graph graph = Controller.Graph;
-
-                List<Node> nodes = graph.Nodes;
-
+                //getting nodes
+                List<Node> nodes = Controller.Graph.Nodes;
 
                 //tools for painting
                 Pen borderPen = new Pen(Color.Black, 10);
                 SolidBrush borderBrush = new SolidBrush(Color.White);
-                Font font = new Font("Arial", 30);
-                TextFormatFlags fontFormat = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter;
+                Font font = new Font("Arial", 20);
+
+                //size of the node boundaries
+                Size nodeSize = new Size(Node.Size, Node.Size);
+
+
+                foreach (Edge edge in Controller.Graph.Edges)
+                {
+                    e.Graphics.DrawLine(borderPen, edge.NodeA.Location + nodeSize / 2, edge.NodeB.Location + nodeSize / 2);
+                }
+
+
+                /*for (int i = 0; i < nodes.Count - 1; ++i)
+                {
+                    e.Graphics.DrawLine(borderPen, nodes[i].Location + nodeSize / 2, nodes[i + 1].Location + nodeSize / 2);
+                }*/
 
                 //painting nodes
                 foreach (Node node in nodes)
                 {
                     e.Graphics.DrawEllipse(borderPen, new Rectangle(node.Location, new Size(Node.Size, Node.Size)));
                     e.Graphics.FillEllipse(borderBrush, new Rectangle(node.Location, new Size(Node.Size, Node.Size)));
-                    TextRenderer.DrawText(e.Graphics, "A", font, new Rectangle(node.Location, new Size(Node.Size, Node.Size)), Color.Blue, fontFormat);
+                    TextRenderer.DrawText(e.Graphics, "A", font, new Rectangle(node.Location + new Size(1, 1), new Size(Node.Size, Node.Size)), Color.Black);
                 }
+
+
             }
 
             base.OnPaint(e);
