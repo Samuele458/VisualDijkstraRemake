@@ -2,7 +2,7 @@
 
 namespace VisualDijkstraRemake.Models
 {
-    class Node
+    public class Node
     {
         //Node size
         public const int Size = 50;
