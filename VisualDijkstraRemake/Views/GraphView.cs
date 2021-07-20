@@ -36,9 +36,34 @@ namespace VisualDijkstraRemake.Views
             if (Controller != null)
             {
 
+                //mouse event
                 MouseEventArgs mouseEvent = (MouseEventArgs)e;
+
+                //getting nodes
+                List<Node> nodes = Controller.Graph.Nodes;
+
+                foreach (Node node in nodes)
+                {
+                    if (node.Contains(mouseEvent.Location))
+                    {
+                        MessageBox.Show("Clicked node");
+                    }
+                }
+
+                //getting edges
+                List<Edge> edges = Controller.Graph.Edges;
+                foreach (Edge edge in edges)
+                {
+                    if (edge.Contains(mouseEvent.Location, 10))
+                    {
+                        MessageBox.Show("Clicked edge");
+                    }
+                }
+
+
+
                 Debug.WriteLine("View:  double click: creating node");
-                Controller.newNode("A", new Point(mouseEvent.X, mouseEvent.Y));
+                //Controller.newNode("A", new Point(mouseEvent.X, mouseEvent.Y));
 
             }
         }
@@ -68,18 +93,12 @@ namespace VisualDijkstraRemake.Views
                     e.Graphics.DrawLine(borderPen, edge.NodeA.Location + nodeSize / 2, edge.NodeB.Location + nodeSize / 2);
                 }
 
-
-                /*for (int i = 0; i < nodes.Count - 1; ++i)
-                {
-                    e.Graphics.DrawLine(borderPen, nodes[i].Location + nodeSize / 2, nodes[i + 1].Location + nodeSize / 2);
-                }*/
-
                 //painting nodes
                 foreach (Node node in nodes)
                 {
                     e.Graphics.DrawEllipse(borderPen, new Rectangle(node.Location, new Size(Node.Size, Node.Size)));
                     e.Graphics.FillEllipse(borderBrush, new Rectangle(node.Location, new Size(Node.Size, Node.Size)));
-                    TextRenderer.DrawText(e.Graphics, "A", font, new Rectangle(node.Location + new Size(1, 1), new Size(Node.Size, Node.Size)), Color.Black);
+                    TextRenderer.DrawText(e.Graphics, node.Name, font, new Rectangle(node.Location + new Size(1, 1), new Size(Node.Size, Node.Size)), Color.Black);
                 }
 
 

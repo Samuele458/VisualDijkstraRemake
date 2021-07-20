@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace VisualDijkstraRemake.Models
 {
@@ -37,6 +39,19 @@ namespace VisualDijkstraRemake.Models
         {
             return (NodeA == other.NodeA && NodeB == other.NodeB) ||
                     (NodeA == other.NodeB && NodeB == other.NodeA);
+        }
+
+        public bool Contains(Point loc, int lineWidth)
+        {
+            Size halfSize = new Size(Node.Size / 2, Node.Size / 2);
+            using (var path = new GraphicsPath())
+            {
+                using (var pen = new Pen(Brushes.Black, lineWidth))
+                {
+                    path.AddLine(_nodeA.Location + halfSize, _nodeB.Location + halfSize);
+                    return path.IsOutlineVisible(loc, pen);
+                }
+            }
         }
 
     }
