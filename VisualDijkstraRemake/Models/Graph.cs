@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace VisualDijkstraRemake.Models
 {
-    class Graph
+    public class Graph
     {
 
         private List<Node> _nodes;
@@ -29,17 +29,27 @@ namespace VisualDijkstraRemake.Models
             _edges = new List<Edge>();
         }
 
-        public void addNewNode(Node node)
+        public void AddNewNode(Node node)
         {
-            _nodes.Add(node);
+            if (node != null)
+            {
+                if (_nodes.Exists(n => node.Name.Equals(n.Name)))
+                {
+                    throw new NodeAlreadyExistsException();
+                }
+                else
+                {
+                    _nodes.Add(node);
+                }
+            }
         }
 
-        public void addNewNode(string nodeName, Point location)
+        public void AddNewNode(string nodeName, Point location)
         {
-            this.addNewNode(new Node(nodeName, location));
+            this.AddNewNode(new Node(nodeName, location));
         }
 
-        public void moveNode(Node node, Point location)
+        public void MoveNode(Node node, Point location)
         {
             if (_nodes.Contains(node))
             {
@@ -51,7 +61,12 @@ namespace VisualDijkstraRemake.Models
             }
         }
 
-        public void createNewEdge(Node a, Node b, int weight)
+        public void MoveNode(string nodeName, Point location)
+        {
+            MoveNode(GetNode(nodeName), location);
+        }
+
+        public void CreateNewEdge(Node a, Node b, int weight)
         {
             Edge edge = new Edge(a, b, weight);
             a.addEdge(edge);
@@ -59,14 +74,21 @@ namespace VisualDijkstraRemake.Models
             Edges.Add(edge);
         }
 
-        public Node getNode(string nodeName)
+        public Node GetNode(string nodeName)
         {
             return Nodes.Find(node => node.Name.Equals(nodeName));
         }
     }
 
-    class NodeNotFoundException : Exception
+    public class NodeNotFoundException : Exception
     {
-        public NodeNotFoundException(string message) : base(message) { }
+        public NodeNotFoundException(string message = "") : base(message) { }
     }
+
+
+    public class NodeAlreadyExistsException : Exception
+    {
+        public NodeAlreadyExistsException(string message = "") : base(message) { }
+    }
+
 }

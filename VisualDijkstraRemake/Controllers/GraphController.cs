@@ -32,7 +32,7 @@ namespace VisualDijkstraRemake.Controllers
 
         public void newNode(Node node)
         {
-            _graph.addNewNode(node);
+            _graph.AddNewNode(node);
             _view.Refresh();
         }
 
@@ -43,21 +43,14 @@ namespace VisualDijkstraRemake.Controllers
 
         public void newEdge(Node a, Node b, int weight)
         {
-            _graph.createNewEdge(a, b, weight);
+            _graph.CreateNewEdge(a, b, weight);
             _view.Refresh();
         }
 
         public void moveNode(Node node, Point location)
         {
-            _graph.moveNode(node, location);
+            _graph.MoveNode(node, location);
             _view.Refresh();
         }
-
-
-
-
-
-
-
     }
 }

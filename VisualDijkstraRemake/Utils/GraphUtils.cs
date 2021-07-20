@@ -70,7 +70,7 @@ namespace VisualDijkstraRemake.Utils
                     {
                         //System.Diagnostics.Debug.WriteLine("  <" + reader.Name + "> ");
 
-                        a = graph.getNode(reader.ReadElementContentAsString());
+                        a = graph.GetNode(reader.ReadElementContentAsString());
 
                         //graph.addNewNode(new Node(reader.Name, new Point(Int32.Parse(reader.GetAttribute("x")), Int32.Parse(reader.GetAttribute("y")))));
                         break;
@@ -82,7 +82,7 @@ namespace VisualDijkstraRemake.Utils
                     if (reader.IsStartElement() && reader.Name.Equals("a"))
                     {
                         //System.Diagnostics.Debug.WriteLine("  <" + reader.Name + "> ");
-                        b = graph.getNode(reader.ReadElementContentAsString());
+                        b = graph.GetNode(reader.ReadElementContentAsString());
                         //graph.addNewNode(new Node(reader.Name, new Point(Int32.Parse(reader.GetAttribute("x")), Int32.Parse(reader.GetAttribute("y")))));
                         break;
                     }
@@ -91,7 +91,7 @@ namespace VisualDijkstraRemake.Utils
 
             if (a != null && b != null)
             {
-                graph.createNewEdge(a, b, weight);
+                graph.CreateNewEdge(a, b, weight);
             }
             else
             {
@@ -106,7 +106,7 @@ namespace VisualDijkstraRemake.Utils
                 int x = Int32.Parse(reader.GetAttribute("x"));
                 int y = Int32.Parse(reader.GetAttribute("y"));
                 //System.Diagnostics.Debug.WriteLine(" <" + reader.Name + "> ");
-                graph.addNewNode(new Node(reader.ReadElementContentAsString(), new Point(x, y)));
+                graph.AddNewNode(new Node(reader.ReadElementContentAsString(), new Point(x, y)));
             }
         }
 
