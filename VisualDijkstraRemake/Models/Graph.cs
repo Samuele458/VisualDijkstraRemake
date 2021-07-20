@@ -58,6 +58,11 @@ namespace VisualDijkstraRemake.Models
             b.addEdge(edge);
             Edges.Add(edge);
         }
+
+        public Node getNode(string nodeName)
+        {
+            return Nodes.Find(node => node.Name.Equals(nodeName));
+        }
     }
 
     class NodeNotFoundException : Exception
