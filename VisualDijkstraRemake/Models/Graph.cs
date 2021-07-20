@@ -51,9 +51,9 @@ namespace VisualDijkstraRemake.Models
             }
         }
 
-        public void createNewEdge(Node a, Node b)
+        public void createNewEdge(Node a, Node b, int weight)
         {
-            Edge edge = new Edge(a, b);
+            Edge edge = new Edge(a, b, weight);
             a.addEdge(edge);
             b.addEdge(edge);
             Edges.Add(edge);

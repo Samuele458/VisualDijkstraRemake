@@ -21,8 +21,8 @@ namespace VisualDijkstraRemake
             graphController.newNode(b);
             graphController.newNode(c);
 
-            graphController.newEdge(a, b);
-            graphController.newEdge(c, b);
+            graphController.newEdge(a, b, 6);
+            graphController.newEdge(c, b, 7);
 
 
         }

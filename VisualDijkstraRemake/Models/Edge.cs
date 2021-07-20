@@ -8,6 +8,7 @@ namespace VisualDijkstraRemake.Models
     {
         Node _nodeA;
         Node _nodeB;
+        int _weight;
 
         public Node NodeA
         {
@@ -22,12 +23,19 @@ namespace VisualDijkstraRemake.Models
             set { _nodeB = value; }
         }
 
-        public Edge(Node a, Node b)
+        public int Weight
+        {
+            get { return _weight; }
+            set { _weight = value; }
+        }
+
+        public Edge(Node a, Node b, int weight)
         {
             if (a != b)
             {
                 NodeA = a;
                 NodeB = b;
+                Weight = weight;
             }
             else
             {

@@ -90,6 +90,11 @@ namespace VisualDijkstraRemake.Views
 
                 foreach (Edge edge in Controller.Graph.Edges)
                 {
+                    Point center = new Point((edge.NodeA.Location.X + edge.NodeB.Location.X) / 2,
+                                                (edge.NodeA.Location.Y + edge.NodeB.Location.Y) / 2);
+
+                    TextRenderer.DrawText(e.Graphics, edge.Weight.ToString(), font, center - new Size(0, 10), Color.Black);
+
                     e.Graphics.DrawLine(borderPen, edge.NodeA.Location + nodeSize / 2, edge.NodeB.Location + nodeSize / 2);
                 }
 

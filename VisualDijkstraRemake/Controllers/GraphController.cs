@@ -41,9 +41,9 @@ namespace VisualDijkstraRemake.Controllers
             newNode(new Node(nodeName, location));
         }
 
-        public void newEdge(Node a, Node b)
+        public void newEdge(Node a, Node b, int weight)
         {
-            _graph.createNewEdge(a, b);
+            _graph.createNewEdge(a, b, weight);
             _view.Refresh();
         }
 
