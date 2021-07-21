@@ -1,6 +1,7 @@
 ﻿using System.Windows.Forms;
 using VisualDijkstraRemake.Controllers;
 using VisualDijkstraRemake.Models;
+using VisualDijkstraRemake.Views;
 
 namespace VisualDijkstraRemake
 {
@@ -11,8 +12,8 @@ namespace VisualDijkstraRemake
             InitializeComponent();
 
 
-            Graph graphModel = Utils.GraphUtils.loadGraphFromXMLFile(@"C:\Users\Yankoo\Desktop\aaaa.xml");
-            GraphController graphController = new GraphController(this.graphPictureBox, graphModel);
+
+
 
             /*
 Node a = new Node("A", new System.Drawing.Point(100, 100));
@@ -29,6 +30,14 @@ graphController.newEdge(c, b, 7);
 Utils.GraphUtils.saveGraphToXMLFile(graphModel, @"C:\Users\Yankoo\Desktop\aaaa.xml");
 */
 
+        }
+
+        private void newGraphButton_Click(object sender, System.EventArgs e)
+        {
+            Graph graphModel = Utils.GraphUtils.loadGraphFromXMLFile(@"C:\Users\Yankoo\Desktop\aaaa.xml");
+            GraphView view = new Views.GraphView();
+            GraphController graphController = new GraphController(view, graphModel);
+            this.scrollPanel1.setGraphView(view);
         }
     }
 }

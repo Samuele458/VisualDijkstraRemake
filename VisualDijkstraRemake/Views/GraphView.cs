@@ -7,7 +7,7 @@ using VisualDijkstraRemake.Models;
 
 namespace VisualDijkstraRemake.Views
 {
-    class GraphView : PictureBox
+    public class GraphView : PictureBox
     {
         private GraphController _controller;
         private Node nodeToMove;
@@ -20,9 +20,16 @@ namespace VisualDijkstraRemake.Views
 
         public GraphView()
         {
-            this.BackColor = Color.Blue;
+            this.BackColor = Color.White;
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.BackgroundImage = global::VisualDijkstraRemake.Properties.Resources.grid100_w4_28o;
+
+            this.Controller = null;
+            this.Location = new System.Drawing.Point(3, 3);
+            this.Name = "graphPictureBox";
+            this.Size = new System.Drawing.Size(10000, 10000);
+            this.TabIndex = 0;
+            this.TabStop = false;
 
             this.Controller = null;
             this.nodeToMove = null;

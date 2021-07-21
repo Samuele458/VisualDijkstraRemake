@@ -11,7 +11,7 @@ namespace VisualDijkstraRemake.Controllers
     }
 
 
-    class GraphController : IGraphController
+    public class GraphController : IGraphController
     {
         private Graph _graph;
         private GraphView _view;
