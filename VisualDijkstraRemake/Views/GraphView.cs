@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using VisualDijkstraRemake.Controllers;
@@ -60,12 +59,6 @@ namespace VisualDijkstraRemake.Views
                         MessageBox.Show("Clicked edge");
                     }
                 }
-
-
-
-                Debug.WriteLine("View:  double click: creating node");
-                //Controller.newNode("A", new Point(mouseEvent.X, mouseEvent.Y));
-
             }
         }
 
@@ -82,6 +75,7 @@ namespace VisualDijkstraRemake.Views
 
                 //tools for painting
                 Pen borderPen = new Pen(Color.Black, 10);
+                Pen edgePen = new Pen(Color.Black, 7);
                 SolidBrush borderBrush = new SolidBrush(Color.White);
                 Font font = new Font("Arial", 20);
 
@@ -94,9 +88,9 @@ namespace VisualDijkstraRemake.Views
                     Point center = new Point((edge.NodeA.Location.X + edge.NodeB.Location.X) / 2,
                                                 (edge.NodeA.Location.Y + edge.NodeB.Location.Y) / 2);
 
-                    TextRenderer.DrawText(e.Graphics, edge.Weight.ToString(), font, center - new Size(0, 10), Color.Black);
+                    TextRenderer.DrawText(e.Graphics, edge.Weight.ToString(), font, center - new Size((int)(35 * Math.Cos(edge.Angle() + Math.PI)), (int)(35 * Math.Sin(edge.Angle() + Math.PI))), Color.Black);
 
-                    e.Graphics.DrawLine(borderPen, edge.NodeA.Location + nodeSize / 2, edge.NodeB.Location + nodeSize / 2);
+                    e.Graphics.DrawLine(edgePen, edge.NodeA.Location + nodeSize / 2, edge.NodeB.Location + nodeSize / 2);
                 }
 
                 //painting nodes
@@ -124,7 +118,6 @@ namespace VisualDijkstraRemake.Views
                 {
                     if (node.Contains(e.Location))
                     {
-                        Debug.WriteLine("Clicked node");
                         nodeToMove = node;
                     }
                 }
@@ -147,7 +140,6 @@ namespace VisualDijkstraRemake.Views
 
             //releasing node under move
             nodeToMove = null;
-            Debug.WriteLine("Node released");
         }
     }
 }

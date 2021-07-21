@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 
 namespace VisualDijkstraRemake.Models
@@ -24,7 +23,6 @@ namespace VisualDijkstraRemake.Models
 
         public Graph()
         {
-            Debug.WriteLine("Graph model created");
             _nodes = new List<Node>();
             _edges = new List<Edge>();
         }

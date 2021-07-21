@@ -62,6 +62,11 @@ namespace VisualDijkstraRemake.Models
             }
         }
 
+        public double Angle()
+        {
+            return Math.Atan2(NodeB.Location.X - NodeA.Location.X, NodeB.Location.Y - NodeA.Location.Y);
+        }
+
     }
 
     class DuplicatedEdgeException : Exception
