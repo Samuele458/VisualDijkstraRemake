@@ -23,6 +23,7 @@ namespace VisualDijkstraRemake.Views
         {
             this.BackColor = Color.Blue;
             this.Cursor = System.Windows.Forms.Cursors.Default;
+            this.BackgroundImage = global::VisualDijkstraRemake.Properties.Resources.grid100_w4_28o;
 
             this.Controller = null;
             this.nodeToMove = null;
