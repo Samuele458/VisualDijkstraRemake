@@ -31,6 +31,7 @@ namespace VisualDijkstraRemake
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.mainSplitContainer = new System.Windows.Forms.SplitContainer();
+            this.graphScrollBox = new System.Windows.Forms.FlowLayoutPanel();
             this.graphPictureBox = new VisualDijkstraRemake.Views.GraphView();
             this.mainToolStrip = new System.Windows.Forms.ToolStrip();
             this.newGraphButton = new System.Windows.Forms.ToolStripButton();
@@ -47,6 +48,7 @@ namespace VisualDijkstraRemake
             ((System.ComponentModel.ISupportInitialize)(this.mainSplitContainer)).BeginInit();
             this.mainSplitContainer.Panel1.SuspendLayout();
             this.mainSplitContainer.SuspendLayout();
+            this.graphScrollBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.graphPictureBox)).BeginInit();
             this.mainToolStrip.SuspendLayout();
             this.SuspendLayout();
@@ -61,20 +63,30 @@ namespace VisualDijkstraRemake
             // 
             // mainSplitContainer.Panel1
             // 
-            this.mainSplitContainer.Panel1.Controls.Add(this.graphPictureBox);
+            this.mainSplitContainer.Panel1.Controls.Add(this.graphScrollBox);
             this.mainSplitContainer.Size = new System.Drawing.Size(800, 450);
             this.mainSplitContainer.SplitterDistance = 415;
             this.mainSplitContainer.TabIndex = 0;
             // 
+            // graphScrollBox
+            // 
+            this.graphScrollBox.AutoScroll = true;
+            this.graphScrollBox.Controls.Add(this.graphPictureBox);
+            this.graphScrollBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.graphScrollBox.Location = new System.Drawing.Point(0, 0);
+            this.graphScrollBox.Name = "graphScrollBox";
+            this.graphScrollBox.Size = new System.Drawing.Size(415, 450);
+            this.graphScrollBox.TabIndex = 1;
+            // 
             // graphPictureBox
             // 
             this.graphPictureBox.BackColor = System.Drawing.SystemColors.InactiveBorder;
+            this.graphPictureBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("graphPictureBox.BackgroundImage")));
             this.graphPictureBox.Controller = null;
             this.graphPictureBox.Cursor = System.Windows.Forms.Cursors.Default;
-            this.graphPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.graphPictureBox.Location = new System.Drawing.Point(0, 0);
+            this.graphPictureBox.Location = new System.Drawing.Point(3, 3);
             this.graphPictureBox.Name = "graphPictureBox";
-            this.graphPictureBox.Size = new System.Drawing.Size(415, 450);
+            this.graphPictureBox.Size = new System.Drawing.Size(4000, 4000);
             this.graphPictureBox.TabIndex = 0;
             this.graphPictureBox.TabStop = false;
             // 
@@ -204,6 +216,7 @@ namespace VisualDijkstraRemake
             this.mainSplitContainer.Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.mainSplitContainer)).EndInit();
             this.mainSplitContainer.ResumeLayout(false);
+            this.graphScrollBox.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.graphPictureBox)).EndInit();
             this.mainToolStrip.ResumeLayout(false);
             this.mainToolStrip.PerformLayout();
@@ -228,6 +241,7 @@ namespace VisualDijkstraRemake
         private System.Windows.Forms.ToolStripButton calculatePathButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripButton adjMatrixButton;
+        private System.Windows.Forms.FlowLayoutPanel graphScrollBox;
     }
 }
 

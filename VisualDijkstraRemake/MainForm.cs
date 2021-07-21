@@ -1,4 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using log4net;
+using System.Diagnostics;
+using System.Windows.Forms;
 using VisualDijkstraRemake.Controllers;
 using VisualDijkstraRemake.Models;
 
@@ -13,6 +15,10 @@ namespace VisualDijkstraRemake
 
             Graph graphModel = Utils.GraphUtils.loadGraphFromXMLFile(@"C:\Users\Yankoo\Desktop\aaaa.xml");
             GraphController graphController = new GraphController(this.graphPictureBox, graphModel);
+
+            ILog log = LogManager.GetLogger("mylog");
+            log.Debug("This is a debug message");
+            Debug.WriteLine("kk");
 
             /*
 Node a = new Node("A", new System.Drawing.Point(100, 100));
