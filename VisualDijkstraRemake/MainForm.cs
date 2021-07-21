@@ -12,7 +12,7 @@ namespace VisualDijkstraRemake
             InitializeComponent();
 
 
-
+            this.KeyPreview = true;
 
 
             /*
@@ -38,6 +38,7 @@ Utils.GraphUtils.saveGraphToXMLFile(graphModel, @"C:\Users\Yankoo\Desktop\aaaa.x
             GraphView view = new Views.GraphView();
             GraphController graphController = new GraphController(view, graphModel);
             this.scrollPanel1.setGraphView(view);
+            view.setScrollBox(this.scrollPanel1);
         }
     }
 }

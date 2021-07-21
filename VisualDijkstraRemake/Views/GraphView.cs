@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using VisualDijkstraRemake.Controllers;
+using VisualDijkstraRemake.Controls;
 using VisualDijkstraRemake.Models;
 
 namespace VisualDijkstraRemake.Views
@@ -11,6 +12,8 @@ namespace VisualDijkstraRemake.Views
     {
         private GraphController _controller;
         private Node nodeToMove;
+        private Nullable<Point> dragLocation;
+        private ScrollPanel scrollBox;
 
         public GraphController Controller
         {
@@ -34,6 +37,14 @@ namespace VisualDijkstraRemake.Views
             this.Controller = null;
             this.nodeToMove = null;
 
+
+            this.dragLocation = null;
+
+        }
+
+        public void setScrollBox(ScrollPanel scroll)
+        {
+            this.scrollBox = scroll;
         }
 
         protected override void OnDoubleClick(EventArgs e)
@@ -128,6 +139,11 @@ namespace VisualDijkstraRemake.Views
                         nodeToMove = node;
                     }
                 }
+
+                if (nodeToMove == null)
+                {
+                    dragLocation = e.Location;
+                }
             }
         }
 
@@ -135,9 +151,24 @@ namespace VisualDijkstraRemake.Views
         {
             base.OnMouseMove(e);
 
-            if (Controller != null && nodeToMove != null)
+            if (Controller != null)
             {
-                Controller.moveNode(nodeToMove, e.Location);
+
+                if (nodeToMove != null)
+                {
+                    Controller.moveNode(nodeToMove, e.Location);
+                }
+                else if (dragLocation.HasValue)
+                {
+                    Size a = new Size(dragLocation.Value.X - e.Location.X, dragLocation.Value.Y - e.Location.Y);
+                    //this.AutoScrollPosition += a;
+                    ScrollPanel sc = (ScrollPanel)this.Parent;
+                    System.Diagnostics.Debug.WriteLine(dragLocation + "  ->  " + e.Location + " ---   " + scrollBox.AutoScrollPosition);
+
+                    scrollBox.AutoScrollPosition = new Point(Math.Abs(scrollBox.AutoScrollPosition.X),
+                                                              Math.Abs(scrollBox.AutoScrollPosition.Y)) + a;
+
+                }
             }
         }
 
@@ -147,6 +178,7 @@ namespace VisualDijkstraRemake.Views
 
             //releasing node under move
             nodeToMove = null;
+            dragLocation = null;
         }
     }
 }

@@ -52,6 +52,7 @@ namespace VisualDijkstraRemake
             // 
             // mainSplitContainer
             // 
+            this.mainSplitContainer.CausesValidation = false;
             this.mainSplitContainer.Cursor = System.Windows.Forms.Cursors.VSplit;
             this.mainSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainSplitContainer.Location = new System.Drawing.Point(0, 0);

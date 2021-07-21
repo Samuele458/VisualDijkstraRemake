@@ -25,6 +25,7 @@ namespace VisualDijkstraRemake.Controls
 
             this.AutoScrollPosition = new System.Drawing.Point(5000, 5000);
 
+
         }
 
         protected override void OnMouseClick(MouseEventArgs e)
@@ -32,5 +33,7 @@ namespace VisualDijkstraRemake.Controls
             base.OnMouseClick(e);
             System.Diagnostics.Debug.WriteLine("CLICK");
         }
+
+
     }
 }
