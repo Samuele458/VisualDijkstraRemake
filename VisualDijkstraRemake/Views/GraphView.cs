@@ -56,42 +56,63 @@ namespace VisualDijkstraRemake.Views
 
         }
 
-        public void fetchInput(char c)
+        private void CheckNodeOnEdit()
         {
-            Debug.WriteLine((int)c);
-            if ((int)c == 13 && _nodeOnEdit != null)
+            if (!_controller.Graph.Nodes.Contains(_nodeOnEdit))
             {
-                Debug.WriteLine("STOP");
-
                 if (_controller.Graph.GetNode(_inputString) == null)
                 {
                     _nodeOnEdit.Name = _inputString;
                     _controller.newNode(_nodeOnEdit);
                 }
-
-
-                _nodeOnEdit = null;
-                _inputString = "";
-            }
-            else if ((int)c == 8)
-            {
-
-                if (_inputString.Length > 0)
+                else
                 {
-                    _inputString = _inputString.Remove(_inputString.Length - 1);
+                    MessageBox.Show("Node already exists!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
-            else if (_inputString.Length < 2)
+            else
             {
-                _inputString += c;
-                Debug.WriteLine("Adding: " + c);
+                if (_controller.Graph.GetNode(_inputString) == null)
+                {
+                    _nodeOnEdit.Name = _inputString;
+                }
+                else
+                {
+                    MessageBox.Show("Node already exists!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+        }
 
+        public void fetchInput(char c)
+        {
+            Debug.WriteLine((int)c);
 
+            if (_nodeOnEdit != null)
+            {
+                if ((int)c == 13)
+                {
+
+                    CheckNodeOnEdit();
+
+                    _nodeOnEdit = null;
+                    _inputString = "";
+                }
+                else if ((int)c == 8)
+                {
+
+                    if (_inputString.Length > 0)
+                    {
+                        _inputString = _inputString.Remove(_inputString.Length - 1);
+                    }
+                }
+                else if (_inputString.Length < 2)
+                {
+                    _inputString += c;
+
+                }
             }
 
-
             this.Refresh();
-            Debug.WriteLine(_inputString);
         }
 
 
@@ -113,8 +134,10 @@ namespace VisualDijkstraRemake.Views
                     if (node.Contains(mouseEvent.Location))
                     {
                         _inputString = node.Name;
+                        _nodeOnEdit = node;
                         //_nodeOnChangingName = node;
                         this.Refresh();
+                        return;
                     }
                 }
 
@@ -260,13 +283,14 @@ namespace VisualDijkstraRemake.Views
 
                     _nodeCreationRequested = false;
 
-                    //
+
                 }
                 else if (_nodeToMove == null)
                 {
                     // Save drag location
                     _dragLocation = e.Location;
                 }
+
             }
 
             this.Refresh();
@@ -325,6 +349,7 @@ namespace VisualDijkstraRemake.Views
         public void requestsNewEdge()
         {
             clearRequests();
+            Debug.WriteLine("REQUESTED NEW EDGE");
             this._edgeCreationRequested = true;
         }
 

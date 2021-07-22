@@ -41,7 +41,10 @@ namespace VisualDijkstraRemake
 
         private void addEdgeButton_Click(object sender, System.EventArgs e)
         {
-            _graphView.requestsNewEdge();
+            if (e is MouseEventArgs)
+            {
+                _graphView.requestsNewEdge();
+            }
         }
 
 
