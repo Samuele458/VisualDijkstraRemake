@@ -160,6 +160,7 @@ namespace VisualDijkstraRemake
             this.addEdgeButton.Size = new System.Drawing.Size(36, 36);
             this.addEdgeButton.Text = "Create new edge";
             this.addEdgeButton.ToolTipText = "Create new edge. Click on two nodes to link them.";
+            this.addEdgeButton.Click += new System.EventHandler(this.addEdgeButton_Click);
             // 
             // toolStripSeparator2
             // 

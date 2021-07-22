@@ -32,5 +32,10 @@ namespace VisualDijkstraRemake
         {
             _graphView.requestsNewNode();
         }
+
+        private void addEdgeButton_Click(object sender, System.EventArgs e)
+        {
+            _graphView.requestsNewEdge();
+        }
     }
 }

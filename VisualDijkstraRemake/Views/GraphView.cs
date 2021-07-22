@@ -15,6 +15,9 @@ namespace VisualDijkstraRemake.Views
         private Node _nodeToMove;
         private Nullable<Point> _dragLocation;
         private bool _nodeCreationRequested;
+        private bool _edgeCreationRequested;
+        private Node _firstNode;
+        private bool _nodeEliminationRequested;
 
         public GraphController Controller
         {
@@ -41,6 +44,9 @@ namespace VisualDijkstraRemake.Views
             this._nodeToMove = null;
             this._dragLocation = null;
             this._nodeCreationRequested = false;
+            this._edgeCreationRequested = false;
+            this._firstNode = null;
+            this._nodeEliminationRequested = false;
 
         }
 
@@ -105,7 +111,7 @@ namespace VisualDijkstraRemake.Views
                     Point center = new Point((edge.NodeA.Location.X + edge.NodeB.Location.X) / 2,
                                                 (edge.NodeA.Location.Y + edge.NodeB.Location.Y) / 2);
 
-                    TextRenderer.DrawText(e.Graphics, edge.Weight.ToString(), font, center - new Size((int)(35 * Math.Cos(edge.Angle() + Math.PI)), (int)(35 * Math.Sin(edge.Angle() + Math.PI))), Color.Black);
+                    TextRenderer.DrawText(e.Graphics, edge.Weight.ToString(), font, center - new Size((int)(35 * Math.Cos((2 * Math.PI) - edge.Angle())), (int)(35 * Math.Sin((2 * Math.PI) - edge.Angle()))), Color.Black);
 
                     e.Graphics.DrawLine(edgePen, edge.NodeA.Location + nodeSize / 2, edge.NodeB.Location + nodeSize / 2);
                 }
@@ -128,12 +134,7 @@ namespace VisualDijkstraRemake.Views
         {
             base.OnMouseClick(e);
 
-            if (_nodeCreationRequested)
-            {
-                string nodeName = Microsoft.VisualBasic.Interaction.InputBox("Enter node name:", "New node");
-                _controller.newNode(nodeName, e.Location);
-                _nodeCreationRequested = false;
-            }
+
         }
 
         protected override void OnMouseDown(MouseEventArgs e)
@@ -143,18 +144,55 @@ namespace VisualDijkstraRemake.Views
             if (Controller != null)
             {
 
+                Node node = null;
+
                 // trying to find if any node is clicked
                 List<Node> nodes = Controller.Graph.Nodes;
-                foreach (Node node in nodes)
+                for (int i = 0; i < nodes.Count; ++i)
                 {
-                    if (node.Contains(e.Location))
+
+                    if (nodes[i].Contains(e.Location))
                     {
-                        _nodeToMove = node;
+                        //a node was clicked
+                        node = nodes[i];
+
+                        break;
                     }
                 }
 
-                // if there is no any clicked node
-                if (_nodeToMove == null)
+                if (node != null)
+                {
+                    //checking if edge creation was requested
+                    if (_edgeCreationRequested && _firstNode == null)
+                    {
+                        //edge creation has already been requested, but first node has not been picked yes
+                        _firstNode = node;
+                    }
+                    else if (_edgeCreationRequested && _firstNode != null)
+                    {
+                        //first node also exists, so new edge can be created
+                        _controller.newEdge(_firstNode, node, 3);
+                        _edgeCreationRequested = false;
+                        _firstNode = null;
+
+                    }
+                    else if (_nodeEliminationRequested)
+                    {
+                        //_controller.deleteNode(node);
+                    }
+                    else
+                    {
+                        //saving node to be moved
+                        _nodeToMove = node;
+                    }
+                }
+                else if (_nodeCreationRequested)
+                {
+                    string nodeName = Microsoft.VisualBasic.Interaction.InputBox("Enter node name:", "New node");
+                    _controller.newNode(nodeName, e.Location);
+                    _nodeCreationRequested = false;
+                }
+                else if (_nodeToMove == null)
                 {
                     // Save drag location
                     _dragLocation = e.Location;
@@ -199,14 +237,47 @@ namespace VisualDijkstraRemake.Views
         }
 
 
+        /// <summary>
+        ///  Requests new node creation
+        /// </summary>
         public void requestsNewNode()
         {
+            clearRequests();
             this._nodeCreationRequested = true;
         }
 
+
+        /// <summary>
+        ///  Requests new edge creation
+        /// </summary>
+        public void requestsNewEdge()
+        {
+            clearRequests();
+            this._edgeCreationRequested = true;
+        }
+
+
+        public void requestNodeElimination()
+        {
+            clearRequests();
+            this._nodeEliminationRequested = true;
+        }
+
+        /// <summary>
+        ///  Clear any pending request.
+        /// </summary>
         public void clearRequests()
         {
+            //clearing node creation request
             this._nodeCreationRequested = false;
+
+
+            //clearing edge creation request
+            this._edgeCreationRequested = false;
+            this._firstNode = null;
+
+            //clearing node elimination request
+            this._nodeEliminationRequested = false;
         }
 
 

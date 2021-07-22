@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Windows.Forms;
 using VisualDijkstraRemake.Models;
 using VisualDijkstraRemake.Views;
 
@@ -32,7 +33,14 @@ namespace VisualDijkstraRemake.Controllers
 
         public void newNode(Node node)
         {
-            _graph.AddNewNode(node);
+            try
+            {
+                _graph.AddNewNode(node);
+            }
+            catch (NodeAlreadyExistsException e)
+            {
+                MessageBox.Show("Node already exists!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
             _view.Refresh();
         }
 
