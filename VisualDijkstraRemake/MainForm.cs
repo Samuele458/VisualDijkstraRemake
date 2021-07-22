@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 using VisualDijkstraRemake.Controllers;
 using VisualDijkstraRemake.Models;
 using VisualDijkstraRemake.Views;
@@ -55,6 +56,21 @@ namespace VisualDijkstraRemake
             _graphView.fetchInput(c);
 
             base.OnKeyPress(e);
+        }
+
+        private void newGraphButton_Click_1(object sender, System.EventArgs e)
+        {
+
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            _graph = Utils.GraphUtils.loadGraphFromXMLFile(@"C:\Users\Yankoo\Desktop\aaaa.xml");
+            _graphView = new Views.GraphView();
+            _graphController = new GraphController(_graphView, _graph);
+            this.scrollPanel1.setGraphView(_graphView);
         }
     }
 }
