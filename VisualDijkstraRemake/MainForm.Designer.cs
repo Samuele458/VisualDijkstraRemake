@@ -139,6 +139,7 @@ namespace VisualDijkstraRemake
             this.addNodeButton.Name = "addNodeButton";
             this.addNodeButton.Size = new System.Drawing.Size(36, 36);
             this.addNodeButton.Text = "Create node";
+            this.addNodeButton.Click += new System.EventHandler(this.addNodeButton_Click);
             // 
             // removeNodeButton
             // 
