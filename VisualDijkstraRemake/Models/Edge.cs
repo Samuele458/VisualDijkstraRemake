@@ -60,8 +60,8 @@ namespace VisualDijkstraRemake.Models
         /// <returns>true if the edges are equals, false otherwise</returns>
         public bool Equals(Edge other)
         {
-            return (NodeA == other.NodeA && NodeB == other.NodeB) ||
-                    (NodeA == other.NodeB && NodeB == other.NodeA);
+            return (NodeA.Equals(other.NodeA) && NodeB.Equals(other.NodeB)) ||
+                   (NodeA.Equals(other.NodeB) && NodeB.Equals(other.NodeA));
         }
 
         /// <summary>

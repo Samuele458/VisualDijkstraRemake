@@ -81,8 +81,22 @@ namespace VisualDijkstraRemake.Models
         }
 
 
-
-
+        /// <summary>
+        ///  Checks if two nodes are equal or not, based on their names
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns>true if equal, false othwìerwise</returns>
+        public bool Equals(Node other)
+        {
+            if (other == null)
+            {
+                throw new ArgumentNullException();
+            }
+            else
+            {
+                return this.Name.Equals(other.Name);
+            }
+        }
     }
 
 
