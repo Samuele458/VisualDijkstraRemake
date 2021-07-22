@@ -13,7 +13,6 @@ namespace VisualDijkstraRemake.Views
         private GraphController _controller;
         private Node nodeToMove;
         private Nullable<Point> dragLocation;
-        private ScrollPanel scrollBox;
 
         public GraphController Controller
         {
@@ -23,10 +22,10 @@ namespace VisualDijkstraRemake.Views
 
         public GraphView()
         {
+            //general settings
             this.BackColor = Color.White;
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.BackgroundImage = global::VisualDijkstraRemake.Properties.Resources.grid100_w4_28o;
-
             this.Controller = null;
             this.Location = new System.Drawing.Point(3, 3);
             this.Name = "graphPictureBox";
@@ -34,18 +33,15 @@ namespace VisualDijkstraRemake.Views
             this.TabIndex = 0;
             this.TabStop = false;
 
+
+            //Initializing attributes
             this.Controller = null;
             this.nodeToMove = null;
-
-
             this.dragLocation = null;
 
         }
 
-        public void setScrollBox(ScrollPanel scroll)
-        {
-            this.scrollBox = scroll;
-        }
+
 
         protected override void OnDoubleClick(EventArgs e)
         {
@@ -131,6 +127,8 @@ namespace VisualDijkstraRemake.Views
 
             if (Controller != null)
             {
+
+                // trying to find if any node is clicked
                 List<Node> nodes = Controller.Graph.Nodes;
                 foreach (Node node in nodes)
                 {
@@ -140,8 +138,10 @@ namespace VisualDijkstraRemake.Views
                     }
                 }
 
+                // if there is no any clicked node
                 if (nodeToMove == null)
                 {
+                    // Save drag location
                     dragLocation = e.Location;
                 }
             }
@@ -153,20 +153,20 @@ namespace VisualDijkstraRemake.Views
 
             if (Controller != null)
             {
-
                 if (nodeToMove != null)
                 {
+                    //moving a node
                     Controller.moveNode(nodeToMove, e.Location);
                 }
-                else if (dragLocation.HasValue)
+                else if (this.Parent != null && dragLocation.HasValue)
                 {
-                    Size a = new Size(dragLocation.Value.X - e.Location.X, dragLocation.Value.Y - e.Location.Y);
-                    //this.AutoScrollPosition += a;
-                    ScrollPanel sc = (ScrollPanel)this.Parent;
-                    System.Diagnostics.Debug.WriteLine(dragLocation + "  ->  " + e.Location + " ---   " + scrollBox.AutoScrollPosition);
+                    //moving the graph
 
-                    scrollBox.AutoScrollPosition = new Point(Math.Abs(scrollBox.AutoScrollPosition.X),
-                                                              Math.Abs(scrollBox.AutoScrollPosition.Y)) + a;
+                    Size delta = new Size(dragLocation.Value.X - e.Location.X, dragLocation.Value.Y - e.Location.Y);
+                    ScrollPanel parentScrollBox = (ScrollPanel)this.Parent;
+
+                    parentScrollBox.AutoScrollPosition = new Point(Math.Abs(parentScrollBox.AutoScrollPosition.X),
+                                                                   Math.Abs(parentScrollBox.AutoScrollPosition.Y)) + delta;
 
                 }
             }
@@ -178,6 +178,8 @@ namespace VisualDijkstraRemake.Views
 
             //releasing node under move
             nodeToMove = null;
+
+            //releasing drag location
             dragLocation = null;
         }
     }

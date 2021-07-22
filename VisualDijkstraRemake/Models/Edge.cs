@@ -4,6 +4,10 @@ using System.Drawing.Drawing2D;
 
 namespace VisualDijkstraRemake.Models
 {
+
+    /// <summary>
+    ///  Edge element used inside Graph
+    /// </summary>
     public class Edge
     {
         Node _nodeA;
@@ -29,6 +33,12 @@ namespace VisualDijkstraRemake.Models
             set { _weight = value; }
         }
 
+        /// <summary>
+        ///  Create an Edge by providing its characteristics
+        /// </summary>
+        /// <param name="a">Node A</param>
+        /// <param name="b">Node B</param>
+        /// <param name="weight">Edge weight</param>
         public Edge(Node a, Node b, int weight)
         {
             if (a != b)
@@ -43,12 +53,23 @@ namespace VisualDijkstraRemake.Models
             }
         }
 
+        /// <summary>
+        ///  Checks is two edges are qual or not, based on nodes contained inside edges
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns>true if the edges are equals, false otherwise</returns>
         public bool Equals(Edge other)
         {
             return (NodeA == other.NodeA && NodeB == other.NodeB) ||
                     (NodeA == other.NodeB && NodeB == other.NodeA);
         }
 
+        /// <summary>
+        ///  Checks if a given location is contained inside Edge boundaries
+        /// </summary>
+        /// <param name="loc">Location to be checked</param>
+        /// <param name="lineWidth">Width of the edge (the higher the width, the larger the boundaries)</param>
+        /// <returns>Returns true if location is contained inside boundaries, false otherwise</returns>
         public bool Contains(Point loc, int lineWidth)
         {
             Size halfSize = new Size(Node.Size / 2, Node.Size / 2);
@@ -62,6 +83,10 @@ namespace VisualDijkstraRemake.Models
             }
         }
 
+        /// <summary>
+        ///  Evaluate the angle (in radians) between two nodes
+        /// </summary>
+        /// <returns>Angle value between two nodes</returns>
         public double Angle()
         {
             return Math.Atan2(NodeB.Location.X - NodeA.Location.X, NodeB.Location.Y - NodeA.Location.Y);
@@ -69,6 +94,10 @@ namespace VisualDijkstraRemake.Models
 
     }
 
+
+    /// <summary>
+    ///  Duplicated edge
+    /// </summary>
     class DuplicatedEdgeException : Exception
     {
         public DuplicatedEdgeException(string message) : base(message) { }

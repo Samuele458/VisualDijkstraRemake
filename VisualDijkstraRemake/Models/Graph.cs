@@ -4,6 +4,9 @@ using System.Drawing;
 
 namespace VisualDijkstraRemake.Models
 {
+    /// <summary>
+    ///  Model for handling a graph
+    /// </summary>
     public class Graph
     {
 
@@ -27,6 +30,10 @@ namespace VisualDijkstraRemake.Models
             _edges = new List<Edge>();
         }
 
+        /// <summary>
+        ///  Adds a given Node object to graph.
+        /// </summary>
+        /// <param name="node">Node object to be added.</param>
         public void AddNewNode(Node node)
         {
             if (node != null)
@@ -42,11 +49,22 @@ namespace VisualDijkstraRemake.Models
             }
         }
 
+        /// <summary>
+        ///  Creates a new node and adds it to graph
+        /// </summary>
+        /// <param name="nodeName">Node name</param>
+        /// <param name="location">Location in which add the node</param>
         public void AddNewNode(string nodeName, Point location)
         {
             this.AddNewNode(new Node(nodeName, location));
         }
 
+
+        /// <summary>
+        ///  Move a node to a given location
+        /// </summary>
+        /// <param name="node">Node object</param>
+        /// <param name="location">Location in which move the node</param>
         public void MoveNode(Node node, Point location)
         {
             if (_nodes.Contains(node))
@@ -59,11 +77,23 @@ namespace VisualDijkstraRemake.Models
             }
         }
 
+
+        /// <summary>
+        ///  Move a node to a given location
+        /// </summary>
+        /// <param name="node">Node object</param>
+        /// <param name="location">Location in which move the node</param>
         public void MoveNode(string nodeName, Point location)
         {
             MoveNode(GetNode(nodeName), location);
         }
 
+        /// <summary>
+        ///  Create a new edge between two nodes (the order doesn't matter)
+        /// </summary>
+        /// <param name="a">Node A</param>
+        /// <param name="b">Node B</param>
+        /// <param name="weight">Edge weight</param>
         public void CreateNewEdge(Node a, Node b, int weight)
         {
             Edge edge = new Edge(a, b, weight);
@@ -72,12 +102,21 @@ namespace VisualDijkstraRemake.Models
             Edges.Add(edge);
         }
 
+        /// <summary>
+        ///  Gets a node object, by providing it's name
+        /// </summary>
+        /// <param name="nodeName">Name of the node to search</param>
+        /// <returns>Returns the node object if found, null otherwise</returns>
         public Node GetNode(string nodeName)
         {
             return Nodes.Find(node => node.Name.Equals(nodeName));
         }
     }
 
+
+    /// <summary>
+    ///  Node not found
+    /// </summary>
     public class NodeNotFoundException : Exception
     {
         public NodeNotFoundException(string message = "") : base(message) { }

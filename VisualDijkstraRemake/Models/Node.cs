@@ -4,6 +4,10 @@ using System.Drawing;
 
 namespace VisualDijkstraRemake.Models
 {
+
+    /// <summary>
+    ///  Node element used inside Graph
+    /// </summary>
     public class Node
     {
         //Node size
@@ -41,10 +45,19 @@ namespace VisualDijkstraRemake.Models
             Name = nodeName;
         }
 
-
+        /// <summary>
+        ///  Constructs a Node object
+        /// </summary>
+        /// <param name="nodeName">Name given to node.</param>
+        /// <param name="x">X coordinate.</param>
+        /// <param name="y">Y coordinate.</param>
         public Node(string nodeName, int x, int y) : this(nodeName, new Point(x, y)) { }
 
-
+        /// <summary>
+        ///  Check if a given location is inside the node boundaries
+        /// </summary>
+        /// <param name="location">Location to check</param>
+        /// <returns>True is is location if inside boundaries, false otherwise.</returns>
         public bool Contains(Point location)
         {
             return (
@@ -55,6 +68,10 @@ namespace VisualDijkstraRemake.Models
             );
         }
 
+        /// <summary>
+        ///  Add a new edge to the node
+        /// </summary>
+        /// <param name="edge"></param>
         public void addEdge(Edge edge)
         {
             if (!Edges.Contains(edge))
@@ -63,8 +80,14 @@ namespace VisualDijkstraRemake.Models
             }
         }
 
+
+
     }
 
+
+    /// <summary>
+    ///  Duplicated node exception
+    /// </summary>
     class DuplicatedNodeException : Exception
     {
         public DuplicatedNodeException(string message) : base(message) { }

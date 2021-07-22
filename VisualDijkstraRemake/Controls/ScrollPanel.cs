@@ -12,7 +12,6 @@ namespace VisualDijkstraRemake.Controls
             this.AutoScroll = true;
 
             this.Location = new System.Drawing.Point(40, 91);
-            this.Name = "ScrollPanel";
             this.Size = new System.Drawing.Size(330, 301);
             this.TabIndex = 0;
 
@@ -27,13 +26,5 @@ namespace VisualDijkstraRemake.Controls
 
 
         }
-
-        protected override void OnMouseClick(MouseEventArgs e)
-        {
-            base.OnMouseClick(e);
-            System.Diagnostics.Debug.WriteLine("CLICK");
-        }
-
-
     }
 }
