@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using VisualDijkstraRemake.Controllers;
@@ -18,6 +19,9 @@ namespace VisualDijkstraRemake.Views
         private bool _edgeCreationRequested;
         private Node _firstNode;
         private bool _nodeEliminationRequested;
+
+        private string _inputString;
+        private Node _nodeOnChangingName;
 
         public GraphController Controller
         {
@@ -47,9 +51,48 @@ namespace VisualDijkstraRemake.Views
             this._edgeCreationRequested = false;
             this._firstNode = null;
             this._nodeEliminationRequested = false;
+            this._inputString = "";
 
         }
 
+        public void fetchInput(char c)
+        {
+            if ((int)c == 13)
+            {
+
+                _nodeOnChangingName = null;
+                _inputString = "";
+            }
+            else if ((int)c == 8)
+            {
+
+                if (_inputString.Length > 0)
+                {
+                    _inputString = _inputString.Remove(_inputString.Length - 1);
+
+
+                    if (_nodeOnChangingName != null)
+                    {
+                        _nodeOnChangingName.Name = _inputString;
+                    }
+                }
+            }
+            else
+            {
+                _inputString += c;
+                Debug.WriteLine("Adding: " + c);
+                if (_nodeOnChangingName != null)
+                {
+                    _nodeOnChangingName.Name = _inputString;
+                }
+
+
+            }
+
+
+            this.Refresh();
+            Debug.WriteLine(_inputString);
+        }
 
 
         protected override void OnDoubleClick(EventArgs e)
@@ -69,7 +112,9 @@ namespace VisualDijkstraRemake.Views
                 {
                     if (node.Contains(mouseEvent.Location))
                     {
-                        MessageBox.Show("Clicked node");
+                        _inputString = node.Name;
+                        _nodeOnChangingName = node;
+                        this.Refresh();
                     }
                 }
 
@@ -121,7 +166,15 @@ namespace VisualDijkstraRemake.Views
                 {
                     e.Graphics.DrawEllipse(borderPen, new Rectangle(node.Location, new Size(Node.Size, Node.Size)));
                     e.Graphics.FillEllipse(borderBrush, new Rectangle(node.Location, new Size(Node.Size, Node.Size)));
-                    TextRenderer.DrawText(e.Graphics, node.Name, font, new Rectangle(node.Location + new Size(1, 1), new Size(Node.Size, Node.Size)), Color.Black);
+                    if (_nodeOnChangingName != node)
+                    {
+                        TextRenderer.DrawText(e.Graphics, node.Name, font, new Rectangle(node.Location + new Size(1, 1), new Size(Node.Size, Node.Size)), Color.Black);
+                    }
+                    else
+                    {
+                        TextRenderer.DrawText(e.Graphics, node.Name, font, new Rectangle(node.Location + new Size(1, 1), new Size(Node.Size, Node.Size)), Color.White, Color.FromArgb(0, 120, 215));
+
+                    }
                 }
 
 
@@ -188,9 +241,12 @@ namespace VisualDijkstraRemake.Views
                 }
                 else if (_nodeCreationRequested)
                 {
-                    string nodeName = Microsoft.VisualBasic.Interaction.InputBox("Enter node name:", "New node");
-                    _controller.newNode(nodeName, e.Location);
+                    //string nodeName = Microsoft.VisualBasic.Interaction.InputBox("Enter node name:", "New node");
+                    _nodeOnChangingName = new Node("", e.Location);
+                    _controller.newNode(_nodeOnChangingName);
                     _nodeCreationRequested = false;
+
+                    //
                 }
                 else if (_nodeToMove == null)
                 {

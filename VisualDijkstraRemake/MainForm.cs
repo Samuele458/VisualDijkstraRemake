@@ -37,5 +37,24 @@ namespace VisualDijkstraRemake
         {
             _graphView.requestsNewEdge();
         }
+
+        private void mainSplitContainer_Panel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, System.EventArgs e)
+        {
+
+        }
+
+        protected override void OnKeyPress(KeyPressEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine((int)e.KeyChar);
+            char c = e.KeyChar;
+            _graphView.fetchInput(c);
+
+            base.OnKeyPress(e);
+        }
     }
 }

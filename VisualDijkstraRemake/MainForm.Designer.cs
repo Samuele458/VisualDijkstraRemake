@@ -44,26 +44,44 @@ namespace VisualDijkstraRemake
             this.calculatePathButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.adjMatrixButton = new System.Windows.Forms.ToolStripButton();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             ((System.ComponentModel.ISupportInitialize)(this.mainSplitContainer)).BeginInit();
             this.mainSplitContainer.Panel1.SuspendLayout();
+            this.mainSplitContainer.Panel2.SuspendLayout();
             this.mainSplitContainer.SuspendLayout();
             this.mainToolStrip.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainSplitContainer
             // 
+            this.mainSplitContainer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.mainSplitContainer.CausesValidation = false;
             this.mainSplitContainer.Cursor = System.Windows.Forms.Cursors.VSplit;
             this.mainSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mainSplitContainer.Location = new System.Drawing.Point(0, 0);
+            this.mainSplitContainer.Location = new System.Drawing.Point(0, 118);
             this.mainSplitContainer.Margin = new System.Windows.Forms.Padding(3, 100, 3, 3);
             this.mainSplitContainer.Name = "mainSplitContainer";
             // 
             // mainSplitContainer.Panel1
             // 
             this.mainSplitContainer.Panel1.Controls.Add(this.scrollPanel1);
-            this.mainSplitContainer.Size = new System.Drawing.Size(800, 450);
-            this.mainSplitContainer.SplitterDistance = 415;
+            // 
+            // mainSplitContainer.Panel2
+            // 
+            this.mainSplitContainer.Panel2.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.mainSplitContainer.Panel2.Controls.Add(this.mainToolStrip);
+            this.mainSplitContainer.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.mainSplitContainer_Panel2_Paint);
+            this.mainSplitContainer.Size = new System.Drawing.Size(792, 406);
+            this.mainSplitContainer.SplitterDistance = 410;
             this.mainSplitContainer.TabIndex = 0;
             // 
             // scrollPanel1
@@ -72,12 +90,13 @@ namespace VisualDijkstraRemake
             this.scrollPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.scrollPanel1.Location = new System.Drawing.Point(0, 0);
             this.scrollPanel1.Name = "scrollPanel1";
-            this.scrollPanel1.Size = new System.Drawing.Size(415, 450);
+            this.scrollPanel1.Size = new System.Drawing.Size(408, 404);
             this.scrollPanel1.TabIndex = 0;
             // 
             // mainToolStrip
             // 
             this.mainToolStrip.CanOverflow = false;
+            this.mainToolStrip.Dock = System.Windows.Forms.DockStyle.None;
             this.mainToolStrip.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.mainToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newGraphButton,
@@ -91,9 +110,9 @@ namespace VisualDijkstraRemake
             this.calculatePathButton,
             this.toolStripSeparator3,
             this.adjMatrixButton});
-            this.mainToolStrip.Location = new System.Drawing.Point(0, 0);
+            this.mainToolStrip.Location = new System.Drawing.Point(10, 16);
             this.mainToolStrip.Name = "mainToolStrip";
-            this.mainToolStrip.Size = new System.Drawing.Size(800, 39);
+            this.mainToolStrip.Size = new System.Drawing.Size(349, 39);
             this.mainToolStrip.TabIndex = 1;
             this.mainToolStrip.Text = "toolStrip1";
             // 
@@ -191,23 +210,146 @@ namespace VisualDijkstraRemake
             this.adjMatrixButton.Size = new System.Drawing.Size(36, 36);
             this.adjMatrixButton.Text = "Calculate adjacency matrix";
             // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.Padding = new System.Drawing.Point(7, 10);
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(792, 118);
+            this.tabControl1.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight;
+            this.tabControl1.TabIndex = 0;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.tabPage1.Controls.Add(this.button5);
+            this.tabPage1.Controls.Add(this.button4);
+            this.tabPage1.Controls.Add(this.button3);
+            this.tabPage1.Controls.Add(this.button2);
+            this.tabPage1.Controls.Add(this.button1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 38);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(784, 93);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "tabPage1";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // button5
+            // 
+            this.button5.BackColor = System.Drawing.Color.White;
+            this.button5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.button5.FlatAppearance.BorderSize = 0;
+            this.button5.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Red;
+            this.button5.Image = global::VisualDijkstraRemake.Properties.Resources._new;
+            this.button5.Location = new System.Drawing.Point(430, 6);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(100, 94);
+            this.button5.TabIndex = 4;
+            this.button5.Text = "New";
+            this.button5.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.button5.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.button5.UseVisualStyleBackColor = false;
+            // 
+            // button4
+            // 
+            this.button4.BackColor = System.Drawing.Color.White;
+            this.button4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.button4.FlatAppearance.BorderSize = 0;
+            this.button4.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Red;
+            this.button4.Image = global::VisualDijkstraRemake.Properties.Resources._new;
+            this.button4.Location = new System.Drawing.Point(324, 6);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(100, 94);
+            this.button4.TabIndex = 3;
+            this.button4.Text = "New";
+            this.button4.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.button4.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.button4.UseVisualStyleBackColor = false;
+            // 
+            // button3
+            // 
+            this.button3.BackColor = System.Drawing.Color.White;
+            this.button3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.button3.FlatAppearance.BorderSize = 0;
+            this.button3.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Red;
+            this.button3.Image = global::VisualDijkstraRemake.Properties.Resources._new;
+            this.button3.Location = new System.Drawing.Point(218, 6);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(100, 94);
+            this.button3.TabIndex = 2;
+            this.button3.Text = "New";
+            this.button3.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.button3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.button3.UseVisualStyleBackColor = false;
+            // 
+            // button2
+            // 
+            this.button2.BackColor = System.Drawing.Color.White;
+            this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.button2.FlatAppearance.BorderSize = 0;
+            this.button2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Red;
+            this.button2.Image = global::VisualDijkstraRemake.Properties.Resources._new;
+            this.button2.Location = new System.Drawing.Point(112, 6);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(100, 94);
+            this.button2.TabIndex = 1;
+            this.button2.Text = "New";
+            this.button2.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.button2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.button2.UseVisualStyleBackColor = false;
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.White;
+            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Red;
+            this.button1.Image = global::VisualDijkstraRemake.Properties.Resources._new;
+            this.button1.Location = new System.Drawing.Point(6, 6);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(100, 94);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "New";
+            this.button1.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Location = new System.Drawing.Point(4, 38);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(784, 76);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "tabPage2";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.mainToolStrip);
+            this.ClientSize = new System.Drawing.Size(792, 524);
             this.Controls.Add(this.mainSplitContainer);
+            this.Controls.Add(this.tabControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "Visual Dijkstra";
             this.mainSplitContainer.Panel1.ResumeLayout(false);
+            this.mainSplitContainer.Panel2.ResumeLayout(false);
+            this.mainSplitContainer.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainSplitContainer)).EndInit();
             this.mainSplitContainer.ResumeLayout(false);
             this.mainToolStrip.ResumeLayout(false);
             this.mainToolStrip.PerformLayout();
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -227,6 +369,14 @@ namespace VisualDijkstraRemake
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripButton adjMatrixButton;
         private Controls.ScrollPanel scrollPanel1;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button2;
     }
 }
 
