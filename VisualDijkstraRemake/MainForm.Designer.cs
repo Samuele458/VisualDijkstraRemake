@@ -69,7 +69,6 @@ namespace VisualDijkstraRemake
             // mainSplitContainer.Panel2
             // 
             this.mainSplitContainer.Panel2.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.mainSplitContainer.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.mainSplitContainer_Panel2_Paint);
             this.mainSplitContainer.Size = new System.Drawing.Size(937, 446);
             this.mainSplitContainer.SplitterDistance = 482;
             this.mainSplitContainer.TabIndex = 0;
@@ -95,7 +94,8 @@ namespace VisualDijkstraRemake
             this.toolbar.SelectedIndex = 0;
             this.toolbar.Size = new System.Drawing.Size(937, 125);
             this.toolbar.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
-            this.toolbar.TabIndex = 1;
+            this.toolbar.TabIndex = 2;
+            this.toolbar.TabStop = false;
             // 
             // fileTab
             // 
@@ -216,6 +216,7 @@ namespace VisualDijkstraRemake
             this.addEdgeButton.Text = "Create edge";
             this.addEdgeButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.addEdgeButton.UseVisualStyleBackColor = true;
+            this.addEdgeButton.Click += new System.EventHandler(this.addEdgeButton_Click);
             // 
             // deleteNodeButton
             // 
@@ -243,9 +244,11 @@ namespace VisualDijkstraRemake
             this.addNodeButton.Name = "addNodeButton";
             this.addNodeButton.Size = new System.Drawing.Size(76, 89);
             this.addNodeButton.TabIndex = 6;
+            this.addNodeButton.TabStop = false;
             this.addNodeButton.Text = "Add node";
             this.addNodeButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.addNodeButton.UseVisualStyleBackColor = true;
+            this.addNodeButton.Click += new System.EventHandler(this.addNodeButton_Click);
             // 
             // styleTab
             // 

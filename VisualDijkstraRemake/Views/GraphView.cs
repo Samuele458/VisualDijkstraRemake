@@ -21,7 +21,7 @@ namespace VisualDijkstraRemake.Views
         private bool _nodeEliminationRequested;
 
         private string _inputString;
-        private Node _nodeOnChangingName;
+        private Node _nodeOnEdit;
 
         public GraphController Controller
         {
@@ -52,15 +52,25 @@ namespace VisualDijkstraRemake.Views
             this._firstNode = null;
             this._nodeEliminationRequested = false;
             this._inputString = "";
+            this._nodeOnEdit = null;
 
         }
 
         public void fetchInput(char c)
         {
-            if ((int)c == 13)
+            Debug.WriteLine((int)c);
+            if ((int)c == 13 && _nodeOnEdit != null)
             {
+                Debug.WriteLine("STOP");
 
-                _nodeOnChangingName = null;
+                if (_controller.Graph.GetNode(_inputString) == null)
+                {
+                    _nodeOnEdit.Name = _inputString;
+                    _controller.newNode(_nodeOnEdit);
+                }
+
+
+                _nodeOnEdit = null;
                 _inputString = "";
             }
             else if ((int)c == 8)
@@ -69,22 +79,12 @@ namespace VisualDijkstraRemake.Views
                 if (_inputString.Length > 0)
                 {
                     _inputString = _inputString.Remove(_inputString.Length - 1);
-
-
-                    if (_nodeOnChangingName != null)
-                    {
-                        _nodeOnChangingName.Name = _inputString;
-                    }
                 }
             }
-            else
+            else if (_inputString.Length < 2)
             {
                 _inputString += c;
                 Debug.WriteLine("Adding: " + c);
-                if (_nodeOnChangingName != null)
-                {
-                    _nodeOnChangingName.Name = _inputString;
-                }
 
 
             }
@@ -113,7 +113,7 @@ namespace VisualDijkstraRemake.Views
                     if (node.Contains(mouseEvent.Location))
                     {
                         _inputString = node.Name;
-                        _nodeOnChangingName = node;
+                        //_nodeOnChangingName = node;
                         this.Refresh();
                     }
                 }
@@ -145,7 +145,7 @@ namespace VisualDijkstraRemake.Views
                 Pen borderPen = new Pen(Color.Black, 10);
                 Pen edgePen = new Pen(Color.Black, 7);
                 SolidBrush borderBrush = new SolidBrush(Color.White);
-                Font font = new Font("Arial", 20);
+                Font font = new Font("Segoe UI", 20);
 
                 //size of the node boundaries
                 Size nodeSize = new Size(Node.Size, Node.Size);
@@ -166,17 +166,30 @@ namespace VisualDijkstraRemake.Views
                 {
                     e.Graphics.DrawEllipse(borderPen, new Rectangle(node.Location, new Size(Node.Size, Node.Size)));
                     e.Graphics.FillEllipse(borderBrush, new Rectangle(node.Location, new Size(Node.Size, Node.Size)));
-                    if (_nodeOnChangingName != node)
+
+
+                    if (_nodeOnEdit != node)
                     {
                         TextRenderer.DrawText(e.Graphics, node.Name, font, new Rectangle(node.Location + new Size(1, 1), new Size(Node.Size, Node.Size)), Color.Black);
                     }
-                    else
-                    {
-                        TextRenderer.DrawText(e.Graphics, node.Name, font, new Rectangle(node.Location + new Size(1, 1), new Size(Node.Size, Node.Size)), Color.White, Color.FromArgb(0, 120, 215));
-
-                    }
                 }
 
+                if (_nodeOnEdit != null)
+                {
+                    Debug.WriteLine("node");
+                    e.Graphics.DrawEllipse(borderPen, new Rectangle(_nodeOnEdit.Location, new Size(Node.Size, Node.Size)));
+                    e.Graphics.FillEllipse(borderBrush, new Rectangle(_nodeOnEdit.Location, new Size(Node.Size, Node.Size)));
+                    e.Graphics.DrawRectangle(new Pen(Color.Black, 3), new Rectangle(_nodeOnEdit.Location + new Size((int)(Node.Size * 0.2), (int)(Node.Size * 0.2)), new Size((int)(Node.Size * 0.6), (int)(Node.Size * 0.6))));
+                    TextRenderer.DrawText(e.Graphics, _inputString, font, new Rectangle(_nodeOnEdit.Location + new Size(1, 1), new Size(Node.Size, Node.Size)), Color.White, Color.FromArgb(0, 120, 215));
+                    e.Graphics.DrawRectangle(new Pen(Color.Black, 3), new Rectangle(_nodeOnEdit.Location + new Size(45, 45), new Size(110, 30)));
+                    e.Graphics.FillRectangle(borderBrush, new Rectangle(_nodeOnEdit.Location + new Size(45, 45), new Size(110, 30)));
+                    TextRenderer.DrawText(e.Graphics, "Enter node name", new Font("Segoe UI", 10), new Rectangle(_nodeOnEdit.Location + new Size(45, 45), new Size(110, 30)), Color.Black);
+
+                }
+                else
+                {
+                    Debug.WriteLine("node 2");
+                }
 
             }
 
@@ -242,8 +255,9 @@ namespace VisualDijkstraRemake.Views
                 else if (_nodeCreationRequested)
                 {
                     //string nodeName = Microsoft.VisualBasic.Interaction.InputBox("Enter node name:", "New node");
-                    _nodeOnChangingName = new Node("", e.Location);
-                    _controller.newNode(_nodeOnChangingName);
+                    _nodeOnEdit = new Node("", e.Location);
+                    //_controller.newNode(_nodeOnChangingName);
+
                     _nodeCreationRequested = false;
 
                     //
@@ -254,6 +268,8 @@ namespace VisualDijkstraRemake.Views
                     _dragLocation = e.Location;
                 }
             }
+
+            this.Refresh();
         }
 
         protected override void OnMouseMove(MouseEventArgs e)

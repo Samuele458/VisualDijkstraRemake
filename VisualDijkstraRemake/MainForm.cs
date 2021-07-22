@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 using VisualDijkstraRemake.Controllers;
 using VisualDijkstraRemake.Models;
@@ -31,7 +32,11 @@ namespace VisualDijkstraRemake
 
         private void addNodeButton_Click(object sender, System.EventArgs e)
         {
-            _graphView.requestsNewNode();
+            if (e is MouseEventArgs)
+            {
+                _graphView.requestsNewNode();
+            }
+
         }
 
         private void addEdgeButton_Click(object sender, System.EventArgs e)
@@ -39,38 +44,34 @@ namespace VisualDijkstraRemake
             _graphView.requestsNewEdge();
         }
 
-        private void mainSplitContainer_Panel2_Paint(object sender, PaintEventArgs e)
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
+            Debug.WriteLine(((int)keyData));
 
-        }
-
-        private void button1_Click(object sender, System.EventArgs e)
-        {
-
-        }
-
-        protected override void OnKeyPress(KeyPressEventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine((int)e.KeyChar);
-            char c = e.KeyChar;
+            char c = (char)keyData;
             _graphView.fetchInput(c);
 
-            base.OnKeyPress(e);
+            return base.ProcessCmdKey(ref msg, keyData);
         }
 
-        private void newGraphButton_Click_1(object sender, System.EventArgs e)
-        {
 
-        }
+
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
-            _graph = Utils.GraphUtils.loadGraphFromXMLFile(@"C:\Users\Yankoo\Desktop\aaaa.xml");
+            //creating default graph
+            _graph = new Graph();
             _graphView = new Views.GraphView();
             _graphController = new GraphController(_graphView, _graph);
             this.scrollPanel1.setGraphView(_graphView);
+
+            //setting tab defaut page
+            this.toolbar.SelectedTab = this.graphTab;
         }
+
+
     }
 }

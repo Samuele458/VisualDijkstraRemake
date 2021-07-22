@@ -12,6 +12,12 @@ namespace VisualDijkstraRemake.Controls
             this.TextImageRelation = TextImageRelation.ImageAboveText;
         }
 
+        protected override void OnKeyDown(KeyEventArgs kevent)
+        {
+            //base.OnKeyDown(kevent);
+
+        }
+
 
     }
 }
