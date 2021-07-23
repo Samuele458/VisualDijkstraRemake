@@ -17,7 +17,7 @@ namespace VisualDijkstraRemake.Controls
 
         }
 
-        public void setGraphView(GraphView view)
+        public void setMainControl(GraphView view)
         {
             this.Controls.Clear();
             this.Controls.Add(view);

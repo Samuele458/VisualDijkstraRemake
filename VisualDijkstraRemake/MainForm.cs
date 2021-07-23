@@ -27,7 +27,7 @@ namespace VisualDijkstraRemake
             _graph = Utils.GraphUtils.loadGraphFromXMLFile(@"C:\Users\Yankoo\Desktop\aaaa.xml");
             _graphView = new Views.GraphView();
             _graphController = new GraphController(_graphView, _graph);
-            this.scrollPanel1.setGraphView(_graphView);
+            this.scrollPanel1.setMainControl(_graphView);
         }
 
         private void addNodeButton_Click(object sender, System.EventArgs e)
@@ -69,7 +69,7 @@ namespace VisualDijkstraRemake
             _graph = new Graph();
             _graphView = new Views.GraphView();
             _graphController = new GraphController(_graphView, _graph);
-            this.scrollPanel1.setGraphView(_graphView);
+            this.scrollPanel1.setMainControl(_graphView);
 
             //setting tab defaut page
             this.toolbar.SelectedTab = this.graphTab;
@@ -78,6 +78,27 @@ namespace VisualDijkstraRemake
         private void deleteNodeButton_Click(object sender, EventArgs e)
         {
             _graphView.requestNodeElimination();
+        }
+
+
+
+        private void saveButton_Click(object sender, EventArgs e)
+        {
+
+            /* for (int j = 0; j < 3; ++j)
+             {
+                 Button b = new Button();
+                 b.Text = (++i).ToString();
+
+                 this.scrollPanel2.Controls.Add(b);
+                 b.Location = new System.Drawing.Point(10, 10);
+                 b.Size = new System.Drawing.Size(50, 50);
+             }*/
+        }
+
+        private void solvePathButton_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

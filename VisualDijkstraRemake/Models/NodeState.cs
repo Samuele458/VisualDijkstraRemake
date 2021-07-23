@@ -1,6 +1,6 @@
 ﻿namespace VisualDijkstraRemake.Models
 {
-    class NodeState
+    public class NodeState
     {
         public const int INF = 999999999;
 

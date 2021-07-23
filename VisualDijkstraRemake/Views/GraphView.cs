@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using VisualDijkstraRemake.Controllers;
@@ -24,6 +23,9 @@ namespace VisualDijkstraRemake.Views
         private Node _nodeOnEdit;
 
         private Edge _edgeOnEdit;
+
+        private bool _solvePathRequested;
+        private Node _solvePath;
 
         public GraphController Controller
         {
@@ -55,6 +57,8 @@ namespace VisualDijkstraRemake.Views
             this._nodeEliminationRequested = false;
             this._inputString = "";
             this._nodeOnEdit = null;
+            this._solvePath = null;
+            this._solvePathRequested = false;
 
             System.Windows.Forms.ContextMenuStrip cm = new ContextMenuStrip();
             cm.Items.Add("Item 1");
@@ -97,7 +101,6 @@ namespace VisualDijkstraRemake.Views
 
         public void fetchInput(char c)
         {
-            Debug.WriteLine((int)c);
 
             if (_nodeOnEdit != null)
             {
@@ -258,7 +261,6 @@ namespace VisualDijkstraRemake.Views
 
                 if (_nodeOnEdit != null)
                 {
-                    Debug.WriteLine("node");
                     e.Graphics.DrawEllipse(borderPen, new Rectangle(_nodeOnEdit.Location, new Size(Node.Size, Node.Size)));
                     e.Graphics.FillEllipse(borderBrush, new Rectangle(_nodeOnEdit.Location, new Size(Node.Size, Node.Size)));
                     e.Graphics.DrawRectangle(new Pen(Color.Black, 3), new Rectangle(_nodeOnEdit.Location + new Size((int)(Node.Size * 0.2), (int)(Node.Size * 0.2)), new Size((int)(Node.Size * 0.6), (int)(Node.Size * 0.6))));
@@ -268,10 +270,7 @@ namespace VisualDijkstraRemake.Views
                     TextRenderer.DrawText(e.Graphics, "Enter node name", new Font("Segoe UI", 10), new Rectangle(_nodeOnEdit.Location + new Size(45, 45), new Size(110, 30)), Color.Black);
 
                 }
-                else
-                {
-                    Debug.WriteLine("node 2");
-                }
+
 
             }
 
@@ -324,6 +323,16 @@ namespace VisualDijkstraRemake.Views
                         _firstNode = null;
 
                     }
+                    else if (_solvePathRequested && _solvePath == null)
+                    {
+                        _solvePath = node;
+                    }
+                    else if (_solvePathRequested && _solvePath != null)
+                    {
+                        _controller.evaluatePath(_solvePath, node);
+                        _solvePathRequested = false;
+                        _solvePath = null;
+                    }
                     else if (_nodeEliminationRequested)
                     {
                         _controller.deleteNode(node);
@@ -349,6 +358,10 @@ namespace VisualDijkstraRemake.Views
                 {
                     // Save drag location
                     _dragLocation = e.Location;
+                }
+                else
+                {
+                    clearRequests();
                 }
 
             }
@@ -409,7 +422,6 @@ namespace VisualDijkstraRemake.Views
         public void requestsNewEdge()
         {
             clearRequests();
-            Debug.WriteLine("REQUESTED NEW EDGE");
             this._edgeCreationRequested = true;
         }
 
@@ -418,6 +430,12 @@ namespace VisualDijkstraRemake.Views
         {
             clearRequests();
             this._nodeEliminationRequested = true;
+        }
+
+        public void requestPath()
+        {
+            clearRequests();
+            this._solvePathRequested = true;
         }
 
         /// <summary>
@@ -436,6 +454,10 @@ namespace VisualDijkstraRemake.Views
             //clearing node elimination request
             this._nodeEliminationRequested = false;
 
+            //clearing path request
+            _solvePath = null;
+            _solvePathRequested = true;
+
 
             _edgeOnEdit = null;
             _nodeOnEdit = null;
@@ -445,7 +467,6 @@ namespace VisualDijkstraRemake.Views
         void contexMenu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             ToolStripItem item = e.ClickedItem;
-            Debug.WriteLine(item.Text);
             // your code here
         }
 

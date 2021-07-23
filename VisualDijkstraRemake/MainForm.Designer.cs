@@ -32,6 +32,7 @@ namespace VisualDijkstraRemake
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.mainSplitContainer = new System.Windows.Forms.SplitContainer();
             this.scrollPanel1 = new VisualDijkstraRemake.Controls.ScrollPanel();
+            this.statesView1 = new VisualDijkstraRemake.Views.StatesView();
             this.toolbar = new System.Windows.Forms.TabControl();
             this.fileTab = new System.Windows.Forms.TabPage();
             this.saveAsButton = new VisualDijkstraRemake.Controls.FlatButton();
@@ -39,6 +40,7 @@ namespace VisualDijkstraRemake
             this.openButton = new VisualDijkstraRemake.Controls.FlatButton();
             this.exitButton = new VisualDijkstraRemake.Controls.FlatButton();
             this.graphTab = new System.Windows.Forms.TabPage();
+            this.solvePathButton = new VisualDijkstraRemake.Controls.FlatButton();
             this.newGraphButton = new VisualDijkstraRemake.Controls.FlatButton();
             this.addEdgeButton = new VisualDijkstraRemake.Controls.FlatButton();
             this.deleteNodeButton = new VisualDijkstraRemake.Controls.FlatButton();
@@ -46,6 +48,7 @@ namespace VisualDijkstraRemake
             this.styleTab = new System.Windows.Forms.TabPage();
             ((System.ComponentModel.ISupportInitialize)(this.mainSplitContainer)).BeginInit();
             this.mainSplitContainer.Panel1.SuspendLayout();
+            this.mainSplitContainer.Panel2.SuspendLayout();
             this.mainSplitContainer.SuspendLayout();
             this.toolbar.SuspendLayout();
             this.fileTab.SuspendLayout();
@@ -69,8 +72,9 @@ namespace VisualDijkstraRemake
             // mainSplitContainer.Panel2
             // 
             this.mainSplitContainer.Panel2.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.mainSplitContainer.Panel2.Controls.Add(this.statesView1);
             this.mainSplitContainer.Size = new System.Drawing.Size(937, 446);
-            this.mainSplitContainer.SplitterDistance = 482;
+            this.mainSplitContainer.SplitterDistance = 512;
             this.mainSplitContainer.TabIndex = 0;
             // 
             // scrollPanel1
@@ -79,8 +83,17 @@ namespace VisualDijkstraRemake
             this.scrollPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.scrollPanel1.Location = new System.Drawing.Point(0, 0);
             this.scrollPanel1.Name = "scrollPanel1";
-            this.scrollPanel1.Size = new System.Drawing.Size(480, 444);
+            this.scrollPanel1.Size = new System.Drawing.Size(510, 444);
             this.scrollPanel1.TabIndex = 0;
+            // 
+            // statesView1
+            // 
+            this.statesView1.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.statesView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.statesView1.Location = new System.Drawing.Point(0, 0);
+            this.statesView1.Name = "statesView1";
+            this.statesView1.Size = new System.Drawing.Size(419, 444);
+            this.statesView1.TabIndex = 0;
             // 
             // toolbar
             // 
@@ -141,6 +154,7 @@ namespace VisualDijkstraRemake
             this.saveButton.Text = "Save";
             this.saveButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.saveButton.UseVisualStyleBackColor = true;
+            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
             // openButton
             // 
@@ -174,6 +188,7 @@ namespace VisualDijkstraRemake
             // 
             // graphTab
             // 
+            this.graphTab.Controls.Add(this.solvePathButton);
             this.graphTab.Controls.Add(this.newGraphButton);
             this.graphTab.Controls.Add(this.addEdgeButton);
             this.graphTab.Controls.Add(this.deleteNodeButton);
@@ -186,6 +201,23 @@ namespace VisualDijkstraRemake
             this.graphTab.Text = "Graph";
             this.graphTab.UseVisualStyleBackColor = true;
             // 
+            // solvePathButton
+            // 
+            this.solvePathButton.AutoSize = true;
+            this.solvePathButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.solvePathButton.FlatAppearance.BorderSize = 0;
+            this.solvePathButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.solvePathButton.Image = global::VisualDijkstraRemake.Properties.Resources.path;
+            this.solvePathButton.Location = new System.Drawing.Point(343, 3);
+            this.solvePathButton.Name = "solvePathButton";
+            this.solvePathButton.Size = new System.Drawing.Size(76, 89);
+            this.solvePathButton.TabIndex = 10;
+            this.solvePathButton.TabStop = false;
+            this.solvePathButton.Text = "Solve path";
+            this.solvePathButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.solvePathButton.UseVisualStyleBackColor = true;
+            this.solvePathButton.Click += new System.EventHandler(this.solvePathButton_Click);
+            // 
             // newGraphButton
             // 
             this.newGraphButton.AutoSize = true;
@@ -193,7 +225,7 @@ namespace VisualDijkstraRemake
             this.newGraphButton.FlatAppearance.BorderSize = 0;
             this.newGraphButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.newGraphButton.Image = global::VisualDijkstraRemake.Properties.Resources._new;
-            this.newGraphButton.Location = new System.Drawing.Point(262, 6);
+            this.newGraphButton.Location = new System.Drawing.Point(3, 3);
             this.newGraphButton.Name = "newGraphButton";
             this.newGraphButton.Size = new System.Drawing.Size(80, 89);
             this.newGraphButton.TabIndex = 9;
@@ -209,7 +241,7 @@ namespace VisualDijkstraRemake
             this.addEdgeButton.FlatAppearance.BorderSize = 0;
             this.addEdgeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.addEdgeButton.Image = global::VisualDijkstraRemake.Properties.Resources.route;
-            this.addEdgeButton.Location = new System.Drawing.Point(176, 6);
+            this.addEdgeButton.Location = new System.Drawing.Point(257, 3);
             this.addEdgeButton.Name = "addEdgeButton";
             this.addEdgeButton.Size = new System.Drawing.Size(80, 89);
             this.addEdgeButton.TabIndex = 8;
@@ -225,7 +257,7 @@ namespace VisualDijkstraRemake
             this.deleteNodeButton.FlatAppearance.BorderSize = 0;
             this.deleteNodeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.deleteNodeButton.Image = global::VisualDijkstraRemake.Properties.Resources.delete;
-            this.deleteNodeButton.Location = new System.Drawing.Point(90, 6);
+            this.deleteNodeButton.Location = new System.Drawing.Point(171, 3);
             this.deleteNodeButton.Name = "deleteNodeButton";
             this.deleteNodeButton.Size = new System.Drawing.Size(80, 89);
             this.deleteNodeButton.TabIndex = 7;
@@ -241,7 +273,7 @@ namespace VisualDijkstraRemake
             this.addNodeButton.FlatAppearance.BorderSize = 0;
             this.addNodeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.addNodeButton.Image = global::VisualDijkstraRemake.Properties.Resources.add;
-            this.addNodeButton.Location = new System.Drawing.Point(8, 6);
+            this.addNodeButton.Location = new System.Drawing.Point(89, 3);
             this.addNodeButton.Name = "addNodeButton";
             this.addNodeButton.Size = new System.Drawing.Size(76, 89);
             this.addNodeButton.TabIndex = 6;
@@ -273,6 +305,7 @@ namespace VisualDijkstraRemake
             this.Name = "MainForm";
             this.Text = "Visual Dijkstra";
             this.mainSplitContainer.Panel1.ResumeLayout(false);
+            this.mainSplitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.mainSplitContainer)).EndInit();
             this.mainSplitContainer.ResumeLayout(false);
             this.toolbar.ResumeLayout(false);
@@ -300,6 +333,8 @@ namespace VisualDijkstraRemake
         private Controls.FlatButton deleteNodeButton;
         private Controls.FlatButton addEdgeButton;
         private Controls.FlatButton newGraphButton;
+        private Views.StatesView statesView1;
+        private Controls.FlatButton solvePathButton;
     }
 }
 

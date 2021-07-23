@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Diagnostics;
+using System.Drawing;
 using System.Windows.Forms;
 using VisualDijkstraRemake.Models;
 using VisualDijkstraRemake.Views;
@@ -64,6 +65,12 @@ namespace VisualDijkstraRemake.Controllers
         public void deleteNode(Node node)
         {
             _graph.deleteNode(node);
+        }
+
+        public void evaluatePath(Node nodeA, Node nodeB)
+        {
+            Debug.WriteLine("Finding path from " + nodeA.Name + "  ->  " + nodeB.Name);
+            IPathFinder solver = new Dijkstra(_graph, nodeA, nodeB);
         }
 
 

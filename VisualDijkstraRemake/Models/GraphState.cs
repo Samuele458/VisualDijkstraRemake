@@ -2,7 +2,7 @@
 
 namespace VisualDijkstraRemake.Models
 {
-    class GraphState
+    public class GraphState
     {
 
         public string Source { get; set; }
