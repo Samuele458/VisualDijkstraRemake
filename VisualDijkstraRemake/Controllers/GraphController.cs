@@ -41,7 +41,7 @@ namespace VisualDijkstraRemake.Controllers
             {
                 MessageBox.Show("Node already exists!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-            _view.Refresh();
+            _view.Invalidate();
         }
 
         public void newNode(string nodeName, Point location)
@@ -52,13 +52,13 @@ namespace VisualDijkstraRemake.Controllers
         public void newEdge(Node a, Node b, int weight)
         {
             _graph.CreateNewEdge(a, b, weight);
-            _view.Refresh();
+            _view.Invalidate();
         }
 
         public void moveNode(Node node, Point location)
         {
             _graph.MoveNode(node, location);
-            _view.Refresh();
+            _view.Invalidate();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Text.RegularExpressions;
 
 namespace VisualDijkstraRemake.Models
 {
@@ -11,7 +12,7 @@ namespace VisualDijkstraRemake.Models
     public class Node
     {
         //Node size
-        public const int Size = 50;
+        public static int Size = 50;
 
         //up-right node angle
         private Point _location;
@@ -96,6 +97,13 @@ namespace VisualDijkstraRemake.Models
             {
                 return this.Name.Equals(other.Name);
             }
+        }
+
+
+        public static bool validateName(string nameStr)
+        {
+            Regex rgx = new Regex(@"^[a-zA-Z0-9]{1,2}$");
+            return rgx.IsMatch(nameStr);
         }
     }
 

@@ -23,6 +23,8 @@ namespace VisualDijkstraRemake.Views
         private string _inputString;
         private Node _nodeOnEdit;
 
+        private Edge _edgeOnEdit;
+
         public GraphController Controller
         {
             get { return _controller; }
@@ -53,6 +55,9 @@ namespace VisualDijkstraRemake.Views
             this._nodeEliminationRequested = false;
             this._inputString = "";
             this._nodeOnEdit = null;
+
+
+
 
         }
 
@@ -91,7 +96,6 @@ namespace VisualDijkstraRemake.Views
             {
                 if ((int)c == 13)
                 {
-
                     CheckNodeOnEdit();
 
                     _nodeOnEdit = null;
@@ -99,26 +103,52 @@ namespace VisualDijkstraRemake.Views
                 }
                 else if ((int)c == 8)
                 {
-
                     if (_inputString.Length > 0)
                     {
                         _inputString = _inputString.Remove(_inputString.Length - 1);
                     }
                 }
-                else if (_inputString.Length < 2)
+                else if (Node.validateName(_inputString + c))
                 {
                     _inputString += c;
 
                 }
             }
 
-            this.Refresh();
+            if (_edgeOnEdit != null)
+            {
+                if ((int)c == 13)
+                {
+
+                    if (Edge.validateWeight(_inputString))
+                    {
+                        _edgeOnEdit.Weight = int.Parse(_inputString);
+                    }
+
+                    _edgeOnEdit = null;
+                    _inputString = "";
+                }
+                else if ((int)c == 8)
+                {
+                    if (_inputString.Length > 0)
+                    {
+                        _inputString = _inputString.Remove(_inputString.Length - 1);
+                    }
+                }
+                else if (Edge.validateWeight(_inputString + c))
+                {
+                    _inputString += c;
+                }
+            }
+
+            this.Invalidate();
         }
 
 
         protected override void OnDoubleClick(EventArgs e)
         {
             base.OnDoubleClick(e);
+            clearRequests();
 
             if (Controller != null)
             {
@@ -136,7 +166,7 @@ namespace VisualDijkstraRemake.Views
                         _inputString = node.Name;
                         _nodeOnEdit = node;
                         //_nodeOnChangingName = node;
-                        this.Refresh();
+                        this.Invalidate();
                         return;
                     }
                 }
@@ -147,7 +177,9 @@ namespace VisualDijkstraRemake.Views
                 {
                     if (edge.Contains(mouseEvent.Location, 10))
                     {
-                        MessageBox.Show("Clicked edge");
+                        _edgeOnEdit = edge;
+                        _inputString = edge.Weight.ToString();
+                        this.Invalidate();
                     }
                 }
             }
@@ -155,11 +187,14 @@ namespace VisualDijkstraRemake.Views
 
         protected override void OnPaint(PaintEventArgs e)
         {
+
+
             //if controller and graph exist
             if (Controller != null && Controller.Graph != null)
             {
                 //anti alias
                 e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                //e.Graphics.ScaleTransform(2f, 2f);
 
                 //getting nodes
                 List<Node> nodes = Controller.Graph.Nodes;
@@ -179,9 +214,20 @@ namespace VisualDijkstraRemake.Views
                     Point center = new Point((edge.NodeA.Location.X + edge.NodeB.Location.X) / 2,
                                                 (edge.NodeA.Location.Y + edge.NodeB.Location.Y) / 2);
 
-                    TextRenderer.DrawText(e.Graphics, edge.Weight.ToString(), font, center - new Size((int)(35 * Math.Cos((2 * Math.PI) - edge.Angle())), (int)(35 * Math.Sin((2 * Math.PI) - edge.Angle()))), Color.Black);
-
                     e.Graphics.DrawLine(edgePen, edge.NodeA.Location + nodeSize / 2, edge.NodeB.Location + nodeSize / 2);
+
+                    if (_edgeOnEdit != edge)
+                    {
+                        TextRenderer.DrawText(e.Graphics, edge.Weight.ToString(), font, center - new Size((int)(35 * Math.Cos((2 * Math.PI) - edge.Angle())), (int)(35 * Math.Sin((2 * Math.PI) - edge.Angle()))), Color.Black);
+                    }
+                }
+
+                if (_edgeOnEdit != null)
+                {
+                    Point center = new Point((_edgeOnEdit.NodeA.Location.X + _edgeOnEdit.NodeB.Location.X) / 2,
+                                                (_edgeOnEdit.NodeA.Location.Y + _edgeOnEdit.NodeB.Location.Y) / 2);
+                    TextRenderer.DrawText(e.Graphics, _inputString, font, center - new Size((int)(35 * Math.Cos((2 * Math.PI) - _edgeOnEdit.Angle())), (int)(35 * Math.Sin((2 * Math.PI) - _edgeOnEdit.Angle()))), Color.White, Color.FromArgb(0, 120, 215));
+
                 }
 
                 //painting nodes
@@ -293,7 +339,7 @@ namespace VisualDijkstraRemake.Views
 
             }
 
-            this.Refresh();
+            this.Invalidate();
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
@@ -375,7 +421,13 @@ namespace VisualDijkstraRemake.Views
 
             //clearing node elimination request
             this._nodeEliminationRequested = false;
+
+
+            _edgeOnEdit = null;
+            _nodeOnEdit = null;
+            _inputString = "";
         }
+
 
 
     }

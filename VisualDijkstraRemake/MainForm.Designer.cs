@@ -232,6 +232,7 @@ namespace VisualDijkstraRemake
             this.deleteNodeButton.Text = "Delete node";
             this.deleteNodeButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.deleteNodeButton.UseVisualStyleBackColor = true;
+            this.deleteNodeButton.Click += new System.EventHandler(this.deleteNodeButton_Click);
             // 
             // addNodeButton
             // 

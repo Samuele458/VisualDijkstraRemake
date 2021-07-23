@@ -92,6 +92,37 @@ namespace VisualDijkstraRemake.Models
             return Math.Atan2(NodeB.Location.X - NodeA.Location.X, NodeB.Location.Y - NodeA.Location.Y);
         }
 
+        public static bool validateWeight(string weightStr)
+        {
+            string alphabet = "1234567890";
+            bool passed = true;
+
+            if (weightStr.Length == 0)
+            {
+                return false;
+            }
+
+            foreach (char c in weightStr)
+            {
+                if (!alphabet.Contains(c))
+                {
+                    return false;
+                }
+            }
+
+            if (weightStr.Length < 9 && int.Parse(weightStr) < 99999)
+            {
+                return true;
+            }
+            else
+            {
+
+                return false;
+            }
+
+            return passed;
+        }
+
     }
 
 

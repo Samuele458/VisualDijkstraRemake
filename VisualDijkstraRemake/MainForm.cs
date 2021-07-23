@@ -75,6 +75,10 @@ namespace VisualDijkstraRemake
             this.toolbar.SelectedTab = this.graphTab;
         }
 
-
+        private void deleteNodeButton_Click(object sender, EventArgs e)
+        {
+            Node.Size += 10;
+            _graphView.Invalidate();
+        }
     }
 }
