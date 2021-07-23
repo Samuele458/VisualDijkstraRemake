@@ -56,6 +56,13 @@ namespace VisualDijkstraRemake.Views
             this._inputString = "";
             this._nodeOnEdit = null;
 
+            System.Windows.Forms.ContextMenuStrip cm = new ContextMenuStrip();
+            cm.Items.Add("Item 1");
+            cm.Items.Add("sd");
+            cm.ItemClicked += new ToolStripItemClickedEventHandler(contexMenu_ItemClicked);
+
+
+            this.ContextMenuStrip = cm;
 
 
 
@@ -180,8 +187,14 @@ namespace VisualDijkstraRemake.Views
                         _edgeOnEdit = edge;
                         _inputString = edge.Weight.ToString();
                         this.Invalidate();
+                        return;
                     }
                 }
+
+                //nothing clicked, creating new node
+                _nodeOnEdit = new Node("", mouseEvent.Location);
+                this.Invalidate();
+
             }
         }
 
@@ -313,7 +326,8 @@ namespace VisualDijkstraRemake.Views
                     }
                     else if (_nodeEliminationRequested)
                     {
-                        //_controller.deleteNode(node);
+                        _controller.deleteNode(node);
+                        _nodeEliminationRequested = false;
                     }
                     else
                     {
@@ -428,7 +442,12 @@ namespace VisualDijkstraRemake.Views
             _inputString = "";
         }
 
-
+        void contexMenu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            ToolStripItem item = e.ClickedItem;
+            Debug.WriteLine(item.Text);
+            // your code here
+        }
 
     }
 }

@@ -59,6 +59,20 @@ namespace VisualDijkstraRemake.Models
             this.AddNewNode(new Node(nodeName, location));
         }
 
+        public void deleteNode(Node node)
+        {
+            if (_nodes.Contains(node))
+            {
+                _nodes.Remove(node);
+                _edges.RemoveAll(edge => (edge.NodeA.Equals(node) || edge.NodeB.Equals(node)));
+
+            }
+            else
+            {
+                throw new NodeNotFoundException("Node \"" + node.Name + "\" not found.");
+            }
+        }
+
 
         /// <summary>
         ///  Move a node to a given location

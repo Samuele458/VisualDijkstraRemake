@@ -77,8 +77,7 @@ namespace VisualDijkstraRemake
 
         private void deleteNodeButton_Click(object sender, EventArgs e)
         {
-            Node.Size += 10;
-            _graphView.Invalidate();
+            _graphView.requestNodeElimination();
         }
     }
 }

@@ -60,5 +60,12 @@ namespace VisualDijkstraRemake.Controllers
             _graph.MoveNode(node, location);
             _view.Invalidate();
         }
+
+        public void deleteNode(Node node)
+        {
+            _graph.deleteNode(node);
+        }
+
+
     }
 }
