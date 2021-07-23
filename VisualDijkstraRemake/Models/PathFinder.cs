@@ -40,13 +40,27 @@ namespace VisualDijkstraRemake.Models
             List<GraphState> states = new List<GraphState>();
 
 
+            //init state
             GraphState state = new GraphState(graph);
+            state.Source = nodeA.Name;
+            state.Dest = nodeB.Name;
+            state.setDistance(state.Source, 0);
             states.Add(state);
 
-            state = state.Copy();
-            state.setDistance("Q", 70);
-            state.setPrevious("Q", "R");
-            states.Add(state);
+            //getting nodes
+            List<Node> nodes = graph.Nodes;
+
+            for (int i = 0; i < nodes.Count; ++i)
+            {
+
+                //getting the (non-processed) node with the smallest distance
+                Node u = graph.GetNode(state.minDistance());
+
+                //setting as processed the current node
+                state.setProcessed(u.Name, true);
+
+
+            }
 
 
             foreach (GraphState s in states)

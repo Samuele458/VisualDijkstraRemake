@@ -125,6 +125,16 @@ namespace VisualDijkstraRemake.Models
         {
             return Nodes.Find(node => node.Name.Equals(nodeName));
         }
+
+
+        public List<Node> GetNeighbours(string nodeName)
+        {
+            Node node = GetNode(nodeName);
+
+            return _edges
+                        .FindAll(edge => (edge.NodeA.Equals(node) || edge.NodeB.Equals(node)))
+                        .ConvertAll<Node>(new Converter<Edge, Node>(edge => edge.NodeA == node ? edge.NodeA : edge.NodeB));
+        }
     }
 
 

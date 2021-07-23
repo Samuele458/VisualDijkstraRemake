@@ -77,6 +77,9 @@ namespace VisualDijkstraRemake.Models
             GraphState newState = new GraphState();
             newState._nodesStates = newNodeStates;
 
+            newState.Source = Source;
+            newState.Dest = Dest;
+
             return newState;
         }
 
@@ -87,6 +90,27 @@ namespace VisualDijkstraRemake.Models
             {
                 state.logNodeState();
             }
+        }
+
+        /// <summary>
+        ///  Get the name of the not yet processed node with the smallest distance
+        /// </summary>
+        /// <returns>the name of the not yet processed node with the smallest distance</returns>
+        public string minDistance()
+        {
+            List<NodeState> notProcessed = _nodesStates.FindAll(node => !node.Processed);
+
+
+            int minIndex = 0;
+            for (int i = 0; i < notProcessed.Count; ++i)
+            {
+                if (notProcessed[i].Distance < notProcessed[minIndex].Distance)
+                {
+                    minIndex = i;
+                }
+            }
+
+            return notProcessed[minIndex].Name;
         }
     }
 }
