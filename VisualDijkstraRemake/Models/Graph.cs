@@ -133,7 +133,12 @@ namespace VisualDijkstraRemake.Models
 
             return _edges
                         .FindAll(edge => (edge.NodeA.Equals(node) || edge.NodeB.Equals(node)))
-                        .ConvertAll<Node>(new Converter<Edge, Node>(edge => edge.NodeA == node ? edge.NodeA : edge.NodeB));
+                        .ConvertAll<Node>(new Converter<Edge, Node>(edge => edge.NodeA.Equals(node) ? edge.NodeB : edge.NodeA));
+        }
+
+        public Edge getEdge(string nodeA, string nodeB)
+        {
+            return _edges.Find(edge => (edge.NodeA.Name == nodeA && edge.NodeB.Name == nodeB) || (edge.NodeA.Name == nodeB && edge.NodeB.Name == nodeA));
         }
     }
 

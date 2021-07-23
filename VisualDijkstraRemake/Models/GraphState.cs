@@ -112,5 +112,11 @@ namespace VisualDijkstraRemake.Models
 
             return notProcessed[minIndex].Name;
         }
+
+
+        public NodeState GetNode(string nodeName)
+        {
+            return _nodesStates.Find(node => node.Name == nodeName);
+        }
     }
 }

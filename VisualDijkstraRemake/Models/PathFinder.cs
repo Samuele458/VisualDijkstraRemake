@@ -47,6 +47,8 @@ namespace VisualDijkstraRemake.Models
             state.setDistance(state.Source, 0);
             states.Add(state);
 
+            state = state.Copy();
+
             //getting nodes
             List<Node> nodes = graph.Nodes;
 
@@ -59,7 +61,35 @@ namespace VisualDijkstraRemake.Models
                 //setting as processed the current node
                 state.setProcessed(u.Name, true);
 
+                //getting neighbours
+                List<Node> neighbours = graph.GetNeighbours(u.Name);
 
+                Debug.WriteLine("Current node: " + u.Name);
+                Debug.WriteLine("edges:");
+                foreach (Edge e in graph.Edges)
+                {
+                    Debug.WriteLine(" " + e.NodeA.Name + " ---> " + e.NodeB.Name);
+                }
+
+                Debug.WriteLine("neighs:");
+                foreach (Node n in neighbours)
+                {
+                    Debug.WriteLine(" - " + n.Name);
+                }
+                for (int j = 0; j < neighbours.Count; ++j)
+                {
+                    int alt = state.GetNode(u.Name).Distance +                      //distance between start and current node
+                              graph.getEdge(u.Name, neighbours[j].Name).Weight;     //weight between current node and neighbour node
+
+                    if (alt < state.GetNode(neighbours[j].Name).Distance)
+                    {
+                        state.setDistance(neighbours[j].Name, alt);
+                        state.setPrevious(neighbours[j].Name, u.Name);
+                        state.Message = string.Format("");
+                        states.Add(state);
+                        state = state.Copy();
+                    }
+                }
             }
 
 
