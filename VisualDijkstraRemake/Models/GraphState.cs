@@ -15,7 +15,13 @@ namespace VisualDijkstraRemake.Models
 
         public GraphState(List<Node> nodes)
         {
+            _nodesStates = new List<NodeState>();
             setNodes(nodes);
+        }
+
+        public GraphState()
+        {
+            _nodesStates = new List<NodeState>();
         }
 
         public GraphState(Graph graph) : this(graph.Nodes)
@@ -56,6 +62,30 @@ namespace VisualDijkstraRemake.Models
             if (node != null)
             {
                 node.Previous = previous;
+            }
+        }
+
+        public GraphState Copy()
+        {
+            List<NodeState> newNodeStates = new List<NodeState>();
+
+            foreach (NodeState node_state in _nodesStates)
+            {
+                newNodeStates.Add(new NodeState(node_state.Name, node_state.Distance, node_state.Previous, node_state.Processed));
+            }
+
+            GraphState newState = new GraphState();
+            newState._nodesStates = newNodeStates;
+
+            return newState;
+        }
+
+        public void logGraphState()
+        {
+            System.Diagnostics.Debug.WriteLine("--- Graph State ---");
+            foreach (NodeState state in _nodesStates)
+            {
+                state.logNodeState();
             }
         }
     }

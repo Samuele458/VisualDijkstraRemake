@@ -456,7 +456,7 @@ namespace VisualDijkstraRemake.Views
 
             //clearing path request
             _solvePath = null;
-            _solvePathRequested = true;
+            _solvePathRequested = false;
 
 
             _edgeOnEdit = null;

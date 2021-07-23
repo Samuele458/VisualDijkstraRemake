@@ -99,6 +99,7 @@ namespace VisualDijkstraRemake
         private void solvePathButton_Click(object sender, EventArgs e)
         {
 
+            _graphView.requestPath();
         }
     }
 }

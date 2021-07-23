@@ -24,6 +24,11 @@
             Previous = previous;
             Processed = processed;
         }
+
+        public void logNodeState()
+        {
+            System.Diagnostics.Debug.WriteLine("Node: " + Name + " Previous: " + Previous + " Distance: " + Distance + " Processed: " + Processed);
+        }
     }
 
 

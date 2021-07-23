@@ -36,6 +36,24 @@ namespace VisualDijkstraRemake.Models
 
         public Dijkstra(Graph graph, Node nodeA, Node nodeB)
         {
+            //list of states to be returned
+            List<GraphState> states = new List<GraphState>();
+
+
+            GraphState state = new GraphState(graph);
+            states.Add(state);
+
+            state = state.Copy();
+            state.setDistance("Q", 70);
+            state.setPrevious("Q", "R");
+            states.Add(state);
+
+
+            foreach (GraphState s in states)
+            {
+                s.logGraphState();
+            }
+
 
         }
 
