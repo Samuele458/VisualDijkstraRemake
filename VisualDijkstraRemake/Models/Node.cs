@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
 namespace VisualDijkstraRemake.Models
@@ -20,9 +21,12 @@ namespace VisualDijkstraRemake.Models
         //node name
         private string _name;
 
-        List<Edge> _edges;
 
+        private List<Edge> _edges;
+
+        [JsonIgnore]
         public bool IsInPath { get; set; }
+
 
         public Point Location
         {
@@ -30,23 +34,36 @@ namespace VisualDijkstraRemake.Models
             set { _location = new Point(value.X - Size / 2, value.Y - Size / 2); }
         }
 
+
+
         public string Name
         {
             get { return _name; }
             set { _name = value; }
         }
 
+
+        [JsonIgnore]
         public List<Edge> Edges
         {
             get { return _edges; }
         }
 
-        public Node(string nodeName, Point loc)
+        [JsonConstructor]
+        public Node(string name, Point location)
         {
-            Location = loc;
+            Location = location;
             _edges = new List<Edge>();
-            Name = nodeName;
+            Name = name;
         }
+
+        /*
+        public Node()
+        {
+            Location = new Point();
+            _edges = new List<Edge>();
+            Name = "";
+        }*/
 
         /// <summary>
         ///  Constructs a Node object

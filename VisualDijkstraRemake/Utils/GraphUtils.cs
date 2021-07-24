@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
+using System.Text.Json;
 using System.Xml;
 using VisualDijkstraRemake.Models;
 
@@ -148,12 +152,57 @@ namespace VisualDijkstraRemake.Utils
                     }
                 }
             }
+            reader.Close();
+
+            return graph;
+        }
+        public static Graph loadGraphFromJSONFile(string filename)
+        {
+
+            //loading from JSON file
+            string jsonString = File.ReadAllText(filename);
+            List<Edge> edges = JsonSerializer.Deserialize<List<Edge>>(jsonString);
+
+            Graph graph = new Graph();
+
+            //adding nodes to graph, by looking at edges
+            foreach (Edge edge in edges)
+            {
+                try
+                {
+                    graph.AddNewNode(edge.NodeA.Name, edge.NodeA.Location);
+                }
+                catch (NodeAlreadyExistsException) { }
+
+                try
+                {
+                    graph.AddNewNode(edge.NodeB.Name, edge.NodeB.Location);
+                }
+                catch (NodeAlreadyExistsException) { }
+
+                Debug.WriteLine(edges.Count);
+            }
+
+
+            //adding each edge between nodes
+            foreach (Edge edge in edges)
+            {
+                graph.CreateNewEdge(graph.GetNode(edge.NodeA.Name), graph.GetNode(edge.NodeB.Name), edge.Weight);
+            }
 
             return graph;
         }
 
-
+        public static void saveGraphToJSONFile(Graph graph, string filename)
+        {
+            string jsonString = JsonSerializer.Serialize(graph.Edges);
+            File.WriteAllText(filename, jsonString);
+            Debug.WriteLine(JsonSerializer.Serialize(graph.Edges));
+        }
     }
+
+
+
 
     class InvalidSaveFileFormat : Exception
     {

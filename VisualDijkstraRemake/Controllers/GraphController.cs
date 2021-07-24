@@ -90,6 +90,8 @@ namespace VisualDijkstraRemake.Controllers
             {
                 StatesController.clearStates();
             }
+
+            _graph.ClearState();
         }
 
         public void setState(GraphState state)

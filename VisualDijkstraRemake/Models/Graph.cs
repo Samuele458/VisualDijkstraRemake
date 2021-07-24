@@ -141,9 +141,8 @@ namespace VisualDijkstraRemake.Models
             return _edges.Find(edge => (edge.NodeA.Name == nodeA && edge.NodeB.Name == nodeB) || (edge.NodeA.Name == nodeB && edge.NodeB.Name == nodeA));
         }
 
-        public void setState(GraphState state)
+        public void ClearState()
         {
-
             //resetting nodes
             foreach (Node n in _nodes)
             {
@@ -156,6 +155,12 @@ namespace VisualDijkstraRemake.Models
             {
                 edge.IsInPath = false;
             }
+        }
+
+        public void setState(GraphState state)
+        {
+
+            this.ClearState();
 
             List<NodeState> nodesStates = state.NodesStates;
 

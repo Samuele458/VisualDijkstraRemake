@@ -42,12 +42,12 @@ namespace VisualDijkstraRemake.Models
         /// <param name="a">Node A</param>
         /// <param name="b">Node B</param>
         /// <param name="weight">Edge weight</param>
-        public Edge(Node a, Node b, int weight)
+        public Edge(Node nodeA, Node nodeB, int weight)
         {
-            if (a != b)
+            if (nodeA != nodeB)
             {
-                NodeA = a;
-                NodeB = b;
+                NodeA = nodeA;
+                NodeB = nodeB;
                 Weight = weight;
             }
             else

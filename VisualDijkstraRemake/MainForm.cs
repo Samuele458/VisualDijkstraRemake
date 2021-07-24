@@ -26,12 +26,15 @@ namespace VisualDijkstraRemake
 
             this.KeyPreview = true;
 
-
         }
 
         private void newGraphButton_Click(object sender, System.EventArgs e)
         {
-            _graph = Utils.GraphUtils.loadGraphFromXMLFile(@"C:\Users\Yankoo\Desktop\aaaa.xml");
+            /*_graph = Utils.GraphUtils.loadGraphFromXMLFile(@"C:\Users\Yankoo\Desktop\aaaa.xml");
+            Utils.GraphUtils.saveGraphToJSONFile(_graph, @"C:\Users\Yankoo\Desktop\aaaa.xml");*/
+            _graph = Utils.GraphUtils.loadGraphFromJSONFile(@"C:\Users\Yankoo\Desktop\aaaa.xml");
+
+
             _graphView = new Views.GraphView();
             _graphController = new GraphController(_graphView, _graph);
             this.scrollPanel1.setMainControl(_graphView);
@@ -116,5 +119,7 @@ namespace VisualDijkstraRemake
 
             _graphView.requestPath();
         }
+
+
     }
 }
