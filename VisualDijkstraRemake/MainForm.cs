@@ -199,10 +199,13 @@ namespace VisualDijkstraRemake
 
         private void exitButton_Click(object sender, EventArgs e)
         {
-            if (e is MouseEventArgs)
+            /*if (e is MouseEventArgs)
             {
                 Close();
             }
+            */
+
+            _graphView.zoomIn();
         }
     }
 }
