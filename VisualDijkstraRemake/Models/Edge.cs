@@ -75,7 +75,7 @@ namespace VisualDijkstraRemake.Models
         /// <returns>Returns true if location is contained inside boundaries, false otherwise</returns>
         public bool Contains(Point loc, int lineWidth)
         {
-            Size halfSize = new Size(Node.Size / 2, Node.Size / 2);
+            Size halfSize = Node.SizeBox / 2;
             using (var path = new GraphicsPath())
             {
                 using (var pen = new Pen(Brushes.Black, lineWidth))

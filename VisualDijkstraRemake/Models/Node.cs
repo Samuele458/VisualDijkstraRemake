@@ -13,7 +13,8 @@ namespace VisualDijkstraRemake.Models
     public class Node
     {
         //Node size
-        public static int Size = 50;
+        public const int SizeLength = 50;
+        public static readonly Size SizeBox = new Size(SizeLength, SizeLength);
 
         //up-right node angle
         private Point _location;
@@ -31,7 +32,7 @@ namespace VisualDijkstraRemake.Models
         public Point Location
         {
             get { return _location; }
-            set { _location = new Point(value.X - Size / 2, value.Y - Size / 2); }
+            set { _location = new Point(value.X - SizeLength / 2, value.Y - SizeLength / 2); }
         }
 
 
@@ -83,8 +84,8 @@ namespace VisualDijkstraRemake.Models
             return (
                 location.X > Location.X &&
                 location.Y > Location.Y &&
-                location.X < (Location.X + Size) &&
-                location.Y < (Location.Y + Size)
+                location.X < (Location.X + SizeLength) &&
+                location.Y < (Location.Y + SizeLength)
             );
         }
 

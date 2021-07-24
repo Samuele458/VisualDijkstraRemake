@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Drawing;
+using System.Windows.Forms;
 using VisualDijkstraRemake.Views;
 
 namespace VisualDijkstraRemake.Controls
@@ -17,14 +18,19 @@ namespace VisualDijkstraRemake.Controls
 
         }
 
-        public void setMainControl(GraphView view)
+        public void setMainControl(GraphView view, Point autoscroll)
         {
             this.Controls.Clear();
             this.Controls.Add(view);
 
-            this.AutoScrollPosition = new System.Drawing.Point(5000, 5000);
+            this.AutoScrollPosition = autoscroll;
 
 
+        }
+
+        protected override void OnMouseWheel(MouseEventArgs e)
+        {
+            //base.OnMouseWheel(e);
         }
 
 

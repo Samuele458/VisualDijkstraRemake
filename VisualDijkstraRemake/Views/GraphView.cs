@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using VisualDijkstraRemake.Controllers;
@@ -10,6 +11,8 @@ namespace VisualDijkstraRemake.Views
 {
     public class GraphView : PictureBox
     {
+        public static int SizeLength = 4000;
+
         private GraphController _controller;
 
         private Node _nodeToMove;
@@ -42,7 +45,7 @@ namespace VisualDijkstraRemake.Views
             this.Controller = null;
             this.Location = new System.Drawing.Point(3, 3);
             this.Name = "graphPictureBox";
-            this.Size = new System.Drawing.Size(10000, 10000);
+            this.Size = new System.Drawing.Size(SizeLength, SizeLength);
             this.TabIndex = 0;
             this.TabStop = false;
 
@@ -68,7 +71,7 @@ namespace VisualDijkstraRemake.Views
 
             this.ContextMenuStrip = cm;
 
-
+            SizeMode = PictureBoxSizeMode.Zoom;
 
         }
 
@@ -171,7 +174,7 @@ namespace VisualDijkstraRemake.Views
 
                 foreach (Node node in nodes)
                 {
-                    if (node.Contains(mouseEvent.Location))
+                    if (node.Contains(ToRelative(mouseEvent.Location)))
                     {
                         _inputString = node.Name;
                         _nodeOnEdit = node;
@@ -185,7 +188,7 @@ namespace VisualDijkstraRemake.Views
                 List<Edge> edges = Controller.Graph.Edges;
                 foreach (Edge edge in edges)
                 {
-                    if (edge.Contains(mouseEvent.Location, 10))
+                    if (edge.Contains(ToRelative(mouseEvent.Location), 10))
                     {
                         _edgeOnEdit = edge;
                         _inputString = edge.Weight.ToString();
@@ -195,7 +198,7 @@ namespace VisualDijkstraRemake.Views
                 }
 
                 //nothing clicked, creating new node
-                _nodeOnEdit = new Node("", mouseEvent.Location);
+                _nodeOnEdit = new Node("", ToRelative(mouseEvent.Location));
                 this.Invalidate();
 
             }
@@ -203,7 +206,6 @@ namespace VisualDijkstraRemake.Views
 
         protected override void OnPaint(PaintEventArgs e)
         {
-
 
             //if controller and graph exist
             if (Controller != null && Controller.Graph != null)
@@ -222,22 +224,15 @@ namespace VisualDijkstraRemake.Views
                 Font font = new Font("Segoe UI", 20);
 
                 //size of the node boundaries
-                Size nodeSize = new Size(Node.Size, Node.Size);
+                Size nodeSize = Node.SizeBox;
 
 
                 foreach (Edge edge in Controller.Graph.Edges)
                 {
-                    Point center = new Point((edge.NodeA.Location.X + edge.NodeB.Location.X) / 2,
-                                                (edge.NodeA.Location.Y + edge.NodeB.Location.Y) / 2);
+                    Point center = ToAbsolute(new Point((edge.NodeA.Location.X + edge.NodeB.Location.X) / 2,
+                                                (edge.NodeA.Location.Y + edge.NodeB.Location.Y) / 2));
 
-                    if (edge.IsInPath)
-                    {
-                        e.Graphics.DrawLine(borderPenPath, edge.NodeA.Location + nodeSize / 2, edge.NodeB.Location + nodeSize / 2);
-                    }
-                    else
-                    {
-                        e.Graphics.DrawLine(borderPen, edge.NodeA.Location + nodeSize / 2, edge.NodeB.Location + nodeSize / 2);
-                    }
+                    e.Graphics.DrawLine(edge.IsInPath ? borderPenPath : borderPen, ToAbsolute(edge.NodeA.Location + nodeSize / 2), ToAbsolute(edge.NodeB.Location + nodeSize / 2));
 
                     if (_edgeOnEdit != edge)
                     {
@@ -256,37 +251,27 @@ namespace VisualDijkstraRemake.Views
                 //painting nodes
                 foreach (Node node in nodes)
                 {
-                    e.Graphics.FillEllipse(nodeFillBrush, new Rectangle(node.Location, new Size(Node.Size, Node.Size)));
-
-                    if (node.IsInPath)
-                    {
-                        e.Graphics.DrawEllipse(borderPenPath, new Rectangle(node.Location, new Size(Node.Size, Node.Size)));
-                    }
-                    else
-                    {
-                        e.Graphics.DrawEllipse(borderPen, new Rectangle(node.Location, new Size(Node.Size, Node.Size)));
-                    }
-
-
-
+                    Point nodeLocation = ToAbsolute(node.Location);
+                    e.Graphics.FillEllipse(nodeFillBrush, new Rectangle(nodeLocation, Node.SizeBox));
+                    e.Graphics.DrawEllipse(node.IsInPath ? borderPenPath : borderPen, new Rectangle(nodeLocation, Node.SizeBox));
 
                     if (_nodeOnEdit != node)
                     {
 
-                        TextRenderer.DrawText(e.Graphics, node.Name, font, new Rectangle(node.Location + new Size(1, 1), new Size(Node.Size, Node.Size)), Color.Black);
+                        TextRenderer.DrawText(e.Graphics, node.Name, font, new Rectangle(nodeLocation + new Size(1, 1), Node.SizeBox), Color.Black);
                     }
                 }
 
                 if (_nodeOnEdit != null)
                 {
-                    e.Graphics.DrawEllipse(borderPen, new Rectangle(_nodeOnEdit.Location, new Size(Node.Size, Node.Size)));
-                    e.Graphics.FillEllipse(nodeFillBrush, new Rectangle(_nodeOnEdit.Location, new Size(Node.Size, Node.Size)));
-                    e.Graphics.DrawRectangle(new Pen(Color.Black, 3), new Rectangle(_nodeOnEdit.Location + new Size((int)(Node.Size * 0.2), (int)(Node.Size * 0.2)), new Size((int)(Node.Size * 0.6), (int)(Node.Size * 0.6))));
-                    TextRenderer.DrawText(e.Graphics, _inputString, font, new Rectangle(_nodeOnEdit.Location + new Size(1, 1), new Size(Node.Size, Node.Size)), Color.White, Color.FromArgb(0, 120, 215));
-                    e.Graphics.DrawRectangle(new Pen(Color.Black, 3), new Rectangle(_nodeOnEdit.Location + new Size(45, 45), new Size(110, 30)));
-                    e.Graphics.FillRectangle(nodeFillBrush, new Rectangle(_nodeOnEdit.Location + new Size(45, 45), new Size(110, 30)));
-                    TextRenderer.DrawText(e.Graphics, "Enter node name", new Font("Segoe UI", 10), new Rectangle(_nodeOnEdit.Location + new Size(45, 45), new Size(110, 30)), Color.Black);
-
+                    Point nodeLocation = ToAbsolute(_nodeOnEdit.Location);
+                    e.Graphics.DrawEllipse(borderPen, new Rectangle(nodeLocation, Node.SizeBox));
+                    e.Graphics.FillEllipse(nodeFillBrush, new Rectangle(nodeLocation, Node.SizeBox));
+                    e.Graphics.DrawRectangle(new Pen(Color.Black, 3), new Rectangle(nodeLocation + new Size((int)(Node.SizeLength * 0.2), (int)(Node.SizeLength * 0.2)), new Size((int)(Node.SizeLength * 0.6), (int)(Node.SizeLength * 0.6))));
+                    TextRenderer.DrawText(e.Graphics, _inputString, font, new Rectangle(nodeLocation + new Size(1, 1), Node.SizeBox), Color.White, Color.FromArgb(0, 120, 215));
+                    e.Graphics.DrawRectangle(new Pen(Color.Black, 3), new Rectangle(nodeLocation + new Size(45, 45), new Size(110, 30)));
+                    e.Graphics.FillRectangle(nodeFillBrush, new Rectangle(nodeLocation + new Size(45, 45), new Size(110, 30)));
+                    TextRenderer.DrawText(e.Graphics, "Enter node name", new Font("Segoe UI", 10), new Rectangle(nodeLocation + new Size(45, 45), new Size(110, 30)), Color.Black);
                 }
 
 
@@ -316,7 +301,7 @@ namespace VisualDijkstraRemake.Views
                 for (int i = 0; i < nodes.Count; ++i)
                 {
 
-                    if (nodes[i].Contains(e.Location))
+                    if (nodes[i].Contains(ToRelative(e.Location)))
                     {
                         //a node was clicked
                         node = nodes[i];
@@ -339,6 +324,8 @@ namespace VisualDijkstraRemake.Views
                         _controller.newEdge(_firstNode, node, 3);
                         _edgeCreationRequested = false;
                         _firstNode = null;
+
+                        Debug.WriteLine("AAAAA");
 
                     }
                     else if (_solvePathRequested && _solvePath == null)
@@ -365,7 +352,7 @@ namespace VisualDijkstraRemake.Views
                 else if (_nodeCreationRequested)
                 {
                     //string nodeName = Microsoft.VisualBasic.Interaction.InputBox("Enter node name:", "New node");
-                    _nodeOnEdit = new Node("", e.Location);
+                    _nodeOnEdit = new Node("", ToRelative(e.Location));
                     //_controller.newNode(_nodeOnChangingName);
 
                     _nodeCreationRequested = false;
@@ -396,7 +383,7 @@ namespace VisualDijkstraRemake.Views
                 if (_nodeToMove != null)
                 {
                     //moving a node
-                    Controller.moveNode(_nodeToMove, e.Location);
+                    Controller.moveNode(_nodeToMove, ToRelative(e.Location));
                 }
                 else if (this.Parent != null && _dragLocation.HasValue)
                 {
@@ -490,5 +477,15 @@ namespace VisualDijkstraRemake.Views
             // your code here
         }
 
+
+        private Point ToRelative(Point absolute)
+        {
+            return new Point(absolute.X - SizeLength / 2, absolute.Y - SizeLength / 2);
+        }
+
+        private Point ToAbsolute(Point relative)
+        {
+            return new Point(SizeLength / 2 + relative.X, SizeLength / 2 + relative.Y);
+        }
     }
 }

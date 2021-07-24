@@ -4,8 +4,6 @@ namespace VisualDijkstraRemake.Models
 {
     public interface IPathFinder
     {
-
-
         public Graph Graph
         {
             get; set;
@@ -27,7 +25,6 @@ namespace VisualDijkstraRemake.Models
         {
 
             Graph = graph;
-
         }
 
         public List<GraphState> Solve(Node source, Node dest)

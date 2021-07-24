@@ -188,7 +188,7 @@ namespace VisualDijkstraRemake.Models
                 path.Add(node);
             }
 
-            if (path.Count > 2 &&
+            if (path.Count >= 2 &&
                 path[0].Name.Equals(state.Dest) &&
                 path[path.Count - 1].Name.Equals(state.Source))
             {

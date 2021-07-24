@@ -30,27 +30,31 @@ namespace VisualDijkstraRemake
 
         private void newGraphButton_Click(object sender, System.EventArgs e)
         {
-            bool proceed = false;
-
-            if (!_graphController.IsSaved)
+            if (e is MouseEventArgs)
             {
-                DialogResult result = _graphController.AskToSave();
+                bool proceed = false;
 
-                if (result == DialogResult.Yes || result == DialogResult.No)
+                if (!_graphController.IsSaved)
+                {
+                    DialogResult result = _graphController.AskToSave();
+
+                    if (result == DialogResult.Yes || result == DialogResult.No)
+                    {
+                        proceed = true;
+                    }
+                }
+                else
                 {
                     proceed = true;
                 }
-            }
-            else
-            {
-                proceed = true;
-            }
 
-            if (proceed)
-            {
-                _graph = new Graph();
-                _graphController.Graph = _graph;
-                this.scrollPanel1.setMainControl(_graphView);
+                if (proceed)
+                {
+                    _graph = new Graph();
+                    _graphController.Graph = _graph;
+                    this.scrollPanel1.setMainControl(_graphView, new System.Drawing.Point(GraphView.SizeLength / 2, GraphView.SizeLength / 2) - scrollPanel1.Size / 2);
+
+                }
             }
         }
 
@@ -93,7 +97,7 @@ namespace VisualDijkstraRemake
             _graph = new Graph();
             _graphView = new Views.GraphView();
             _graphController = new GraphController(_graphView, _graph);
-            this.scrollPanel1.setMainControl(_graphView);
+            this.scrollPanel1.setMainControl(_graphView, new System.Drawing.Point(GraphView.SizeLength / 2, GraphView.SizeLength / 2) - scrollPanel1.Size / 2);
 
 
             _statesController = new StatesController(this.statesView1, new List<GraphState>());
@@ -109,48 +113,63 @@ namespace VisualDijkstraRemake
 
         private void deleteNodeButton_Click(object sender, EventArgs e)
         {
-            _graphView.requestNodeElimination();
+            if (e is MouseEventArgs)
+            {
+                _graphView.requestNodeElimination();
+            }
         }
 
 
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            _graphController.save();
+            if (e is MouseEventArgs)
+            {
+                _graphController.save();
+            }
         }
 
         private void solvePathButton_Click(object sender, EventArgs e)
         {
-            _graphView.requestPath();
+            if (e is MouseEventArgs)
+            {
+                _graphView.requestPath();
+            }
         }
 
         private void openButton_Click(object sender, EventArgs e)
         {
-            bool proceed = false;
-
-            if (!_graphController.IsSaved)
+            if (e is MouseEventArgs)
             {
-                DialogResult result = _graphController.AskToSave();
+                bool proceed = false;
 
-                if (result == DialogResult.Yes || result == DialogResult.No)
+                if (!_graphController.IsSaved)
+                {
+                    DialogResult result = _graphController.AskToSave();
+
+                    if (result == DialogResult.Yes || result == DialogResult.No)
+                    {
+                        proceed = true;
+                    }
+                }
+                else
                 {
                     proceed = true;
                 }
-            }
-            else
-            {
-                proceed = true;
-            }
 
-            if (proceed)
-            {
-                _graphController.load();
+                if (proceed)
+                {
+                    _graphController.load();
+                }
             }
         }
 
         private void saveAsButton_Click(object sender, EventArgs e)
         {
-            _graphController.saveAs();
+            if (e is MouseEventArgs)
+            {
+                _graphController.saveAs();
+            }
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -180,7 +199,10 @@ namespace VisualDijkstraRemake
 
         private void exitButton_Click(object sender, EventArgs e)
         {
-            Close();
+            if (e is MouseEventArgs)
+            {
+                Close();
+            }
         }
     }
 }
