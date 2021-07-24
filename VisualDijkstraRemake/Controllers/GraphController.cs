@@ -34,6 +34,7 @@ namespace VisualDijkstraRemake.Controllers
         public Graph Graph
         {
             get { return _graph; }
+            set { _graph = value; }
         }
 
         public GraphController(GraphView view, Graph graph)
@@ -41,7 +42,7 @@ namespace VisualDijkstraRemake.Controllers
             _graph = graph;
             _view = view;
 
-            _saved = false;
+            _saved = true;
             _filenameToSave = "";
 
             view.Controller = this;
@@ -58,6 +59,7 @@ namespace VisualDijkstraRemake.Controllers
             {
                 MessageBox.Show("Node already exists!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+            _saved = false;
             _view.Invalidate();
         }
 
@@ -70,17 +72,20 @@ namespace VisualDijkstraRemake.Controllers
         {
             _graph.CreateNewEdge(a, b, weight);
             _view.Invalidate();
+            _saved = false;
         }
 
         public void moveNode(Node node, Point location)
         {
             _graph.MoveNode(node, location);
+            _saved = false;
             _view.Invalidate();
         }
 
         public void deleteNode(Node node)
         {
             _graph.deleteNode(node);
+            _saved = false;
         }
 
         public void evaluatePath(Node nodeA, Node nodeB)
@@ -120,7 +125,24 @@ namespace VisualDijkstraRemake.Controllers
             }
             else
             {
+                Regex jsonRegex = new Regex(@"^.*\.json$");
+                Regex xmlRegex = new Regex(@"^.*\.xml$");
 
+
+                if (jsonRegex.Match(_filenameToSave).Success)
+                {
+                    GraphUtils.saveGraphToJSONFile(_graph, _filenameToSave);
+                    _saved = true;
+                }
+                else if (xmlRegex.Match(_filenameToSave).Success)
+                {
+                    GraphUtils.saveGraphToXMLFile(_graph, _filenameToSave);
+                    _saved = true;
+                }
+                else
+                {
+                    saveAs();
+                }
             }
         }
 
@@ -144,10 +166,14 @@ namespace VisualDijkstraRemake.Controllers
                 if (jsonRegex.Match(filename).Success)
                 {
                     GraphUtils.saveGraphToJSONFile(_graph, filename);
+                    _saved = true;
+                    _filenameToSave = filename;
                 }
                 else if (xmlRegex.Match(filename).Success)
                 {
                     GraphUtils.saveGraphToXMLFile(_graph, filename);
+                    _saved = true;
+                    _filenameToSave = filename;
                 }
                 else
                 {
@@ -185,6 +211,18 @@ namespace VisualDijkstraRemake.Controllers
             }
 
             _view.Refresh();
+        }
+
+        public DialogResult AskToSave()
+        {
+            DialogResult result = MessageBox.Show("Save your changes before exit?", "Save changes?", MessageBoxButtons.YesNoCancel);
+
+            if (result == DialogResult.Yes)
+            {
+                save();
+            }
+
+            return result;
         }
 
     }

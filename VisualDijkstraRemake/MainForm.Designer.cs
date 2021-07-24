@@ -140,6 +140,7 @@ namespace VisualDijkstraRemake
             this.saveAsButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.saveAsButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.saveAsButton.UseVisualStyleBackColor = true;
+            this.saveAsButton.Click += new System.EventHandler(this.saveAsButton_Click);
             // 
             // saveButton
             // 
@@ -187,6 +188,7 @@ namespace VisualDijkstraRemake
             this.exitButton.Text = "Exit";
             this.exitButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.exitButton.UseVisualStyleBackColor = true;
+            this.exitButton.Click += new System.EventHandler(this.exitButton_Click);
             // 
             // graphTab
             // 

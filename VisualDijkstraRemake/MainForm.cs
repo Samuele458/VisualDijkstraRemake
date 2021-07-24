@@ -30,14 +30,28 @@ namespace VisualDijkstraRemake
 
         private void newGraphButton_Click(object sender, System.EventArgs e)
         {
-            /*_graph = Utils.GraphUtils.loadGraphFromXMLFile(@"C:\Users\Yankoo\Desktop\aaaa.xml");
-            Utils.GraphUtils.saveGraphToJSONFile(_graph, @"C:\Users\Yankoo\Desktop\aaaa.xml");*/
-            _graph = Utils.GraphUtils.loadGraphFromJSONFile(@"C:\Users\Yankoo\Desktop\aaaa.xml");
+            bool proceed = false;
 
+            if (!_graphController.IsSaved)
+            {
+                DialogResult result = _graphController.AskToSave();
 
-            _graphView = new Views.GraphView();
-            _graphController = new GraphController(_graphView, _graph);
-            this.scrollPanel1.setMainControl(_graphView);
+                if (result == DialogResult.Yes || result == DialogResult.No)
+                {
+                    proceed = true;
+                }
+            }
+            else
+            {
+                proceed = true;
+            }
+
+            if (proceed)
+            {
+                _graph = new Graph();
+                _graphController.Graph = _graph;
+                this.scrollPanel1.setMainControl(_graphView);
+            }
         }
 
         private void addNodeButton_Click(object sender, System.EventArgs e)
@@ -102,19 +116,71 @@ namespace VisualDijkstraRemake
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-
             _graphController.save();
         }
 
         private void solvePathButton_Click(object sender, EventArgs e)
         {
-
             _graphView.requestPath();
         }
 
         private void openButton_Click(object sender, EventArgs e)
         {
-            _graphController.load();
+            bool proceed = false;
+
+            if (!_graphController.IsSaved)
+            {
+                DialogResult result = _graphController.AskToSave();
+
+                if (result == DialogResult.Yes || result == DialogResult.No)
+                {
+                    proceed = true;
+                }
+            }
+            else
+            {
+                proceed = true;
+            }
+
+            if (proceed)
+            {
+                _graphController.load();
+            }
+        }
+
+        private void saveAsButton_Click(object sender, EventArgs e)
+        {
+            _graphController.saveAs();
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            bool proceed = false;
+
+            if (!_graphController.IsSaved)
+            {
+                DialogResult result = _graphController.AskToSave();
+
+                if (result == DialogResult.Yes || result == DialogResult.No)
+                {
+                    proceed = true;
+                }
+            }
+            else
+            {
+                proceed = true;
+            }
+
+            if (!proceed)
+            {
+                e.Cancel = true;
+            }
+            base.OnFormClosing(e);
+        }
+
+        private void exitButton_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }
