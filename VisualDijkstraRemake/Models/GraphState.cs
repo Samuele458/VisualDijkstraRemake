@@ -13,6 +13,11 @@ namespace VisualDijkstraRemake.Models
 
         private List<NodeState> _nodesStates;
 
+        public List<NodeState> NodesStates
+        {
+            get { return _nodesStates; }
+        }
+
         public GraphState(List<Node> nodes)
         {
             _nodesStates = new List<NodeState>();

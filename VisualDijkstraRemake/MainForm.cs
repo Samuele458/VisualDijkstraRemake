@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
 using VisualDijkstraRemake.Controllers;
@@ -15,11 +16,21 @@ namespace VisualDijkstraRemake
         GraphView _graphView;
         GraphController _graphController;
 
+        IStatesController _statesController;
+
+
+
         public MainForm()
         {
             InitializeComponent();
 
             this.KeyPreview = true;
+
+
+
+
+
+
         }
 
         private void newGraphButton_Click(object sender, System.EventArgs e)
@@ -70,6 +81,14 @@ namespace VisualDijkstraRemake
             _graphView = new Views.GraphView();
             _graphController = new GraphController(_graphView, _graph);
             this.scrollPanel1.setMainControl(_graphView);
+
+
+            _statesController = new StatesController(this.statesView1, new List<GraphState>());
+            statesView1.Controller = _statesController;
+
+
+            _statesController.GraphController = _graphController;
+            _graphController.StatesController = _statesController;
 
             //setting tab defaut page
             this.toolbar.SelectedTab = this.graphTab;

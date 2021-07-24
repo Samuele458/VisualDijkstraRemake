@@ -1,85 +1,69 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace VisualDijkstraRemake.Models
 {
     public interface IPathFinder
     {
-        public Node Source
-        {
-            get; set;
-        }
 
-        public Node Dest
-        {
-            get; set;
-        }
 
         public Graph Graph
         {
             get; set;
         }
 
-        public List<GraphState> Solve();
+        public List<GraphState> Solve(Node source, Node dest);
 
     }
 
     public class Dijkstra : IPathFinder
     {
-        public Node Source { get; set; }
-        public Node Dest { get; set; }
 
         public Graph Graph
         {
             get; set;
         }
 
-        public Dijkstra(Graph graph, Node nodeA, Node nodeB)
+        public Dijkstra(Graph graph)
+        {
+
+            Graph = graph;
+
+        }
+
+        public List<GraphState> Solve(Node source, Node dest)
         {
             //list of states to be returned
             List<GraphState> states = new List<GraphState>();
 
 
             //init state
-            GraphState state = new GraphState(graph);
-            state.Source = nodeA.Name;
-            state.Dest = nodeB.Name;
+            GraphState state = new GraphState(Graph);
+            state.Source = source.Name;
+            state.Dest = dest.Name;
             state.setDistance(state.Source, 0);
             states.Add(state);
 
             state = state.Copy();
 
             //getting nodes
-            List<Node> nodes = graph.Nodes;
+            List<Node> nodes = Graph.Nodes;
 
             for (int i = 0; i < nodes.Count; ++i)
             {
 
                 //getting the (non-processed) node with the smallest distance
-                Node u = graph.GetNode(state.minDistance());
+                Node u = Graph.GetNode(state.minDistance());
 
                 //setting as processed the current node
                 state.setProcessed(u.Name, true);
 
                 //getting neighbours
-                List<Node> neighbours = graph.GetNeighbours(u.Name);
+                List<Node> neighbours = Graph.GetNeighbours(u.Name);
 
-                Debug.WriteLine("Current node: " + u.Name);
-                Debug.WriteLine("edges:");
-                foreach (Edge e in graph.Edges)
-                {
-                    Debug.WriteLine(" " + e.NodeA.Name + " ---> " + e.NodeB.Name);
-                }
-
-                Debug.WriteLine("neighs:");
-                foreach (Node n in neighbours)
-                {
-                    Debug.WriteLine(" - " + n.Name);
-                }
                 for (int j = 0; j < neighbours.Count; ++j)
                 {
                     int alt = state.GetNode(u.Name).Distance +                      //distance between start and current node
-                              graph.getEdge(u.Name, neighbours[j].Name).Weight;     //weight between current node and neighbour node
+                              Graph.getEdge(u.Name, neighbours[j].Name).Weight;     //weight between current node and neighbour node
 
                     if (alt < state.GetNode(neighbours[j].Name).Distance)
                     {
@@ -98,14 +82,7 @@ namespace VisualDijkstraRemake.Models
                 s.logGraphState();
             }
 
-
-        }
-
-        public List<GraphState> Solve()
-        {
-            Debug.WriteLine("Solving dijkstra...");
-
-            return new List<GraphState>();
+            return states;
         }
     }
 }

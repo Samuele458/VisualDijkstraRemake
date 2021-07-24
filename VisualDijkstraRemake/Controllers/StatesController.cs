@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using VisualDijkstraRemake.Models;
 using VisualDijkstraRemake.Views;
 
@@ -7,17 +8,23 @@ namespace VisualDijkstraRemake.Controllers
 
     public interface IStatesController
     {
+
+        public GraphController GraphController { get; set; }
         void clearStates();
 
         void setStates(List<GraphState> states);
 
         void setCurrentState(GraphState state);
+
+        GraphState getState(int index);
     }
 
-    class StatesController : IStatesController
+    public class StatesController : IStatesController
     {
         private StatesView _view;
         private List<GraphState> _states;
+
+        public GraphController GraphController { get; set; }
 
         public StatesView View
         {
@@ -35,7 +42,7 @@ namespace VisualDijkstraRemake.Controllers
         public void clearStates()
         {
 
-            throw new System.NotImplementedException();
+            _states = new List<GraphState>();
         }
 
         public void setCurrentState(GraphState state)
@@ -45,7 +52,21 @@ namespace VisualDijkstraRemake.Controllers
 
         public void setStates(List<GraphState> states)
         {
-            throw new System.NotImplementedException();
+            _states = states;
+
+            _view.setStates(states);
+        }
+
+        public GraphState getState(int index)
+        {
+            if (index >= 0 && index < _states.Count)
+            {
+                return _states[index];
+            }
+            else
+            {
+                throw new IndexOutOfRangeException();
+            }
         }
     }
 }

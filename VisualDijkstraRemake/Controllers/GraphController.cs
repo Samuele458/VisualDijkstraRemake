@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using VisualDijkstraRemake.Models;
@@ -17,6 +18,9 @@ namespace VisualDijkstraRemake.Controllers
     {
         private Graph _graph;
         private GraphView _view;
+
+
+        public IStatesController StatesController { get; set; }
 
         public Graph Graph
         {
@@ -70,7 +74,13 @@ namespace VisualDijkstraRemake.Controllers
         public void evaluatePath(Node nodeA, Node nodeB)
         {
             Debug.WriteLine("Finding path from " + nodeA.Name + "  ->  " + nodeB.Name);
-            IPathFinder solver = new Dijkstra(_graph, nodeA, nodeB);
+            IPathFinder solver = new Dijkstra(_graph);
+            List<GraphState> states = solver.Solve(nodeA, nodeB);
+
+
+            Debug.WriteLine("StatesController is not null");
+            StatesController.setStates(states);
+
         }
 
 

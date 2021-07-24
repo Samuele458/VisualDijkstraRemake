@@ -74,7 +74,7 @@ namespace VisualDijkstraRemake
             this.mainSplitContainer.Panel2.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.mainSplitContainer.Panel2.Controls.Add(this.statesView1);
             this.mainSplitContainer.Size = new System.Drawing.Size(937, 446);
-            this.mainSplitContainer.SplitterDistance = 512;
+            this.mainSplitContainer.SplitterDistance = 553;
             this.mainSplitContainer.TabIndex = 0;
             // 
             // scrollPanel1
@@ -83,16 +83,17 @@ namespace VisualDijkstraRemake
             this.scrollPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.scrollPanel1.Location = new System.Drawing.Point(0, 0);
             this.scrollPanel1.Name = "scrollPanel1";
-            this.scrollPanel1.Size = new System.Drawing.Size(510, 444);
+            this.scrollPanel1.Size = new System.Drawing.Size(551, 444);
             this.scrollPanel1.TabIndex = 0;
             // 
             // statesView1
             // 
             this.statesView1.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.statesView1.Controller = null;
             this.statesView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.statesView1.Location = new System.Drawing.Point(0, 0);
             this.statesView1.Name = "statesView1";
-            this.statesView1.Size = new System.Drawing.Size(419, 444);
+            this.statesView1.Size = new System.Drawing.Size(378, 444);
             this.statesView1.TabIndex = 0;
             // 
             // toolbar
