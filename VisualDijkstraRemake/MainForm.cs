@@ -103,15 +103,7 @@ namespace VisualDijkstraRemake
         private void saveButton_Click(object sender, EventArgs e)
         {
 
-            /* for (int j = 0; j < 3; ++j)
-             {
-                 Button b = new Button();
-                 b.Text = (++i).ToString();
-
-                 this.scrollPanel2.Controls.Add(b);
-                 b.Location = new System.Drawing.Point(10, 10);
-                 b.Size = new System.Drawing.Size(50, 50);
-             }*/
+            _graphController.save();
         }
 
         private void solvePathButton_Click(object sender, EventArgs e)
@@ -120,6 +112,9 @@ namespace VisualDijkstraRemake
             _graphView.requestPath();
         }
 
-
+        private void openButton_Click(object sender, EventArgs e)
+        {
+            _graphController.load();
+        }
     }
 }

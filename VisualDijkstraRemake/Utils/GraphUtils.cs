@@ -1,14 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Xml;
 using VisualDijkstraRemake.Models;
 
 namespace VisualDijkstraRemake.Utils
 {
+
+
     class GraphUtils
     {
 
@@ -18,7 +21,7 @@ namespace VisualDijkstraRemake.Utils
             XmlTextWriter writer = new XmlTextWriter(filename, null);
 
             //XML indentation
-            writer.Formatting = Formatting.Indented;
+            writer.Formatting = System.Xml.Formatting.Indented;
 
 
             writer.WriteStartDocument(); // start document
@@ -40,6 +43,7 @@ namespace VisualDijkstraRemake.Utils
             foreach (Edge edge in graph.Edges)
             {
                 writer.WriteStartElement("edge");
+                writer.WriteAttributeString("weight", edge.Weight.ToString());
                 writer.WriteElementString("a", edge.NodeA.Name);
                 writer.WriteElementString("a", edge.NodeB.Name);
                 writer.WriteEndElement();
@@ -158,36 +162,31 @@ namespace VisualDijkstraRemake.Utils
         }
         public static Graph loadGraphFromJSONFile(string filename)
         {
-
-            //loading from JSON file
-            string jsonString = File.ReadAllText(filename);
-            List<Edge> edges = JsonSerializer.Deserialize<List<Edge>>(jsonString);
-
             Graph graph = new Graph();
 
-            //adding nodes to graph, by looking at edges
-            foreach (Edge edge in edges)
+            try
             {
-                try
-                {
-                    graph.AddNewNode(edge.NodeA.Name, edge.NodeA.Location);
-                }
-                catch (NodeAlreadyExistsException) { }
+                string jsonString = File.ReadAllText(filename);
+                var graphObj = JsonConvert.DeserializeObject<dynamic>(jsonString);
 
-                try
-                {
-                    graph.AddNewNode(edge.NodeB.Name, edge.NodeB.Location);
-                }
-                catch (NodeAlreadyExistsException) { }
 
-                Debug.WriteLine(edges.Count);
+                foreach (var node in graphObj.nodes)
+                {
+                    graph.AddNewNode((string)node.name,
+                                     new Point((int)node.x, (int)node.y));
+                }
+
+
+                foreach (var edge in graphObj.edges)
+                {
+                    graph.CreateNewEdge(graph.GetNode((string)edge.a),
+                                        graph.GetNode((string)edge.b),
+                                        (int)edge.weight);
+                }
             }
-
-
-            //adding each edge between nodes
-            foreach (Edge edge in edges)
+            catch (Exception)
             {
-                graph.CreateNewEdge(graph.GetNode(edge.NodeA.Name), graph.GetNode(edge.NodeB.Name), edge.Weight);
+                throw new InvalidSaveFileFormat();
             }
 
             return graph;
@@ -195,9 +194,32 @@ namespace VisualDijkstraRemake.Utils
 
         public static void saveGraphToJSONFile(Graph graph, string filename)
         {
-            string jsonString = JsonSerializer.Serialize(graph.Edges);
+
+            //creating nodes
+            var nodes = new[] { new { name = "name", x = 0, y = 0 } }.ToList();
+            nodes.Clear();
+            foreach (Node node in graph.Nodes)
+            {
+                nodes.Add(new { name = node.Name, x = node.Location.X, y = node.Location.Y });
+            }
+
+            //creating edges
+            var edges = new[] { new { a = "a", b = "b", weight = 3 } }.ToList();
+            edges.Clear();
+            foreach (Edge edge in graph.Edges)
+            {
+                edges.Add(new { a = edge.NodeA.Name, b = edge.NodeB.Name, weight = edge.Weight });
+            }
+
+
+            //graph object to be serialized
+            var graphObj = new { nodes = nodes, edges = edges };
+
+            JsonSerializerOptions options = new JsonSerializerOptions();
+            options.WriteIndented = false;
+            string jsonString = System.Text.Json.JsonSerializer.Serialize(graphObj, options);
             File.WriteAllText(filename, jsonString);
-            Debug.WriteLine(JsonSerializer.Serialize(graph.Edges));
+            Debug.WriteLine(System.Text.Json.JsonSerializer.Serialize(graphObj));
         }
     }
 
