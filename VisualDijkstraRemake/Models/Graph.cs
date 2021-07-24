@@ -140,6 +140,62 @@ namespace VisualDijkstraRemake.Models
         {
             return _edges.Find(edge => (edge.NodeA.Name == nodeA && edge.NodeB.Name == nodeB) || (edge.NodeA.Name == nodeB && edge.NodeB.Name == nodeA));
         }
+
+        public void setState(GraphState state)
+        {
+
+            //resetting nodes
+            foreach (Node n in _nodes)
+            {
+                n.IsInPath = false;
+            }
+
+
+            //resetting edges
+            foreach (Edge edge in _edges)
+            {
+                edge.IsInPath = false;
+            }
+
+            List<NodeState> nodesStates = state.NodesStates;
+
+            /*
+            for (int i = 0; i < nodesStates.Count; ++i)
+            {
+                if (!nodesStates[i].Previous.Equals("DEFAULT_PREVIOUS_NODE"))
+                {
+                    GetNode(nodesStates[i].Name).IsInPath = true;
+                    getEdge(nodesStates[i].Name, nodesStates[i].Previous).IsInPath = true;
+                }
+            }
+            */
+
+            GetNode(state.Source).IsInPath = true;
+            GetNode(state.Dest).IsInPath = true;
+
+            NodeState node = state.GetNode(state.Dest);
+            List<NodeState> path = new List<NodeState>();
+            path.Add(node);
+
+            while (!node.Previous.Equals("DEFAULT_PREVIOUS_NODE"))
+            {
+                node = state.GetNode(node.Previous);
+                path.Add(node);
+            }
+
+            if (path.Count > 2 &&
+                path[0].Name.Equals(state.Dest) &&
+                path[path.Count - 1].Name.Equals(state.Source))
+            {
+                for (int i = 0; i < path.Count - 1; ++i)
+                {
+                    GetNode(path[i].Name).IsInPath = true;
+                    getEdge(path[i].Name, path[i + 1].Name).IsInPath = true;
+                }
+            }
+
+
+        }
     }
 
 

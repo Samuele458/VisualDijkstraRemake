@@ -43,11 +43,12 @@ namespace VisualDijkstraRemake.Controllers
         {
 
             _states = new List<GraphState>();
+            _view.Clear();
         }
 
         public void setCurrentState(GraphState state)
         {
-            throw new System.NotImplementedException();
+            GraphController.setState(state);
         }
 
         public void setStates(List<GraphState> states)

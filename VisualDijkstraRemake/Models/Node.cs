@@ -22,6 +22,8 @@ namespace VisualDijkstraRemake.Models
 
         List<Edge> _edges;
 
+        public bool IsInPath { get; set; }
+
         public Point Location
         {
             get { return _location; }

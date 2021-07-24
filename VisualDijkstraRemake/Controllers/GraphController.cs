@@ -84,5 +84,19 @@ namespace VisualDijkstraRemake.Controllers
         }
 
 
+        public void clearStates()
+        {
+            if (StatesController != null)
+            {
+                StatesController.clearStates();
+            }
+        }
+
+        public void setState(GraphState state)
+        {
+            _graph.setState(state);
+            _view.Refresh();
+        }
+
     }
 }

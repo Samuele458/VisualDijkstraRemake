@@ -27,10 +27,6 @@ namespace VisualDijkstraRemake
             this.KeyPreview = true;
 
 
-
-
-
-
         }
 
         private void newGraphButton_Click(object sender, System.EventArgs e)

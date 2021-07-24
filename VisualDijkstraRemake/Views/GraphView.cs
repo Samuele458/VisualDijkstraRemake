@@ -216,9 +216,9 @@ namespace VisualDijkstraRemake.Views
                 List<Node> nodes = Controller.Graph.Nodes;
 
                 //tools for painting
-                Pen borderPen = new Pen(Color.Black, 10);
-                Pen edgePen = new Pen(Color.Black, 7);
-                SolidBrush borderBrush = new SolidBrush(Color.White);
+                Pen borderPen = new Pen(Color.Black, 6);
+                Pen borderPenPath = new Pen(Color.Red, 6);
+                SolidBrush nodeFillBrush = new SolidBrush(Color.White);
                 Font font = new Font("Segoe UI", 20);
 
                 //size of the node boundaries
@@ -230,7 +230,14 @@ namespace VisualDijkstraRemake.Views
                     Point center = new Point((edge.NodeA.Location.X + edge.NodeB.Location.X) / 2,
                                                 (edge.NodeA.Location.Y + edge.NodeB.Location.Y) / 2);
 
-                    e.Graphics.DrawLine(edgePen, edge.NodeA.Location + nodeSize / 2, edge.NodeB.Location + nodeSize / 2);
+                    if (edge.IsInPath)
+                    {
+                        e.Graphics.DrawLine(borderPenPath, edge.NodeA.Location + nodeSize / 2, edge.NodeB.Location + nodeSize / 2);
+                    }
+                    else
+                    {
+                        e.Graphics.DrawLine(borderPen, edge.NodeA.Location + nodeSize / 2, edge.NodeB.Location + nodeSize / 2);
+                    }
 
                     if (_edgeOnEdit != edge)
                     {
@@ -249,12 +256,23 @@ namespace VisualDijkstraRemake.Views
                 //painting nodes
                 foreach (Node node in nodes)
                 {
-                    e.Graphics.DrawEllipse(borderPen, new Rectangle(node.Location, new Size(Node.Size, Node.Size)));
-                    e.Graphics.FillEllipse(borderBrush, new Rectangle(node.Location, new Size(Node.Size, Node.Size)));
+                    e.Graphics.FillEllipse(nodeFillBrush, new Rectangle(node.Location, new Size(Node.Size, Node.Size)));
+
+                    if (node.IsInPath)
+                    {
+                        e.Graphics.DrawEllipse(borderPenPath, new Rectangle(node.Location, new Size(Node.Size, Node.Size)));
+                    }
+                    else
+                    {
+                        e.Graphics.DrawEllipse(borderPen, new Rectangle(node.Location, new Size(Node.Size, Node.Size)));
+                    }
+
+
 
 
                     if (_nodeOnEdit != node)
                     {
+
                         TextRenderer.DrawText(e.Graphics, node.Name, font, new Rectangle(node.Location + new Size(1, 1), new Size(Node.Size, Node.Size)), Color.Black);
                     }
                 }
@@ -262,11 +280,11 @@ namespace VisualDijkstraRemake.Views
                 if (_nodeOnEdit != null)
                 {
                     e.Graphics.DrawEllipse(borderPen, new Rectangle(_nodeOnEdit.Location, new Size(Node.Size, Node.Size)));
-                    e.Graphics.FillEllipse(borderBrush, new Rectangle(_nodeOnEdit.Location, new Size(Node.Size, Node.Size)));
+                    e.Graphics.FillEllipse(nodeFillBrush, new Rectangle(_nodeOnEdit.Location, new Size(Node.Size, Node.Size)));
                     e.Graphics.DrawRectangle(new Pen(Color.Black, 3), new Rectangle(_nodeOnEdit.Location + new Size((int)(Node.Size * 0.2), (int)(Node.Size * 0.2)), new Size((int)(Node.Size * 0.6), (int)(Node.Size * 0.6))));
                     TextRenderer.DrawText(e.Graphics, _inputString, font, new Rectangle(_nodeOnEdit.Location + new Size(1, 1), new Size(Node.Size, Node.Size)), Color.White, Color.FromArgb(0, 120, 215));
                     e.Graphics.DrawRectangle(new Pen(Color.Black, 3), new Rectangle(_nodeOnEdit.Location + new Size(45, 45), new Size(110, 30)));
-                    e.Graphics.FillRectangle(borderBrush, new Rectangle(_nodeOnEdit.Location + new Size(45, 45), new Size(110, 30)));
+                    e.Graphics.FillRectangle(nodeFillBrush, new Rectangle(_nodeOnEdit.Location + new Size(45, 45), new Size(110, 30)));
                     TextRenderer.DrawText(e.Graphics, "Enter node name", new Font("Segoe UI", 10), new Rectangle(_nodeOnEdit.Location + new Size(45, 45), new Size(110, 30)), Color.Black);
 
                 }
@@ -443,6 +461,8 @@ namespace VisualDijkstraRemake.Views
         /// </summary>
         public void clearRequests()
         {
+            Controller.clearStates();
+
             //clearing node creation request
             this._nodeCreationRequested = false;
 

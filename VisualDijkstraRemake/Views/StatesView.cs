@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
+using System.Drawing;
 using System.Windows.Forms;
 using VisualDijkstraRemake.Controllers;
+using VisualDijkstraRemake.Controls;
 using VisualDijkstraRemake.Models;
 
 namespace VisualDijkstraRemake.Views
@@ -43,11 +46,22 @@ namespace VisualDijkstraRemake.Views
             for (int i = 0; i < states.Count; ++i)
             {
 
-                Button btn = new Button();
+                Button btn = new FlatButton();
                 btn.Text = (i + 1).ToString();
                 btn.Click += new System.EventHandler(stateButton_Click);
+                btn.Height = 40;
+                btn.Width = 60;
+                btn.BackColor = Color.FromArgb(244, 244, 244);
+                btn.Margin = new Padding(10);
+                btn.Font = new Font("Segoe UI", 14);
+
 
                 scrollPanel1.Controls.Add(btn);
+            }
+
+            if (states.Count > 0)
+            {
+                setState(states[states.Count - 1]);
             }
         }
 
@@ -56,6 +70,7 @@ namespace VisualDijkstraRemake.Views
             Button btn = (Button)sender;
 
             this.setState(Controller.getState(int.Parse(btn.Text) - 1));
+
         }
 
         public void setState(GraphState state)
@@ -67,10 +82,29 @@ namespace VisualDijkstraRemake.Views
                 DataRow row = _statesData.NewRow();
 
                 row["Name"] = node.Name;
-                row["Previous"] = node.Previous;
-                row["Distance"] = node.Distance;
+                row["Previous"] = node.Previous.Equals("DEFAULT_PREVIOUS_NODE") ? "-" : node.Previous;
+                row["Distance"] = node.Distance == 999999999 ? "INF" : node.Distance;
 
                 _statesData.Rows.Add(row);
+            }
+
+            Controller.setCurrentState(state);
+        }
+
+        public void Clear()
+        {
+            _statesData.Clear();
+
+
+            foreach (Control c in scrollPanel1.Controls)
+            {
+                Debug.WriteLine("Removing " + c.Text);
+                //scrollPanel1.Controls.Remove(c);
+            }
+
+            for (int i = scrollPanel1.Controls.Count - 1; i >= 0; --i)
+            {
+                scrollPanel1.Controls.RemoveAt(i);
             }
         }
 

@@ -14,6 +14,7 @@ namespace VisualDijkstraRemake.Models
         Node _nodeB;
         int _weight;
 
+
         public Node NodeA
         {
             get { return _nodeA; }
@@ -32,6 +33,8 @@ namespace VisualDijkstraRemake.Models
             get { return _weight; }
             set { _weight = value; }
         }
+
+        public bool IsInPath { get; set; }
 
         /// <summary>
         ///  Create an Edge by providing its characteristics
