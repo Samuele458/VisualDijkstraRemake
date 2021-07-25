@@ -221,10 +221,10 @@ namespace VisualDijkstraRemake.Views
                 List<Node> nodes = Controller.Graph.Nodes;
 
                 //tools for painting
-                Pen borderPen = new Pen(Color.Black, 6);
-                Pen borderPenPath = new Pen(Color.Red, 6);
+                Pen borderPen = new Pen(Color.Black, Scale(6));
+                Pen borderPenPath = new Pen(Color.Red, Scale(6));
                 SolidBrush nodeFillBrush = new SolidBrush(Color.White);
-                Font font = new Font("Segoe UI", 20);
+                Font font = new Font("Segoe UI", Scale(20));
 
                 //size of the node boundaries
                 Size nodeSize = Scale(Node.SizeBox);
@@ -233,22 +233,27 @@ namespace VisualDijkstraRemake.Views
                 foreach (Edge edge in Controller.Graph.Edges)
                 {
                     Point center = ToAbsolute(Scale(new Point((edge.NodeA.Location.X + edge.NodeB.Location.X) / 2,
-                                                (edge.NodeA.Location.Y + edge.NodeB.Location.Y) / 2)));
+                                                              (edge.NodeA.Location.Y + edge.NodeB.Location.Y) / 2)));
 
-                    e.Graphics.DrawLine(edge.IsInPath ? borderPenPath : borderPen, ToAbsolute(Scale(edge.NodeA.Location) + nodeSize / 2), ToAbsolute(Scale(edge.NodeB.Location) + nodeSize / 2));
+                    e.Graphics.DrawLine(edge.IsInPath ? borderPenPath : borderPen,
+                                        ToAbsolute(Scale(edge.NodeA.Location) + nodeSize / 2),
+                                        ToAbsolute(Scale(edge.NodeB.Location) + nodeSize / 2));
 
                     if (_edgeOnEdit != edge)
                     {
-                        TextRenderer.DrawText(e.Graphics, edge.Weight.ToString(), font, center - new Size((int)(35 * Math.Cos((2 * Math.PI) - edge.Angle())), (int)(35 * Math.Sin((2 * Math.PI) - edge.Angle()))), Color.Black);
+                        TextRenderer.DrawText(e.Graphics, edge.Weight.ToString(), font,
+                                              center - new Size((int)(Scale(35) * Math.Cos((2 * Math.PI) - edge.Angle())),
+                                              (int)(Scale(35) * Math.Sin((2 * Math.PI) - edge.Angle()))), Color.Black);
                     }
                 }
 
                 if (_edgeOnEdit != null)
                 {
-                    Point center = new Point((_edgeOnEdit.NodeA.Location.X + _edgeOnEdit.NodeB.Location.X) / 2,
-                                                (_edgeOnEdit.NodeA.Location.Y + _edgeOnEdit.NodeB.Location.Y) / 2);
-                    TextRenderer.DrawText(e.Graphics, _inputString, font, center - new Size((int)(35 * Math.Cos((2 * Math.PI) - _edgeOnEdit.Angle())), (int)(35 * Math.Sin((2 * Math.PI) - _edgeOnEdit.Angle()))), Color.White, Color.FromArgb(0, 120, 215));
-
+                    Point center = ToAbsolute(Scale(new Point((_edgeOnEdit.NodeA.Location.X + _edgeOnEdit.NodeB.Location.X) / 2,
+                                                              (_edgeOnEdit.NodeA.Location.Y + _edgeOnEdit.NodeB.Location.Y) / 2)));
+                    TextRenderer.DrawText(e.Graphics, _inputString, font,
+                                                                  center - new Size((int)(Scale(35) * Math.Cos((2 * Math.PI) - _edgeOnEdit.Angle())),
+                                                                  (int)(Scale(35) * Math.Sin((2 * Math.PI) - _edgeOnEdit.Angle()))), Color.White, Color.FromArgb(0, 120, 215));
                 }
 
                 //painting nodes
@@ -268,13 +273,18 @@ namespace VisualDijkstraRemake.Views
                 if (_nodeOnEdit != null)
                 {
                     Point nodeLocation = ToAbsolute(Scale(_nodeOnEdit.Location));
-                    e.Graphics.DrawEllipse(borderPen, new Rectangle(nodeLocation, Node.SizeBox));
-                    e.Graphics.FillEllipse(nodeFillBrush, new Rectangle(nodeLocation, Node.SizeBox));
-                    e.Graphics.DrawRectangle(new Pen(Color.Black, 3), new Rectangle(nodeLocation + new Size((int)(Node.SizeLength * 0.2), (int)(Node.SizeLength * 0.2)), new Size((int)(Node.SizeLength * 0.6), (int)(Node.SizeLength * 0.6))));
-                    TextRenderer.DrawText(e.Graphics, _inputString, font, new Rectangle(nodeLocation + new Size(1, 1), Node.SizeBox), Color.White, Color.FromArgb(0, 120, 215));
-                    e.Graphics.DrawRectangle(new Pen(Color.Black, 3), new Rectangle(nodeLocation + new Size(45, 45), new Size(110, 30)));
-                    e.Graphics.FillRectangle(nodeFillBrush, new Rectangle(nodeLocation + new Size(45, 45), new Size(110, 30)));
-                    TextRenderer.DrawText(e.Graphics, "Enter node name", new Font("Segoe UI", 10), new Rectangle(nodeLocation + new Size(45, 45), new Size(110, 30)), Color.Black);
+
+                    e.Graphics.FillEllipse(nodeFillBrush, new Rectangle(nodeLocation, nodeSize));
+                    e.Graphics.DrawEllipse(borderPen, new Rectangle(nodeLocation, nodeSize));
+                    //e.Graphics.DrawRectangle(new Pen(Color.Black, 3), new Rectangle(nodeLocation + Scale(new Size((int)(nodeSize.Width * 0.2), (int)(nodeSize.Width * 0.2))),
+                    //                                                                               new Size((int)(nodeSize.Width * 0.6), (int)(nodeSize.Width * 0.6))));
+                    TextRenderer.DrawText(e.Graphics, _inputString, font,
+                                          new Rectangle(nodeLocation + Scale(new Size(1, 1)), nodeSize),
+                                          Color.White, Color.FromArgb(0, 120, 215));
+
+                    e.Graphics.DrawRectangle(new Pen(Color.Black, 3), new Rectangle(nodeLocation + Scale(new Size(45, 45)), Scale(new Size(110, 30))));
+                    e.Graphics.FillRectangle(nodeFillBrush, new Rectangle(nodeLocation + Scale(new Size(45, 45)), Scale(new Size(110, 30))));
+                    TextRenderer.DrawText(e.Graphics, "Enter node name", new Font("Segoe UI", Scale(10)), new Rectangle(nodeLocation + Scale(new Size(45, 45)), Scale(new Size(110, 30))), Color.Black);
                 }
 
 
@@ -501,6 +511,11 @@ namespace VisualDijkstraRemake.Views
             return new Size((int)(size.Width * (_scaleFactor / 10)), (int)(size.Height * (_scaleFactor / 10)));
         }
 
+        private int Scale(int num)
+        {
+            return (int)(num * (_scaleFactor / 10));
+        }
+
         private Point ReverseScale(Point location)
         {
             return new Point((int)(location.X * (10 / _scaleFactor)), (int)(location.Y * (10 / _scaleFactor)));
@@ -508,7 +523,7 @@ namespace VisualDijkstraRemake.Views
 
         public void zoomIn()
         {
-            this._scaleFactor -= 1;
+            this._scaleFactor += 1;
             this.Refresh();
         }
     }
