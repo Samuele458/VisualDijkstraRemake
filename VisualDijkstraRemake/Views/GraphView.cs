@@ -16,14 +16,16 @@ namespace VisualDijkstraRemake.Views
 
         private Node _nodeToMove;
         private Nullable<Point> _dragLocation;
+
         private bool _nodeCreationRequested;
+
         private bool _edgeCreationRequested;
         private Node _firstNode;
+
         private bool _nodeEliminationRequested;
 
         private string _inputString;
         private Node _nodeOnEdit;
-
         private Edge _edgeOnEdit;
 
         private bool _solvePathRequested;
@@ -31,7 +33,6 @@ namespace VisualDijkstraRemake.Views
 
         private GraphOptions _options;
 
-        private int _paintedNum;
 
         public GraphOptions Options
         {
@@ -93,8 +94,6 @@ namespace VisualDijkstraRemake.Views
             this._solvePath = null;
             this._solvePathRequested = false;
 
-            this._paintedNum = 0;
-
             if (options == null)
             {
                 Options = new GraphOptions();
@@ -109,12 +108,11 @@ namespace VisualDijkstraRemake.Views
             cm.Items.Add("Item 1");
             cm.Items.Add("sd");
             cm.ItemClicked += new ToolStripItemClickedEventHandler(contexMenu_ItemClicked);
-
-
             this.ContextMenuStrip = cm;
 
-            SizeMode = PictureBoxSizeMode.Zoom;
 
+
+            SizeMode = PictureBoxSizeMode.Zoom;
         }
 
         private void CheckNodeOnEdit()
@@ -254,7 +252,6 @@ namespace VisualDijkstraRemake.Views
             {
                 //anti alias
                 e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                //e.Graphics.ScaleTransform(2f, 2f);
 
                 //getting nodes
                 List<Node> nodes = Controller.Graph.Nodes;
@@ -262,6 +259,7 @@ namespace VisualDijkstraRemake.Views
                 //tools for painting
                 Pen borderPen = new Pen(Color.Black, Scale(6));
                 Pen borderPenPath = new Pen(Color.Red, Scale(6));
+                Pen borderPenPartialPath = new Pen(Color.Blue, Scale(6));
                 SolidBrush nodeFillBrush = new SolidBrush(Color.White);
                 Font font = new Font("Segoe UI", Scale(20));
 
@@ -274,7 +272,7 @@ namespace VisualDijkstraRemake.Views
                     Point center = ToAbsolute(Scale(new Point((edge.NodeA.Location.X + edge.NodeB.Location.X) / 2,
                                                               (edge.NodeA.Location.Y + edge.NodeB.Location.Y) / 2)));
 
-                    e.Graphics.DrawLine(edge.IsInPath ? borderPenPath : borderPen,
+                    e.Graphics.DrawLine(edge.IsInPath ? borderPenPath : edge.IsInPartialPath ? borderPenPartialPath : borderPen,
                                         ToAbsolute(Scale(edge.NodeA.Location) + nodeSize / 2),
                                         ToAbsolute(Scale(edge.NodeB.Location) + nodeSize / 2));
 
@@ -300,7 +298,7 @@ namespace VisualDijkstraRemake.Views
                 {
                     Point nodeLocation = ToAbsolute(Scale(node.Location));
                     e.Graphics.FillEllipse(nodeFillBrush, new Rectangle(nodeLocation, nodeSize));
-                    e.Graphics.DrawEllipse(node.IsInPath ? borderPenPath : borderPen, new Rectangle(nodeLocation, nodeSize));
+                    e.Graphics.DrawEllipse(node.IsInPath ? borderPenPath : node.IsInPartialPath ? borderPenPartialPath : borderPen, new Rectangle(nodeLocation, nodeSize));
 
                     if (_nodeOnEdit != node)
                     {

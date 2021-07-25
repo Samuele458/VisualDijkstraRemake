@@ -1,16 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
 namespace VisualDijkstraRemake.Models
 {
+    public interface IPath
+    {
+        public bool IsInPath { get; set; }
+
+        public bool IsInPartialPath { get; set; }
+    }
 
     /// <summary>
     ///  Node element used inside Graph
     /// </summary>
-    public class Node
+    public class Node : IPath
     {
         //Node size
         public const int SizeLength = 50;
@@ -22,11 +27,9 @@ namespace VisualDijkstraRemake.Models
         //node name
         private string _name;
 
-
-        private List<Edge> _edges;
-
         [JsonIgnore]
         public bool IsInPath { get; set; }
+        public bool IsInPartialPath { get; set; }
 
 
         public Point Location
@@ -44,17 +47,10 @@ namespace VisualDijkstraRemake.Models
         }
 
 
-        [JsonIgnore]
-        public List<Edge> Edges
-        {
-            get { return _edges; }
-        }
-
         [JsonConstructor]
         public Node(string name, Point location)
         {
             Location = location;
-            _edges = new List<Edge>();
             Name = name;
         }
 
@@ -87,18 +83,6 @@ namespace VisualDijkstraRemake.Models
                 location.X < (Location.X + SizeLength) &&
                 location.Y < (Location.Y + SizeLength)
             );
-        }
-
-        /// <summary>
-        ///  Add a new edge to the node
-        /// </summary>
-        /// <param name="edge"></param>
-        public void addEdge(Edge edge)
-        {
-            if (!Edges.Contains(edge))
-            {
-                Edges.Add(edge);
-            }
         }
 
 

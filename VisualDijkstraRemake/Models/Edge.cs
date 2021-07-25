@@ -8,7 +8,7 @@ namespace VisualDijkstraRemake.Models
     /// <summary>
     ///  Edge element used inside Graph
     /// </summary>
-    public class Edge
+    public class Edge : IPath
     {
         Node _nodeA;
         Node _nodeB;
@@ -35,6 +35,8 @@ namespace VisualDijkstraRemake.Models
         }
 
         public bool IsInPath { get; set; }
+
+        public bool IsInPartialPath { get; set; }
 
         /// <summary>
         ///  Create an Edge by providing its characteristics

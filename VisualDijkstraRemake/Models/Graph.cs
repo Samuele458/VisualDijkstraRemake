@@ -111,8 +111,6 @@ namespace VisualDijkstraRemake.Models
         public void CreateNewEdge(Node a, Node b, int weight)
         {
             Edge edge = new Edge(a, b, weight);
-            a.addEdge(edge);
-            b.addEdge(edge);
             Edges.Add(edge);
         }
 
@@ -147,6 +145,7 @@ namespace VisualDijkstraRemake.Models
             foreach (Node n in _nodes)
             {
                 n.IsInPath = false;
+                n.IsInPartialPath = false;
             }
 
 
@@ -154,6 +153,7 @@ namespace VisualDijkstraRemake.Models
             foreach (Edge edge in _edges)
             {
                 edge.IsInPath = false;
+                edge.IsInPartialPath = false;
             }
         }
 
@@ -164,16 +164,16 @@ namespace VisualDijkstraRemake.Models
 
             List<NodeState> nodesStates = state.NodesStates;
 
-            /*
+
             for (int i = 0; i < nodesStates.Count; ++i)
             {
                 if (!nodesStates[i].Previous.Equals("DEFAULT_PREVIOUS_NODE"))
                 {
-                    GetNode(nodesStates[i].Name).IsInPath = true;
-                    getEdge(nodesStates[i].Name, nodesStates[i].Previous).IsInPath = true;
+                    GetNode(nodesStates[i].Name).IsInPartialPath = true;
+                    getEdge(nodesStates[i].Name, nodesStates[i].Previous).IsInPartialPath = true;
                 }
             }
-            */
+
 
             GetNode(state.Source).IsInPath = true;
             GetNode(state.Dest).IsInPath = true;
