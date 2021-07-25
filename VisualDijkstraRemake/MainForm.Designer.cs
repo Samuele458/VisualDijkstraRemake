@@ -46,6 +46,15 @@ namespace VisualDijkstraRemake
             this.deleteNodeButton = new VisualDijkstraRemake.Controls.FlatButton();
             this.addNodeButton = new VisualDijkstraRemake.Controls.FlatButton();
             this.styleTab = new System.Windows.Forms.TabPage();
+            this.radioButton4 = new System.Windows.Forms.RadioButton();
+            this.radioButton3 = new System.Windows.Forms.RadioButton();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.label2 = new System.Windows.Forms.Label();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.label1 = new System.Windows.Forms.Label();
+            this.zoomTrackbar = new System.Windows.Forms.TrackBar();
+            this.zoomOutButton = new VisualDijkstraRemake.Controls.FlatButton();
+            this.zoomInButton = new VisualDijkstraRemake.Controls.FlatButton();
             ((System.ComponentModel.ISupportInitialize)(this.mainSplitContainer)).BeginInit();
             this.mainSplitContainer.Panel1.SuspendLayout();
             this.mainSplitContainer.Panel2.SuspendLayout();
@@ -53,6 +62,8 @@ namespace VisualDijkstraRemake
             this.toolbar.SuspendLayout();
             this.fileTab.SuspendLayout();
             this.graphTab.SuspendLayout();
+            this.styleTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.zoomTrackbar)).BeginInit();
             this.SuspendLayout();
             // 
             // mainSplitContainer
@@ -289,6 +300,15 @@ namespace VisualDijkstraRemake
             // 
             // styleTab
             // 
+            this.styleTab.Controls.Add(this.radioButton4);
+            this.styleTab.Controls.Add(this.radioButton3);
+            this.styleTab.Controls.Add(this.radioButton2);
+            this.styleTab.Controls.Add(this.label2);
+            this.styleTab.Controls.Add(this.radioButton1);
+            this.styleTab.Controls.Add(this.label1);
+            this.styleTab.Controls.Add(this.zoomTrackbar);
+            this.styleTab.Controls.Add(this.zoomOutButton);
+            this.styleTab.Controls.Add(this.zoomInButton);
             this.styleTab.Location = new System.Drawing.Point(4, 24);
             this.styleTab.Name = "styleTab";
             this.styleTab.Padding = new System.Windows.Forms.Padding(3);
@@ -296,6 +316,124 @@ namespace VisualDijkstraRemake
             this.styleTab.TabIndex = 3;
             this.styleTab.Text = "Style";
             this.styleTab.UseVisualStyleBackColor = true;
+            // 
+            // radioButton4
+            // 
+            this.radioButton4.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.radioButton4.FlatAppearance.BorderSize = 0;
+            this.radioButton4.Image = global::VisualDijkstraRemake.Properties.Resources.preview_grid_3;
+            this.radioButton4.Location = new System.Drawing.Point(291, 47);
+            this.radioButton4.Name = "radioButton4";
+            this.radioButton4.Size = new System.Drawing.Size(65, 52);
+            this.radioButton4.TabIndex = 8;
+            this.radioButton4.TabStop = true;
+            this.radioButton4.Text = "Slim";
+            this.radioButton4.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.radioButton4.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.radioButton4.UseVisualStyleBackColor = true;
+            // 
+            // radioButton3
+            // 
+            this.radioButton3.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.radioButton3.FlatAppearance.BorderSize = 0;
+            this.radioButton3.Image = global::VisualDijkstraRemake.Properties.Resources.preview_grid_2;
+            this.radioButton3.Location = new System.Drawing.Point(220, 47);
+            this.radioButton3.Name = "radioButton3";
+            this.radioButton3.Size = new System.Drawing.Size(65, 52);
+            this.radioButton3.TabIndex = 7;
+            this.radioButton3.TabStop = true;
+            this.radioButton3.Text = "Dark";
+            this.radioButton3.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.radioButton3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.radioButton3.UseVisualStyleBackColor = true;
+            // 
+            // radioButton2
+            // 
+            this.radioButton2.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.radioButton2.FlatAppearance.BorderSize = 0;
+            this.radioButton2.Image = global::VisualDijkstraRemake.Properties.Resources.preview_grid_1;
+            this.radioButton2.Location = new System.Drawing.Point(148, 47);
+            this.radioButton2.Name = "radioButton2";
+            this.radioButton2.Size = new System.Drawing.Size(65, 52);
+            this.radioButton2.TabIndex = 6;
+            this.radioButton2.TabStop = true;
+            this.radioButton2.Text = "Light";
+            this.radioButton2.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.radioButton2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.radioButton2.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label2.Location = new System.Drawing.Point(22, 63);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(40, 20);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "Grid:";
+            // 
+            // radioButton1
+            // 
+            this.radioButton1.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.radioButton1.FlatAppearance.BorderSize = 0;
+            this.radioButton1.Image = global::VisualDijkstraRemake.Properties.Resources.none;
+            this.radioButton1.Location = new System.Drawing.Point(77, 47);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(65, 52);
+            this.radioButton1.TabIndex = 4;
+            this.radioButton1.TabStop = true;
+            this.radioButton1.Text = "None";
+            this.radioButton1.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.radioButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.radioButton1.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label1.Location = new System.Drawing.Point(18, 45);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(331, 2);
+            this.label1.TabIndex = 3;
+            // 
+            // zoomTrackbar
+            // 
+            this.zoomTrackbar.AutoSize = false;
+            this.zoomTrackbar.BackColor = System.Drawing.Color.White;
+            this.zoomTrackbar.Location = new System.Drawing.Point(62, 15);
+            this.zoomTrackbar.Maximum = 30;
+            this.zoomTrackbar.Minimum = 1;
+            this.zoomTrackbar.Name = "zoomTrackbar";
+            this.zoomTrackbar.Size = new System.Drawing.Size(237, 22);
+            this.zoomTrackbar.TabIndex = 0;
+            this.zoomTrackbar.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.zoomTrackbar.Value = 10;
+            this.zoomTrackbar.ValueChanged += new System.EventHandler(this.zoomTrackbar_ValueChanged);
+            // 
+            // zoomOutButton
+            // 
+            this.zoomOutButton.FlatAppearance.BorderSize = 0;
+            this.zoomOutButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.zoomOutButton.Image = global::VisualDijkstraRemake.Properties.Resources.zoom_out;
+            this.zoomOutButton.Location = new System.Drawing.Point(12, 6);
+            this.zoomOutButton.Name = "zoomOutButton";
+            this.zoomOutButton.Size = new System.Drawing.Size(44, 40);
+            this.zoomOutButton.TabIndex = 2;
+            this.zoomOutButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.zoomOutButton.UseVisualStyleBackColor = true;
+            this.zoomOutButton.Click += new System.EventHandler(this.zoomOutButton_Click);
+            // 
+            // zoomInButton
+            // 
+            this.zoomInButton.FlatAppearance.BorderSize = 0;
+            this.zoomInButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.zoomInButton.Image = global::VisualDijkstraRemake.Properties.Resources.zoom_in;
+            this.zoomInButton.Location = new System.Drawing.Point(305, 6);
+            this.zoomInButton.Name = "zoomInButton";
+            this.zoomInButton.Size = new System.Drawing.Size(44, 40);
+            this.zoomInButton.TabIndex = 1;
+            this.zoomInButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.zoomInButton.UseVisualStyleBackColor = true;
+            this.zoomInButton.Click += new System.EventHandler(this.zoomInButton_Click);
             // 
             // MainForm
             // 
@@ -317,6 +455,9 @@ namespace VisualDijkstraRemake
             this.fileTab.PerformLayout();
             this.graphTab.ResumeLayout(false);
             this.graphTab.PerformLayout();
+            this.styleTab.ResumeLayout(false);
+            this.styleTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.zoomTrackbar)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -339,6 +480,15 @@ namespace VisualDijkstraRemake
         private Controls.FlatButton newGraphButton;
         private Views.StatesView statesView1;
         private Controls.FlatButton solvePathButton;
+        private System.Windows.Forms.TrackBar zoomTrackbar;
+        private Controls.FlatButton zoomInButton;
+        private Controls.FlatButton zoomOutButton;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.RadioButton radioButton4;
+        private System.Windows.Forms.RadioButton radioButton3;
+        private System.Windows.Forms.RadioButton radioButton2;
     }
 }
 

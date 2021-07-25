@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using VisualDijkstraRemake.Controllers;
@@ -30,7 +29,18 @@ namespace VisualDijkstraRemake.Views
         private bool _solvePathRequested;
         private Node _solvePath;
 
-        private double _scaleFactor;
+        private GraphOptions _options;
+
+        public GraphOptions Options
+        {
+            get { return _options; }
+            set
+            {
+                _options = value;
+                this.Refresh();
+            }
+        }
+
 
         public GraphController Controller
         {
@@ -38,7 +48,7 @@ namespace VisualDijkstraRemake.Views
             set { _controller = value; }
         }
 
-        public GraphView()
+        public GraphView(GraphOptions options = null)
         {
             //general settings
             this.BackColor = Color.White;
@@ -64,7 +74,16 @@ namespace VisualDijkstraRemake.Views
             this._nodeOnEdit = null;
             this._solvePath = null;
             this._solvePathRequested = false;
-            this._scaleFactor = 10;
+
+            if (options == null)
+            {
+                Options = new GraphOptions();
+            }
+            else
+            {
+                Options = options;
+            }
+
 
             System.Windows.Forms.ContextMenuStrip cm = new ContextMenuStrip();
             cm.Items.Add("Item 1");
@@ -337,9 +356,6 @@ namespace VisualDijkstraRemake.Views
                         _controller.newEdge(_firstNode, node, 3);
                         _edgeCreationRequested = false;
                         _firstNode = null;
-
-                        Debug.WriteLine("AAAAA");
-
                     }
                     else if (_solvePathRequested && _solvePath == null)
                     {
@@ -503,28 +519,23 @@ namespace VisualDijkstraRemake.Views
 
         private Point Scale(Point location)
         {
-            return new Point((int)(location.X * (_scaleFactor / 10)), (int)(location.Y * (_scaleFactor / 10)));
+            return new Point((int)(location.X * (Options.Zoom / 10)), (int)(location.Y * (Options.Zoom / 10)));
         }
 
         private Size Scale(Size size)
         {
-            return new Size((int)(size.Width * (_scaleFactor / 10)), (int)(size.Height * (_scaleFactor / 10)));
+            return new Size((int)(size.Width * (Options.Zoom / 10)), (int)(size.Height * (Options.Zoom / 10)));
         }
 
         private int Scale(int num)
         {
-            return (int)(num * (_scaleFactor / 10));
+            return (int)(num * (Options.Zoom / 10));
         }
 
         private Point ReverseScale(Point location)
         {
-            return new Point((int)(location.X * (10 / _scaleFactor)), (int)(location.Y * (10 / _scaleFactor)));
+            return new Point((int)(location.X * (10 / Options.Zoom)), (int)(location.Y * (10 / Options.Zoom)));
         }
 
-        public void zoomIn()
-        {
-            this._scaleFactor += 1;
-            this.Refresh();
-        }
     }
 }
