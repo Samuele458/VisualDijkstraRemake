@@ -46,11 +46,11 @@ namespace VisualDijkstraRemake
             this.deleteNodeButton = new VisualDijkstraRemake.Controls.FlatButton();
             this.addNodeButton = new VisualDijkstraRemake.Controls.FlatButton();
             this.styleTab = new System.Windows.Forms.TabPage();
-            this.radioButton4 = new System.Windows.Forms.RadioButton();
-            this.radioButton3 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.gridSlimRadioButton = new System.Windows.Forms.RadioButton();
+            this.gridDarkRadioButton = new System.Windows.Forms.RadioButton();
+            this.gridLightRadioButton = new System.Windows.Forms.RadioButton();
             this.label2 = new System.Windows.Forms.Label();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.gridNoneRadioButton = new System.Windows.Forms.RadioButton();
             this.label1 = new System.Windows.Forms.Label();
             this.zoomTrackbar = new System.Windows.Forms.TrackBar();
             this.zoomOutButton = new VisualDijkstraRemake.Controls.FlatButton();
@@ -300,11 +300,11 @@ namespace VisualDijkstraRemake
             // 
             // styleTab
             // 
-            this.styleTab.Controls.Add(this.radioButton4);
-            this.styleTab.Controls.Add(this.radioButton3);
-            this.styleTab.Controls.Add(this.radioButton2);
+            this.styleTab.Controls.Add(this.gridSlimRadioButton);
+            this.styleTab.Controls.Add(this.gridDarkRadioButton);
+            this.styleTab.Controls.Add(this.gridLightRadioButton);
             this.styleTab.Controls.Add(this.label2);
-            this.styleTab.Controls.Add(this.radioButton1);
+            this.styleTab.Controls.Add(this.gridNoneRadioButton);
             this.styleTab.Controls.Add(this.label1);
             this.styleTab.Controls.Add(this.zoomTrackbar);
             this.styleTab.Controls.Add(this.zoomOutButton);
@@ -317,50 +317,53 @@ namespace VisualDijkstraRemake
             this.styleTab.Text = "Style";
             this.styleTab.UseVisualStyleBackColor = true;
             // 
-            // radioButton4
+            // gridSlimRadioButton
             // 
-            this.radioButton4.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.radioButton4.FlatAppearance.BorderSize = 0;
-            this.radioButton4.Image = global::VisualDijkstraRemake.Properties.Resources.preview_grid_3;
-            this.radioButton4.Location = new System.Drawing.Point(291, 47);
-            this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(65, 52);
-            this.radioButton4.TabIndex = 8;
-            this.radioButton4.TabStop = true;
-            this.radioButton4.Text = "Slim";
-            this.radioButton4.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.radioButton4.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.radioButton4.UseVisualStyleBackColor = true;
+            this.gridSlimRadioButton.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.gridSlimRadioButton.FlatAppearance.BorderSize = 0;
+            this.gridSlimRadioButton.Image = global::VisualDijkstraRemake.Properties.Resources.preview_grid_3;
+            this.gridSlimRadioButton.Location = new System.Drawing.Point(291, 47);
+            this.gridSlimRadioButton.Name = "gridSlimRadioButton";
+            this.gridSlimRadioButton.Size = new System.Drawing.Size(65, 52);
+            this.gridSlimRadioButton.TabIndex = 8;
+            this.gridSlimRadioButton.TabStop = true;
+            this.gridSlimRadioButton.Text = "Slim";
+            this.gridSlimRadioButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.gridSlimRadioButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.gridSlimRadioButton.UseVisualStyleBackColor = true;
+            this.gridSlimRadioButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.gridRadioButtons_MouseClick);
             // 
-            // radioButton3
+            // gridDarkRadioButton
             // 
-            this.radioButton3.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.radioButton3.FlatAppearance.BorderSize = 0;
-            this.radioButton3.Image = global::VisualDijkstraRemake.Properties.Resources.preview_grid_2;
-            this.radioButton3.Location = new System.Drawing.Point(220, 47);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(65, 52);
-            this.radioButton3.TabIndex = 7;
-            this.radioButton3.TabStop = true;
-            this.radioButton3.Text = "Dark";
-            this.radioButton3.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.radioButton3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.radioButton3.UseVisualStyleBackColor = true;
+            this.gridDarkRadioButton.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.gridDarkRadioButton.FlatAppearance.BorderSize = 0;
+            this.gridDarkRadioButton.Image = global::VisualDijkstraRemake.Properties.Resources.preview_grid_2;
+            this.gridDarkRadioButton.Location = new System.Drawing.Point(220, 47);
+            this.gridDarkRadioButton.Name = "gridDarkRadioButton";
+            this.gridDarkRadioButton.Size = new System.Drawing.Size(65, 52);
+            this.gridDarkRadioButton.TabIndex = 7;
+            this.gridDarkRadioButton.TabStop = true;
+            this.gridDarkRadioButton.Text = "Dark";
+            this.gridDarkRadioButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.gridDarkRadioButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.gridDarkRadioButton.UseVisualStyleBackColor = true;
+            this.gridDarkRadioButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.gridRadioButtons_MouseClick);
             // 
-            // radioButton2
+            // gridLightRadioButton
             // 
-            this.radioButton2.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.radioButton2.FlatAppearance.BorderSize = 0;
-            this.radioButton2.Image = global::VisualDijkstraRemake.Properties.Resources.preview_grid_1;
-            this.radioButton2.Location = new System.Drawing.Point(148, 47);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(65, 52);
-            this.radioButton2.TabIndex = 6;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "Light";
-            this.radioButton2.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.radioButton2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.radioButton2.UseVisualStyleBackColor = true;
+            this.gridLightRadioButton.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.gridLightRadioButton.FlatAppearance.BorderSize = 0;
+            this.gridLightRadioButton.Image = global::VisualDijkstraRemake.Properties.Resources.preview_grid_1;
+            this.gridLightRadioButton.Location = new System.Drawing.Point(148, 47);
+            this.gridLightRadioButton.Name = "gridLightRadioButton";
+            this.gridLightRadioButton.Size = new System.Drawing.Size(65, 52);
+            this.gridLightRadioButton.TabIndex = 6;
+            this.gridLightRadioButton.TabStop = true;
+            this.gridLightRadioButton.Text = "Light";
+            this.gridLightRadioButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.gridLightRadioButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.gridLightRadioButton.UseVisualStyleBackColor = true;
+            this.gridLightRadioButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.gridRadioButtons_MouseClick);
             // 
             // label2
             // 
@@ -372,20 +375,21 @@ namespace VisualDijkstraRemake
             this.label2.TabIndex = 5;
             this.label2.Text = "Grid:";
             // 
-            // radioButton1
+            // gridNoneRadioButton
             // 
-            this.radioButton1.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.radioButton1.FlatAppearance.BorderSize = 0;
-            this.radioButton1.Image = global::VisualDijkstraRemake.Properties.Resources.none;
-            this.radioButton1.Location = new System.Drawing.Point(77, 47);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(65, 52);
-            this.radioButton1.TabIndex = 4;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "None";
-            this.radioButton1.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.radioButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.radioButton1.UseVisualStyleBackColor = true;
+            this.gridNoneRadioButton.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.gridNoneRadioButton.FlatAppearance.BorderSize = 0;
+            this.gridNoneRadioButton.Image = global::VisualDijkstraRemake.Properties.Resources.none;
+            this.gridNoneRadioButton.Location = new System.Drawing.Point(77, 47);
+            this.gridNoneRadioButton.Name = "gridNoneRadioButton";
+            this.gridNoneRadioButton.Size = new System.Drawing.Size(65, 52);
+            this.gridNoneRadioButton.TabIndex = 4;
+            this.gridNoneRadioButton.TabStop = true;
+            this.gridNoneRadioButton.Text = "None";
+            this.gridNoneRadioButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.gridNoneRadioButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.gridNoneRadioButton.UseVisualStyleBackColor = true;
+            this.gridNoneRadioButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.gridRadioButtons_MouseClick);
             // 
             // label1
             // 
@@ -485,10 +489,10 @@ namespace VisualDijkstraRemake
         private Controls.FlatButton zoomOutButton;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.RadioButton radioButton4;
-        private System.Windows.Forms.RadioButton radioButton3;
-        private System.Windows.Forms.RadioButton radioButton2;
+        private System.Windows.Forms.RadioButton gridNoneRadioButton;
+        private System.Windows.Forms.RadioButton gridSlimRadioButton;
+        private System.Windows.Forms.RadioButton gridDarkRadioButton;
+        private System.Windows.Forms.RadioButton gridLightRadioButton;
     }
 }
 

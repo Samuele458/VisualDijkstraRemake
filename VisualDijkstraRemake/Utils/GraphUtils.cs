@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -67,20 +66,16 @@ namespace VisualDijkstraRemake.Utils
             Node b = null;
             int weight = 3;
 
-            //System.Diagnostics.Debug.WriteLine("  parsing edge <" + reader.Name + ">  " + reader.ReadString());
             if (reader.IsStartElement() && reader.Name.Equals("edge"))
             {
-                //System.Diagnostics.Debug.WriteLine(" <" + reader.Name + ">");
                 weight = Int32.Parse(reader.GetAttribute("weight"));
                 while (reader.Read())
                 {
                     if (reader.IsStartElement() && reader.Name.Equals("a"))
                     {
-                        //System.Diagnostics.Debug.WriteLine("  <" + reader.Name + "> ");
 
                         a = graph.GetNode(reader.ReadElementContentAsString());
 
-                        //graph.addNewNode(new Node(reader.Name, new Point(Int32.Parse(reader.GetAttribute("x")), Int32.Parse(reader.GetAttribute("y")))));
                         break;
                     }
                 }
@@ -89,9 +84,7 @@ namespace VisualDijkstraRemake.Utils
                 {
                     if (reader.IsStartElement() && reader.Name.Equals("a"))
                     {
-                        //System.Diagnostics.Debug.WriteLine("  <" + reader.Name + "> ");
                         b = graph.GetNode(reader.ReadElementContentAsString());
-                        //graph.addNewNode(new Node(reader.Name, new Point(Int32.Parse(reader.GetAttribute("x")), Int32.Parse(reader.GetAttribute("y")))));
                         break;
                     }
                 }
@@ -113,7 +106,6 @@ namespace VisualDijkstraRemake.Utils
             {
                 int x = Int32.Parse(reader.GetAttribute("x"));
                 int y = Int32.Parse(reader.GetAttribute("y"));
-                //System.Diagnostics.Debug.WriteLine(" <" + reader.Name + "> ");
                 graph.AddNewNode(new Node(reader.ReadElementContentAsString(), new Point(x, y)));
             }
         }
@@ -128,7 +120,6 @@ namespace VisualDijkstraRemake.Utils
             {
                 if (reader.IsStartElement() && reader.Name.Equals("nodes"))
                 {
-                    //System.Diagnostics.Debug.WriteLine("<" + reader.Name + ">");
                     while (reader.Read())
                     {
                         if (reader.IsStartElement() && reader.Name.Equals("node"))
@@ -146,7 +137,6 @@ namespace VisualDijkstraRemake.Utils
 
                 if (reader.IsStartElement() && reader.Name.Equals("edges"))
                 {
-                    //System.Diagnostics.Debug.WriteLine("<" + reader.Name + ">");
                     while (reader.Read())
                     {
                         if (reader.IsStartElement() && reader.Name.Equals("edge"))
@@ -219,7 +209,6 @@ namespace VisualDijkstraRemake.Utils
             options.WriteIndented = false;
             string jsonString = System.Text.Json.JsonSerializer.Serialize(graphObj, options);
             File.WriteAllText(filename, jsonString);
-            Debug.WriteLine(System.Text.Json.JsonSerializer.Serialize(graphObj));
         }
     }
 

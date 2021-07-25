@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Windows.Forms;
 using VisualDijkstraRemake.Controllers;
 using VisualDijkstraRemake.Models;
@@ -28,8 +27,8 @@ namespace VisualDijkstraRemake
 
             this.KeyPreview = true;
 
-
             options = new GraphOptions();
+
         }
 
         private void newGraphButton_Click(object sender, System.EventArgs e)
@@ -82,7 +81,6 @@ namespace VisualDijkstraRemake
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            Debug.WriteLine(((int)keyData));
 
             char c = (char)keyData;
             _graphView.fetchInput(c);
@@ -112,6 +110,27 @@ namespace VisualDijkstraRemake
 
             //setting tab defaut page
             this.toolbar.SelectedTab = this.graphTab;
+
+
+            //loading options
+            zoomTrackbar.Value = (int)options.Zoom;
+
+            switch (options.GridType)
+            {
+                case GridType.None:
+                    gridNoneRadioButton.Checked = true;
+                    break;
+                case GridType.Light:
+                    gridLightRadioButton.Checked = true;
+                    break;
+                case GridType.Dark:
+                    gridDarkRadioButton.Checked = true;
+                    break;
+                case GridType.Slim:
+                    gridSlimRadioButton.Checked = true;
+                    break;
+
+            }
         }
 
         private void deleteNodeButton_Click(object sender, EventArgs e)
@@ -197,6 +216,12 @@ namespace VisualDijkstraRemake
             {
                 e.Cancel = true;
             }
+            else
+            {
+                options.Save();
+            }
+
+
             base.OnFormClosing(e);
         }
 
@@ -230,6 +255,14 @@ namespace VisualDijkstraRemake
         private void zoomTrackbar_ValueChanged(object sender, EventArgs e)
         {
             options.Zoom = zoomTrackbar.Value;
+            _graphView.Options = options;
+        }
+
+        private void gridRadioButtons_MouseClick(object sender, MouseEventArgs e)
+        {
+            RadioButton radioButtonClicked = (RadioButton)sender;
+
+            options.GridType = (GridType)Enum.Parse(typeof(GridType), radioButtonClicked.Text, true);
             _graphView.Options = options;
         }
     }

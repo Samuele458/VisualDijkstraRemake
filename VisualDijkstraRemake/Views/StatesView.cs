@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using VisualDijkstraRemake.Controllers;
@@ -94,13 +93,6 @@ namespace VisualDijkstraRemake.Views
         public void Clear()
         {
             _statesData.Clear();
-
-
-            foreach (Control c in scrollPanel1.Controls)
-            {
-                Debug.WriteLine("Removing " + c.Text);
-                //scrollPanel1.Controls.Remove(c);
-            }
 
             for (int i = scrollPanel1.Controls.Count - 1; i >= 0; --i)
             {

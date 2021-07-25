@@ -90,7 +90,6 @@ namespace VisualDijkstraRemake.Models
 
         public void logGraphState()
         {
-            System.Diagnostics.Debug.WriteLine("--- Graph State ---");
             foreach (NodeState state in _nodesStates)
             {
                 state.logNodeState();

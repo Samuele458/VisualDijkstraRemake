@@ -10,7 +10,7 @@ namespace VisualDijkstraRemake.Views
 {
     public class GraphView : PictureBox
     {
-        public static int SizeLength = 4000;
+        public static int SizeLength = 3000;
 
         private GraphController _controller;
 
@@ -31,12 +31,31 @@ namespace VisualDijkstraRemake.Views
 
         private GraphOptions _options;
 
+        private int _paintedNum;
+
         public GraphOptions Options
         {
             get { return _options; }
             set
             {
                 _options = value;
+
+                switch (_options.GridType)
+                {
+                    case GridType.None:
+                        this.BackgroundImage = null;
+                        break;
+                    case GridType.Light:
+                        this.BackgroundImage = global::VisualDijkstraRemake.Properties.Resources.grid100_w4_28o;
+                        break;
+                    case GridType.Dark:
+                        this.BackgroundImage = global::VisualDijkstraRemake.Properties.Resources.grid100_w4_64o;
+                        break;
+                    case GridType.Slim:
+                        this.BackgroundImage = global::VisualDijkstraRemake.Properties.Resources.grid100;
+                        break;
+                }
+
                 this.Refresh();
             }
         }
@@ -53,7 +72,6 @@ namespace VisualDijkstraRemake.Views
             //general settings
             this.BackColor = Color.White;
             this.Cursor = System.Windows.Forms.Cursors.Default;
-            this.BackgroundImage = global::VisualDijkstraRemake.Properties.Resources.grid100_w4_28o;
             this.Controller = null;
             this.Location = new System.Drawing.Point(3, 3);
             this.Name = "graphPictureBox";
@@ -74,6 +92,8 @@ namespace VisualDijkstraRemake.Views
             this._nodeOnEdit = null;
             this._solvePath = null;
             this._solvePathRequested = false;
+
+            this._paintedNum = 0;
 
             if (options == null)
             {

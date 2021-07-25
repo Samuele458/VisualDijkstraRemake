@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -90,12 +89,10 @@ namespace VisualDijkstraRemake.Controllers
 
         public void evaluatePath(Node nodeA, Node nodeB)
         {
-            Debug.WriteLine("Finding path from " + nodeA.Name + "  ->  " + nodeB.Name);
             IPathFinder solver = new Dijkstra(_graph);
             List<GraphState> states = solver.Solve(nodeA, nodeB);
 
 
-            Debug.WriteLine("StatesController is not null");
             StatesController.setStates(states);
 
         }
@@ -153,8 +150,6 @@ namespace VisualDijkstraRemake.Controllers
             saveFileDialog.Title = "Save graph file";
             saveFileDialog.ShowDialog();
 
-            Debug.WriteLine("FIle: \"" + saveFileDialog.FileName + "\"");
-
             if (saveFileDialog.FileName != "")
             {
                 string filename = saveFileDialog.FileName;
@@ -206,7 +201,7 @@ namespace VisualDijkstraRemake.Controllers
                 }
                 else
                 {
-                    MessageBox.Show("Invalid file format", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Invalid file format", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
 
@@ -215,7 +210,7 @@ namespace VisualDijkstraRemake.Controllers
 
         public DialogResult AskToSave()
         {
-            DialogResult result = MessageBox.Show("Save your changes before exit?", "Save changes?", MessageBoxButtons.YesNoCancel);
+            DialogResult result = MessageBox.Show("Save your changes before exit?", "Save changes?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
 
             if (result == DialogResult.Yes)
             {
