@@ -13,7 +13,7 @@ namespace VisualDijkstraRemake.Models.Tests
 
             Node node = new Node("A", new Point(100, 200));
 
-            Point locationToTest = new Point(100 + Node.Size / 4, 200 + Node.Size / 4);
+            Point locationToTest = new Point(100 + Node.SizeLength / 4, 200 + Node.SizeLength / 4);
 
             Assert.IsTrue(node.Contains(locationToTest));
         }
@@ -24,7 +24,7 @@ namespace VisualDijkstraRemake.Models.Tests
 
             Node node = new Node("A", new Point(100, 200));
 
-            Point locationToTest = new Point(100 + Node.Size, 200 + Node.Size / 4);
+            Point locationToTest = new Point(100 + Node.SizeLength, 200 + Node.SizeLength / 4);
 
             Assert.IsFalse(node.Contains(locationToTest));
         }
@@ -35,7 +35,7 @@ namespace VisualDijkstraRemake.Models.Tests
 
             Node node = new Node("A", new Point(100, 200));
 
-            Point locationToTest = new Point(100 + Node.Size / 4, 200 + Node.Size);
+            Point locationToTest = new Point(100 + Node.SizeLength / 4, 200 + Node.SizeLength);
 
             Assert.IsFalse(node.Contains(locationToTest));
         }

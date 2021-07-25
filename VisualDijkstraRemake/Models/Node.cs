@@ -54,13 +54,6 @@ namespace VisualDijkstraRemake.Models
             Name = name;
         }
 
-        /*
-        public Node()
-        {
-            Location = new Point();
-            _edges = new List<Edge>();
-            Name = "";
-        }*/
 
         /// <summary>
         ///  Constructs a Node object
@@ -103,7 +96,11 @@ namespace VisualDijkstraRemake.Models
             }
         }
 
-
+        /// <summary>
+        ///  Checks if a given string is a valid node name or not
+        /// </summary>
+        /// <param name="nameStr">string to check</param>
+        /// <returns>true if name is valid, false otherwise</returns>
         public static bool validateName(string nameStr)
         {
             Regex rgx = new Regex(@"^[a-zA-Z0-9]{1,2}$");

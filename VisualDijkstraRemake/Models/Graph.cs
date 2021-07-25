@@ -125,6 +125,11 @@ namespace VisualDijkstraRemake.Models
         }
 
 
+        /// <summary>
+        ///  Returns all neighbours of a given node inside graph
+        /// </summary>
+        /// <param name="nodeName">Node to find</param>
+        /// <returns>List of all neighbours nodes</returns>
         public List<Node> GetNeighbours(string nodeName)
         {
             Node node = GetNode(nodeName);
@@ -134,11 +139,23 @@ namespace VisualDijkstraRemake.Models
                         .ConvertAll<Node>(new Converter<Edge, Node>(edge => edge.NodeA.Equals(node) ? edge.NodeB : edge.NodeA));
         }
 
+
+        /// <summary>
+        ///  Returns the edge object which between the two given nodes (order doesn't matter)
+        /// </summary>
+        /// <param name="nodeA">Node A</param>
+        /// <param name="nodeB">Node B</param>
+        /// <returns>edge between A and B</returns>
         public Edge getEdge(string nodeA, string nodeB)
         {
             return _edges.Find(edge => (edge.NodeA.Name == nodeA && edge.NodeB.Name == nodeB) || (edge.NodeA.Name == nodeB && edge.NodeB.Name == nodeA));
         }
 
+
+
+        /// <summary>
+        ///  Clear the current graph state
+        /// </summary>
         public void ClearState()
         {
             //resetting nodes
@@ -157,6 +174,11 @@ namespace VisualDijkstraRemake.Models
             }
         }
 
+
+        /// <summary>
+        ///  Set the current graoh state
+        /// </summary>
+        /// <param name="state">Graph state</param>
         public void setState(GraphState state)
         {
 

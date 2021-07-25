@@ -14,6 +14,11 @@ namespace VisualDijkstraRemake.Utils
     class GraphUtils
     {
 
+        /// <summary>
+        ///  Serialize graph to XML file
+        /// </summary>
+        /// <param name="graph">Graph to be serialized</param>
+        /// <param name="filename">Filename of output XML file</param>
         public static void saveGraphToXMLFile(Graph graph, string filename)
         {
             //XmlWriter writer = XmlWriter.Create(filename);
@@ -59,6 +64,11 @@ namespace VisualDijkstraRemake.Utils
 
         }
 
+        /// <summary>
+        ///  Parse a single edge xml node
+        /// </summary>
+        /// <param name="reader">Node subtree</param>
+        /// <param name="graph">graph object</param>
         private static void parseXMLEdge(XmlReader reader, Graph graph)
         {
 
@@ -100,6 +110,11 @@ namespace VisualDijkstraRemake.Utils
             }
         }
 
+        /// <summary>
+        ///  Parse a node from XML subtree
+        /// </summary>
+        /// <param name="reader">node subtree</param>
+        /// <param name="graph">graph object</param>
         private static void parseXMLNode(XmlReader reader, Graph graph)
         {
             if (reader.IsStartElement() && reader.Name.Equals("node"))
@@ -110,6 +125,11 @@ namespace VisualDijkstraRemake.Utils
             }
         }
 
+        /// <summary>
+        ///  Deserialize graph from XML file
+        /// </summary>
+        /// <param name="filename">XML input file</param>
+        /// <returns>Graph object</returns>
         public static Graph loadGraphFromXMLFile(string filename)
         {
             XmlReader reader = XmlReader.Create(filename);
@@ -150,6 +170,12 @@ namespace VisualDijkstraRemake.Utils
 
             return graph;
         }
+
+        /// <summary>
+        ///  Deserialize graph from JSON file
+        /// </summary>
+        /// <param name="filename">Input filename</param>
+        /// <returns>Graph object</returns>
         public static Graph loadGraphFromJSONFile(string filename)
         {
             Graph graph = new Graph();
@@ -182,6 +208,11 @@ namespace VisualDijkstraRemake.Utils
             return graph;
         }
 
+        /// <summary>
+        ///  Serialize graph into JSON file
+        /// </summary>
+        /// <param name="graph">graph object to be serialized </param>
+        /// <param name="filename">Output JSON filename</param>
         public static void saveGraphToJSONFile(Graph graph, string filename)
         {
 

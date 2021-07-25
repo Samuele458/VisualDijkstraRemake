@@ -54,7 +54,7 @@ namespace VisualDijkstraRemake.Controllers
             {
                 _graph.AddNewNode(node);
             }
-            catch (NodeAlreadyExistsException e)
+            catch (NodeAlreadyExistsException)
             {
                 MessageBox.Show("Node already exists!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }

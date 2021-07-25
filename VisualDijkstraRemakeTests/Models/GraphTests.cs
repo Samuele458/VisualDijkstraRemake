@@ -92,7 +92,7 @@ namespace VisualDijkstraRemake.Models.Tests
 
             graph.MoveNode(nodeToMove, new System.Drawing.Point(600, 600));
 
-            Assert.AreEqual(nodeToMove.Location, new System.Drawing.Point(600, 600) - new System.Drawing.Size(Node.Size, Node.Size) / 2);
+            Assert.AreEqual(nodeToMove.Location, new System.Drawing.Point(600, 600) - new System.Drawing.Size(Node.SizeLength, Node.SizeLength) / 2);
         }
 
         [TestMethod()]
@@ -104,7 +104,7 @@ namespace VisualDijkstraRemake.Models.Tests
 
             graph.MoveNode("A", new System.Drawing.Point(600, 600));
 
-            Assert.AreEqual(nodeToMove.Location, new System.Drawing.Point(600, 600) - new System.Drawing.Size(Node.Size, Node.Size) / 2);
+            Assert.AreEqual(nodeToMove.Location, new System.Drawing.Point(600, 600) - new System.Drawing.Size(Node.SizeLength, Node.SizeLength) / 2);
         }
     }
 }

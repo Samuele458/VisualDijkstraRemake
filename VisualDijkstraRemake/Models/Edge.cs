@@ -97,10 +97,15 @@ namespace VisualDijkstraRemake.Models
             return Math.Atan2(NodeB.Location.X - NodeA.Location.X, NodeB.Location.Y - NodeA.Location.Y);
         }
 
+
+        /// <summary>
+        ///  Checks if a given string represents a valid edge weight
+        /// </summary>
+        /// <param name="weightStr">string to check</param>
+        /// <returns>true is is valid, false otherwise</returns>
         public static bool validateWeight(string weightStr)
         {
             string alphabet = "1234567890";
-            bool passed = true;
 
             if (weightStr.Length == 0)
             {
@@ -124,8 +129,6 @@ namespace VisualDijkstraRemake.Models
 
                 return false;
             }
-
-            return passed;
         }
 
     }

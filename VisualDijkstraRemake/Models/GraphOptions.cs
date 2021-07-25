@@ -3,6 +3,10 @@
 namespace VisualDijkstraRemake.Models
 {
 
+
+    /// <summary>
+    ///  Types of available grids
+    /// </summary>
     public enum GridType
     {
         None,
@@ -11,6 +15,10 @@ namespace VisualDijkstraRemake.Models
         Slim
     }
 
+
+    /// <summary>
+    ///  handling of graph style options
+    /// </summary>
     public class GraphOptions
     {
 
@@ -48,6 +56,10 @@ namespace VisualDijkstraRemake.Models
 
         }
 
+
+        /// <summary>
+        ///  Save current options in session (handled by Settings)
+        /// </summary>
         public void Save()
         {
             Properties.Settings.Default.Save();

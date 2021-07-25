@@ -103,12 +103,12 @@ namespace VisualDijkstraRemake.Views
                 Options = options;
             }
 
-
+            /*
             System.Windows.Forms.ContextMenuStrip cm = new ContextMenuStrip();
             cm.Items.Add("Item 1");
             cm.Items.Add("sd");
             cm.ItemClicked += new ToolStripItemClickedEventHandler(contexMenu_ItemClicked);
-            this.ContextMenuStrip = cm;
+            this.ContextMenuStrip = cm;*/
 
 
 
