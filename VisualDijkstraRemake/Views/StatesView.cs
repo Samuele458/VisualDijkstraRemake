@@ -15,7 +15,7 @@ namespace VisualDijkstraRemake.Views
 
         public IStatesController Controller { get; set; }
 
-        private DataTable _statesData;
+        private readonly DataTable _statesData;
 
         public StatesView()
         {
@@ -38,7 +38,7 @@ namespace VisualDijkstraRemake.Views
         }
 
 
-        public void setStates(List<GraphState> states)
+        public void SetStates(List<GraphState> states)
         {
             scrollPanel1.Controls.Clear();
 
@@ -60,7 +60,7 @@ namespace VisualDijkstraRemake.Views
 
             if (states.Count > 0)
             {
-                setState(states[states.Count - 1]);
+                SetState(states[states.Count - 1]);
             }
         }
 
@@ -68,11 +68,11 @@ namespace VisualDijkstraRemake.Views
         {
             Button btn = (Button)sender;
 
-            this.setState(Controller.getState(int.Parse(btn.Text) - 1));
+            this.SetState(Controller.getState(int.Parse(btn.Text) - 1));
 
         }
 
-        public void setState(GraphState state)
+        public void SetState(GraphState state)
         {
             _statesData.Clear();
 

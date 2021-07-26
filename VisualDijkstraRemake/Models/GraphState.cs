@@ -92,7 +92,7 @@ namespace VisualDijkstraRemake.Models
         {
             foreach (NodeState state in _nodesStates)
             {
-                state.logNodeState();
+                state.LogNodeState();
             }
         }
 

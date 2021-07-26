@@ -21,6 +21,9 @@ namespace VisualDijkstraRemake.Utils
         /// <param name="filename">Filename of output XML file</param>
         public static void saveGraphToXMLFile(Graph graph, string filename)
         {
+            Logger.log.Info("Saving graph to \"" + filename + "\"");
+
+
             //XmlWriter writer = XmlWriter.Create(filename);
             XmlTextWriter writer = new XmlTextWriter(filename, null);
 
@@ -132,6 +135,8 @@ namespace VisualDijkstraRemake.Utils
         /// <returns>Graph object</returns>
         public static Graph loadGraphFromXMLFile(string filename)
         {
+            Logger.log.Info("Loading graph from \"" + filename + "\"");
+
             XmlReader reader = XmlReader.Create(filename);
             Graph graph = new Graph();
 
@@ -178,6 +183,8 @@ namespace VisualDijkstraRemake.Utils
         /// <returns>Graph object</returns>
         public static Graph loadGraphFromJSONFile(string filename)
         {
+            Logger.log.Info("Loading graph from \"" + filename + "\"");
+
             Graph graph = new Graph();
 
             try
@@ -215,6 +222,7 @@ namespace VisualDijkstraRemake.Utils
         /// <param name="filename">Output JSON filename</param>
         public static void saveGraphToJSONFile(Graph graph, string filename)
         {
+            Logger.log.Info("Saving graph to \"" + filename + "\"");
 
             //creating nodes
             var nodes = new[] { new { name = "name", x = 0, y = 0 } }.ToList();

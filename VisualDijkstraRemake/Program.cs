@@ -6,7 +6,6 @@ using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 
-
 namespace VisualDijkstraRemake
 {
     static class Program
@@ -21,6 +20,7 @@ namespace VisualDijkstraRemake
             //log4net configurations
             ILoggerRepository logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
             XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
+
 
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();

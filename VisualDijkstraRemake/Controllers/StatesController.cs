@@ -48,14 +48,14 @@ namespace VisualDijkstraRemake.Controllers
 
         public void setCurrentState(GraphState state)
         {
-            GraphController.setState(state);
+            GraphController.SetState(state);
         }
 
         public void setStates(List<GraphState> states)
         {
             _states = states;
 
-            _view.setStates(states);
+            _view.SetStates(states);
         }
 
         public GraphState getState(int index)

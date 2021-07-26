@@ -11,14 +11,14 @@ namespace VisualDijkstraRemake.Controllers
 
     public interface IGraphController
     {
-        void newNode(string nodeName, Point location);
+        void NewNode(string nodeName, Point location);
     }
 
 
     public class GraphController : IGraphController
     {
         private Graph _graph;
-        private GraphView _view;
+        private readonly GraphView _view;
 
         private bool _saved;
         private string _filenameToSave;
@@ -48,11 +48,12 @@ namespace VisualDijkstraRemake.Controllers
 
         }
 
-        public void newNode(Node node)
+        public void NewNode(Node node)
         {
             try
             {
                 _graph.AddNewNode(node);
+                Logger.log.Info("New node \"" + node.Name + "\" added.");
             }
             catch (NodeAlreadyExistsException)
             {
@@ -62,16 +63,17 @@ namespace VisualDijkstraRemake.Controllers
             _view.Invalidate();
         }
 
-        public void newNode(string nodeName, Point location)
+        public void NewNode(string nodeName, Point location)
         {
-            newNode(new Node(nodeName, location));
+            NewNode(new Node(nodeName, location));
         }
 
-        public void newEdge(Node a, Node b, int weight)
+        public void NewEdge(Node a, Node b, int weight)
         {
             try
             {
                 _graph.CreateNewEdge(a, b, weight);
+                Logger.log.Info("New edge between " + a.Name + " and " + b.Name + " added. Weight: " + weight);
             }
             catch (DuplicatedEdgeException) { }
             catch (DuplicatedNodeException) { }
@@ -79,20 +81,21 @@ namespace VisualDijkstraRemake.Controllers
             _saved = false;
         }
 
-        public void moveNode(Node node, Point location)
+        public void MoveNode(Node node, Point location)
         {
             _graph.MoveNode(node, location);
             _saved = false;
             _view.Invalidate();
         }
 
-        public void deleteNode(Node node)
+        public void DeleteNode(Node node)
         {
-            _graph.deleteNode(node);
+            _graph.DeleteNode(node);
+            Logger.log.Info("\"" + node.Name + "\" node deleted.");
             _saved = false;
         }
 
-        public void evaluatePath(Node nodeA, Node nodeB)
+        public void EvaluatePath(Node nodeA, Node nodeB)
         {
             IPathFinder solver = new Dijkstra(_graph);
             List<GraphState> states = solver.Solve(nodeA, nodeB);
@@ -103,7 +106,7 @@ namespace VisualDijkstraRemake.Controllers
         }
 
 
-        public void clearStates()
+        public void ClearStates()
         {
             if (StatesController != null)
             {
@@ -113,17 +116,17 @@ namespace VisualDijkstraRemake.Controllers
             _graph.ClearState();
         }
 
-        public void setState(GraphState state)
+        public void SetState(GraphState state)
         {
-            _graph.setState(state);
+            _graph.SetState(state);
             _view.Refresh();
         }
 
-        public void save()
+        public void Save()
         {
             if (_filenameToSave == "")
             {
-                saveAs();
+                SaveAs();
             }
             else
             {
@@ -143,12 +146,12 @@ namespace VisualDijkstraRemake.Controllers
                 }
                 else
                 {
-                    saveAs();
+                    SaveAs();
                 }
             }
         }
 
-        public void saveAs()
+        public void SaveAs()
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "Json |*.json|XML |*.xml";
@@ -182,7 +185,7 @@ namespace VisualDijkstraRemake.Controllers
             }
         }
 
-        public void load()
+        public void Load()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Title = "Open graph file";
@@ -199,10 +202,12 @@ namespace VisualDijkstraRemake.Controllers
                 if (jsonRegex.Match(filename).Success)
                 {
                     _graph = GraphUtils.loadGraphFromJSONFile(filename);
+                    _filenameToSave = filename;
                 }
                 else if (xmlRegex.Match(filename).Success)
                 {
                     _graph = GraphUtils.loadGraphFromXMLFile(filename);
+                    _filenameToSave = filename;
                 }
                 else
                 {
@@ -219,7 +224,7 @@ namespace VisualDijkstraRemake.Controllers
 
             if (result == DialogResult.Yes)
             {
-                save();
+                Save();
             }
 
             return result;

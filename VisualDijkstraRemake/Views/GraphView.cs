@@ -109,15 +109,6 @@ namespace VisualDijkstraRemake.Views
                 Options = options;
             }
 
-            /*
-            System.Windows.Forms.ContextMenuStrip cm = new ContextMenuStrip();
-            cm.Items.Add("Item 1");
-            cm.Items.Add("sd");
-            cm.ItemClicked += new ToolStripItemClickedEventHandler(contexMenu_ItemClicked);
-            this.ContextMenuStrip = cm;*/
-
-
-
             SizeMode = PictureBoxSizeMode.Zoom;
         }
 
@@ -128,7 +119,7 @@ namespace VisualDijkstraRemake.Views
                 if (_controller.Graph.GetNode(_inputString) == null)
                 {
                     _nodeOnEdit.Name = _inputString;
-                    _controller.newNode(_nodeOnEdit);
+                    _controller.NewNode(_nodeOnEdit);
                 }
                 else
                 {
@@ -148,7 +139,7 @@ namespace VisualDijkstraRemake.Views
             }
         }
 
-        public void fetchInput(char c)
+        public void FetchInput(char c)
         {
 
             if (_nodeOnEdit != null)
@@ -179,7 +170,7 @@ namespace VisualDijkstraRemake.Views
                 if ((int)c == 13)
                 {
 
-                    if (Edge.validateWeight(_inputString))
+                    if (Edge.ValidateWeight(_inputString))
                     {
                         _edgeOnEdit.Weight = int.Parse(_inputString);
                     }
@@ -194,7 +185,7 @@ namespace VisualDijkstraRemake.Views
                         _inputString = _inputString.Remove(_inputString.Length - 1);
                     }
                 }
-                else if (Edge.validateWeight(_inputString + c))
+                else if (Edge.ValidateWeight(_inputString + c))
                 {
                     _inputString += c;
                 }
@@ -207,7 +198,7 @@ namespace VisualDijkstraRemake.Views
         protected override void OnDoubleClick(EventArgs e)
         {
             base.OnDoubleClick(e);
-            clearRequests();
+            ClearRequests();
 
             if (Controller != null)
             {
@@ -320,8 +311,7 @@ namespace VisualDijkstraRemake.Views
 
                     e.Graphics.FillEllipse(nodeFillBrush, new Rectangle(nodeLocation, nodeSize));
                     e.Graphics.DrawEllipse(borderPen, new Rectangle(nodeLocation, nodeSize));
-                    //e.Graphics.DrawRectangle(new Pen(Color.Black, 3), new Rectangle(nodeLocation + Scale(new Size((int)(nodeSize.Width * 0.2), (int)(nodeSize.Width * 0.2))),
-                    //                                                                               new Size((int)(nodeSize.Width * 0.6), (int)(nodeSize.Width * 0.6))));
+
                     TextRenderer.DrawText(e.Graphics, _inputString, font,
                                           new Rectangle(nodeLocation + Scale(new Size(1, 1)), nodeSize),
                                           Color.White, Color.FromArgb(0, 120, 215));
@@ -347,7 +337,6 @@ namespace VisualDijkstraRemake.Views
                                           new Rectangle(nodeLocation + Scale(new Size(1, 1)), nodeSize),
                                           Color.White, Color.FromArgb(0, 120, 215));
                 }
-
 
             }
 
@@ -395,7 +384,7 @@ namespace VisualDijkstraRemake.Views
                     else if (_edgeCreationRequested && _firstNode != null)
                     {
                         //first node also exists, so new edge can be created
-                        _controller.newEdge(_firstNode, node, 3);
+                        _controller.NewEdge(_firstNode, node, 3);
                         _edgeCreationRequested = false;
                         _firstNode = null;
                     }
@@ -405,13 +394,13 @@ namespace VisualDijkstraRemake.Views
                     }
                     else if (_solvePathRequested && _solvePath != null)
                     {
-                        _controller.evaluatePath(_solvePath, node);
+                        _controller.EvaluatePath(_solvePath, node);
                         _solvePathRequested = false;
                         _solvePath = null;
                     }
                     else if (_nodeEliminationRequested)
                     {
-                        _controller.deleteNode(node);
+                        _controller.DeleteNode(node);
                         _nodeEliminationRequested = false;
                     }
                     else
@@ -419,7 +408,7 @@ namespace VisualDijkstraRemake.Views
                         //saving node to be moved
                         _nodeToMove = node;
                         _nodeLongPress = true;
-                        //Task.Delay(100).ContinueWith(t => checkEdgeCreationDelay(node));
+
                         await Task.Delay(300);
 
                         if (_nodeLongPress)
@@ -446,7 +435,7 @@ namespace VisualDijkstraRemake.Views
                 }
                 else
                 {
-                    clearRequests();
+                    ClearRequests();
                 }
 
             }
@@ -471,7 +460,7 @@ namespace VisualDijkstraRemake.Views
                 if (_nodeToMove != null && !_edgeCreationRequested)
                 {
                     //moving a node
-                    Controller.moveNode(_nodeToMove, ReverseScale(ToRelative(e.Location)));
+                    Controller.MoveNode(_nodeToMove, ReverseScale(ToRelative(e.Location)));
                     _nodeLongPress = false;
                 }
                 else if (this.Parent != null && _dragLocation.HasValue)
@@ -515,14 +504,14 @@ namespace VisualDijkstraRemake.Views
 
                         if (nodes[i] != _firstNode)
                         {
-                            _controller.newEdge(_firstNode, nodes[i], 3);
+                            _controller.NewEdge(_firstNode, nodes[i], 3);
                         }
 
                         break;
                     }
                 }
 
-                clearRequests();
+                ClearRequests();
 
             }
 
@@ -538,9 +527,9 @@ namespace VisualDijkstraRemake.Views
         /// <summary>
         ///  Requests new node creation
         /// </summary>
-        public void requestsNewNode()
+        public void RequestsNewNode()
         {
-            clearRequests();
+            ClearRequests();
             this._nodeCreationRequested = true;
         }
 
@@ -548,31 +537,31 @@ namespace VisualDijkstraRemake.Views
         /// <summary>
         ///  Requests new edge creation
         /// </summary>
-        public void requestsNewEdge()
+        public void RequestsNewEdge()
         {
-            clearRequests();
+            ClearRequests();
             this._edgeCreationRequested = true;
         }
 
 
-        public void requestNodeElimination()
+        public void RequestNodeElimination()
         {
-            clearRequests();
+            ClearRequests();
             this._nodeEliminationRequested = true;
         }
 
-        public void requestPath()
+        public void RequestPath()
         {
-            clearRequests();
+            ClearRequests();
             this._solvePathRequested = true;
         }
 
         /// <summary>
         ///  Clear any pending request.
         /// </summary>
-        public void clearRequests()
+        public void ClearRequests()
         {
-            Controller.clearStates();
+            Controller.ClearStates();
 
             //clearing node creation request
             this._nodeCreationRequested = false;

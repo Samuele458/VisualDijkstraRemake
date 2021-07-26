@@ -25,7 +25,7 @@
             Processed = processed;
         }
 
-        public void logNodeState()
+        public void LogNodeState()
         {
             System.Diagnostics.Debug.WriteLine("Node: " + Name + " Previous: " + Previous + " Distance: " + Distance + " Processed: " + Processed);
         }

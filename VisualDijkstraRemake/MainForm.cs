@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using VisualDijkstraRemake.Controllers;
 using VisualDijkstraRemake.Models;
+using VisualDijkstraRemake.Utils;
 using VisualDijkstraRemake.Views;
 
 
@@ -11,13 +12,13 @@ namespace VisualDijkstraRemake
     public partial class MainForm : Form
     {
 
-        Graph _graph;
-        GraphView _graphView;
-        GraphController _graphController;
+        private Graph _graph;
+        private GraphView _graphView;
+        private GraphController _graphController;
 
-        IStatesController _statesController;
+        private IStatesController _statesController;
 
-        GraphOptions options;
+        private readonly GraphOptions options;
 
 
 
@@ -28,6 +29,8 @@ namespace VisualDijkstraRemake
             this.KeyPreview = true;
 
             options = new GraphOptions();
+
+            Logger.log.Info("Execution started");
 
         }
 
@@ -55,7 +58,7 @@ namespace VisualDijkstraRemake
                 {
                     _graph = new Graph();
                     _graphController.Graph = _graph;
-                    this.scrollPanel1.setMainControl(_graphView, new System.Drawing.Point(GraphView.SizeLength / 2, GraphView.SizeLength / 2) - scrollPanel1.Size / 2);
+                    this.scrollPanel1.SetMainControl(_graphView, new System.Drawing.Point(GraphView.SizeLength / 2, GraphView.SizeLength / 2) - scrollPanel1.Size / 2);
 
                 }
             }
@@ -65,7 +68,7 @@ namespace VisualDijkstraRemake
         {
             if (e is MouseEventArgs)
             {
-                _graphView.requestsNewNode();
+                _graphView.RequestsNewNode();
             }
 
         }
@@ -74,7 +77,7 @@ namespace VisualDijkstraRemake
         {
             if (e is MouseEventArgs)
             {
-                _graphView.requestsNewEdge();
+                _graphView.RequestsNewEdge();
             }
         }
 
@@ -83,7 +86,7 @@ namespace VisualDijkstraRemake
         {
 
             char c = (char)keyData;
-            _graphView.fetchInput(c);
+            _graphView.FetchInput(c);
 
             return base.ProcessCmdKey(ref msg, keyData);
         }
@@ -99,7 +102,7 @@ namespace VisualDijkstraRemake
             _graph = new Graph();
             _graphView = new Views.GraphView(options);
             _graphController = new GraphController(_graphView, _graph);
-            this.scrollPanel1.setMainControl(_graphView, new System.Drawing.Point(GraphView.SizeLength / 2, GraphView.SizeLength / 2) - scrollPanel1.Size / 2);
+            this.scrollPanel1.SetMainControl(_graphView, new System.Drawing.Point(GraphView.SizeLength / 2, GraphView.SizeLength / 2) - scrollPanel1.Size / 2);
 
             _statesController = new StatesController(this.statesView1, new List<GraphState>());
             statesView1.Controller = _statesController;
@@ -137,7 +140,7 @@ namespace VisualDijkstraRemake
         {
             if (e is MouseEventArgs)
             {
-                _graphView.requestNodeElimination();
+                _graphView.RequestNodeElimination();
             }
         }
 
@@ -147,7 +150,7 @@ namespace VisualDijkstraRemake
         {
             if (e is MouseEventArgs)
             {
-                _graphController.save();
+                _graphController.Save();
             }
         }
 
@@ -155,7 +158,7 @@ namespace VisualDijkstraRemake
         {
             if (e is MouseEventArgs)
             {
-                _graphView.requestPath();
+                _graphView.RequestPath();
             }
         }
 
@@ -181,7 +184,7 @@ namespace VisualDijkstraRemake
 
                 if (proceed)
                 {
-                    _graphController.load();
+                    _graphController.Load();
                 }
             }
         }
@@ -190,7 +193,7 @@ namespace VisualDijkstraRemake
         {
             if (e is MouseEventArgs)
             {
-                _graphController.saveAs();
+                _graphController.SaveAs();
             }
         }
 
@@ -218,6 +221,7 @@ namespace VisualDijkstraRemake
             }
             else
             {
+                Logger.log.Info("Program closed");
                 options.Save();
             }
 
@@ -236,20 +240,26 @@ namespace VisualDijkstraRemake
 
         private void zoomInButton_Click(object sender, EventArgs e)
         {
-            try
+            if (e is MouseEventArgs)
             {
-                zoomTrackbar.Value += 1;
+                try
+                {
+                    zoomTrackbar.Value += 1;
+                }
+                catch (ArgumentOutOfRangeException) { }
             }
-            catch (ArgumentOutOfRangeException) { }
         }
 
         private void zoomOutButton_Click(object sender, EventArgs e)
         {
-            try
+            if (e is MouseEventArgs)
             {
-                zoomTrackbar.Value -= 1;
+                try
+                {
+                    zoomTrackbar.Value -= 1;
+                }
+                catch (ArgumentOutOfRangeException) { }
             }
-            catch (ArgumentOutOfRangeException) { }
         }
 
         private void zoomTrackbar_ValueChanged(object sender, EventArgs e)

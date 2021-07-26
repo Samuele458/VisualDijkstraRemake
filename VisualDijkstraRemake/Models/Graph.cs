@@ -10,9 +10,9 @@ namespace VisualDijkstraRemake.Models
     public class Graph
     {
 
-        private List<Node> _nodes;
+        private readonly List<Node> _nodes;
 
-        private List<Edge> _edges;
+        private readonly List<Edge> _edges;
 
         public List<Node> Nodes
         {
@@ -59,7 +59,7 @@ namespace VisualDijkstraRemake.Models
             this.AddNewNode(new Node(nodeName, location));
         }
 
-        public void deleteNode(Node node)
+        public void DeleteNode(Node node)
         {
             if (_nodes.Contains(node))
             {
@@ -110,7 +110,7 @@ namespace VisualDijkstraRemake.Models
         /// <param name="weight">Edge weight</param>
         public void CreateNewEdge(Node a, Node b, int weight)
         {
-            if (getEdge(a.Name, b.Name) == null)
+            if (GetEdge(a.Name, b.Name) == null)
             {
                 Edge edge = new Edge(a, b, weight);
                 Edges.Add(edge);
@@ -153,7 +153,7 @@ namespace VisualDijkstraRemake.Models
         /// <param name="nodeA">Node A</param>
         /// <param name="nodeB">Node B</param>
         /// <returns>edge between A and B</returns>
-        public Edge getEdge(string nodeA, string nodeB)
+        public Edge GetEdge(string nodeA, string nodeB)
         {
             return _edges.Find(edge => (edge.NodeA.Name == nodeA && edge.NodeB.Name == nodeB) || (edge.NodeA.Name == nodeB && edge.NodeB.Name == nodeA));
         }
@@ -186,7 +186,7 @@ namespace VisualDijkstraRemake.Models
         ///  Set the current graoh state
         /// </summary>
         /// <param name="state">Graph state</param>
-        public void setState(GraphState state)
+        public void SetState(GraphState state)
         {
 
             this.ClearState();
@@ -199,7 +199,7 @@ namespace VisualDijkstraRemake.Models
                 if (!nodesStates[i].Previous.Equals("DEFAULT_PREVIOUS_NODE"))
                 {
                     GetNode(nodesStates[i].Name).IsInPartialPath = true;
-                    getEdge(nodesStates[i].Name, nodesStates[i].Previous).IsInPartialPath = true;
+                    GetEdge(nodesStates[i].Name, nodesStates[i].Previous).IsInPartialPath = true;
                 }
             }
 
@@ -224,7 +224,7 @@ namespace VisualDijkstraRemake.Models
                 for (int i = 0; i < path.Count - 1; ++i)
                 {
                     GetNode(path[i].Name).IsInPath = true;
-                    getEdge(path[i].Name, path[i + 1].Name).IsInPath = true;
+                    GetEdge(path[i].Name, path[i + 1].Name).IsInPath = true;
                 }
             }
 

@@ -18,7 +18,7 @@ namespace VisualDijkstraRemake.Controls
 
         }
 
-        public void setMainControl(GraphView view, Point autoscroll)
+        public void SetMainControl(GraphView view, Point autoscroll)
         {
             this.Controls.Clear();
             this.Controls.Add(view);

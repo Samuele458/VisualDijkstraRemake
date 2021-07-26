@@ -60,7 +60,7 @@ namespace VisualDijkstraRemake.Models
                 for (int j = 0; j < neighbours.Count; ++j)
                 {
                     int alt = state.GetNode(u.Name).Distance +                      //distance between start and current node
-                              Graph.getEdge(u.Name, neighbours[j].Name).Weight;     //weight between current node and neighbour node
+                              Graph.GetEdge(u.Name, neighbours[j].Name).Weight;     //weight between current node and neighbour node
 
                     if (alt < state.GetNode(neighbours[j].Name).Distance)
                     {

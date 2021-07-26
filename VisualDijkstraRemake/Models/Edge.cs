@@ -103,7 +103,7 @@ namespace VisualDijkstraRemake.Models
         /// </summary>
         /// <param name="weightStr">string to check</param>
         /// <returns>true is is valid, false otherwise</returns>
-        public static bool validateWeight(string weightStr)
+        public static bool ValidateWeight(string weightStr)
         {
             string alphabet = "1234567890";
 
