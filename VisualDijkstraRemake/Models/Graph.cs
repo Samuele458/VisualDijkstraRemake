@@ -110,8 +110,15 @@ namespace VisualDijkstraRemake.Models
         /// <param name="weight">Edge weight</param>
         public void CreateNewEdge(Node a, Node b, int weight)
         {
-            Edge edge = new Edge(a, b, weight);
-            Edges.Add(edge);
+            if (getEdge(a.Name, b.Name) == null)
+            {
+                Edge edge = new Edge(a, b, weight);
+                Edges.Add(edge);
+            }
+            else
+            {
+                throw new DuplicatedEdgeException("");
+            }
         }
 
         /// <summary>

@@ -65,6 +65,7 @@ namespace VisualDijkstraRemake.Views
             // 
             this.scrollPanel1.AutoScroll = true;
             this.scrollPanel1.BackColor = System.Drawing.Color.White;
+            this.scrollPanel1.Cursor = System.Windows.Forms.Cursors.Default;
             this.scrollPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.scrollPanel1.Location = new System.Drawing.Point(0, 0);
             this.scrollPanel1.Name = "scrollPanel1";
@@ -87,6 +88,7 @@ namespace VisualDijkstraRemake.Views
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Cursor = System.Windows.Forms.Cursors.Default;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);

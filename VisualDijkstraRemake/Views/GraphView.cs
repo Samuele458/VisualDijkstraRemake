@@ -333,18 +333,19 @@ namespace VisualDijkstraRemake.Views
 
                 if (_nodeLongPress && _edgeCreationRequested)
                 {
-                    System.Diagnostics.Debug.WriteLine("LONG");
+                    Pen edgeCreationPath = new Pen(Color.Orange, Scale(6));
+
                     Point nodeLocation = ToAbsolute(Scale(_firstNode.Location));
-                    e.Graphics.FillEllipse(nodeFillBrush, new Rectangle(nodeLocation, nodeSize));
-                    e.Graphics.DrawEllipse(borderPenPath, new Rectangle(nodeLocation, nodeSize));
-                    TextRenderer.DrawText(e.Graphics, _firstNode.Name, font,
-                                          new Rectangle(nodeLocation + Scale(new Size(1, 1)), nodeSize),
-                                          Color.White, Color.FromArgb(0, 120, 215));
-                    e.Graphics.DrawLine(borderPen,
+
+                    e.Graphics.DrawLine(edgeCreationPath,
                                         ToAbsolute(Scale(_firstNode.Location) + nodeSize / 2),
                                         _mouseLocation);
 
-
+                    e.Graphics.FillEllipse(nodeFillBrush, new Rectangle(nodeLocation, nodeSize));
+                    e.Graphics.DrawEllipse(edgeCreationPath, new Rectangle(nodeLocation, nodeSize));
+                    TextRenderer.DrawText(e.Graphics, _firstNode.Name, font,
+                                          new Rectangle(nodeLocation + Scale(new Size(1, 1)), nodeSize),
+                                          Color.White, Color.FromArgb(0, 120, 215));
                 }
 
 
@@ -420,28 +421,17 @@ namespace VisualDijkstraRemake.Views
                         _nodeLongPress = true;
                         //Task.Delay(100).ContinueWith(t => checkEdgeCreationDelay(node));
                         await Task.Delay(300);
-                        System.Diagnostics.Debug.WriteLine("ssss");
 
                         if (_nodeLongPress)
                         {
-                            System.Diagnostics.Debug.WriteLine(node.Name);
                             _firstNode = node;
                             _edgeCreationRequested = true;
                             this.Refresh();
                         }
-
-
-                        //Task.Delay(100).ContinueWith(aaaaa, null );
-
-                        //tengo premuto
-                        //dopo X imposta il primo nodo
-                        //onMOuseUp verifica che sia in un altro nodo
-                        //se si, crea edge altrimenti cancella tutto
                     }
                 }
                 else if (_nodeCreationRequested)
                 {
-                    //string nodeName = Microsoft.VisualBasic.Interaction.InputBox("Enter node name:", "New node");
                     _nodeOnEdit = new Node("", ReverseScale(ToRelative(e.Location)));
                     //_controller.newNode(_nodeOnChangingName);
 
@@ -464,21 +454,6 @@ namespace VisualDijkstraRemake.Views
             this.Invalidate();
         }
 
-        private void aaaaa()
-        {
-
-        }
-
-        private void checkEdgeCreationDelay(Node node)
-        {
-            if (_nodeLongPress)
-            {
-                System.Diagnostics.Debug.WriteLine(node.Name);
-                _firstNode = node;
-                _edgeCreationRequested = true;
-
-            }
-        }
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
@@ -495,7 +470,6 @@ namespace VisualDijkstraRemake.Views
                 else
                 if (_nodeToMove != null && !_edgeCreationRequested)
                 {
-                    System.Diagnostics.Debug.WriteLine("HERE");
                     //moving a node
                     Controller.moveNode(_nodeToMove, ReverseScale(ToRelative(e.Location)));
                     _nodeLongPress = false;
@@ -548,7 +522,6 @@ namespace VisualDijkstraRemake.Views
                     }
                 }
 
-                System.Diagnostics.Debug.WriteLine("CLEARED");
                 clearRequests();
 
             }
@@ -556,6 +529,9 @@ namespace VisualDijkstraRemake.Views
 
             //releasing long press node
             _nodeLongPress = false;
+
+
+            this.Refresh();
         }
 
 

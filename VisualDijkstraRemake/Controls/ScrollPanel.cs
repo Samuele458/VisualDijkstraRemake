@@ -30,7 +30,7 @@ namespace VisualDijkstraRemake.Controls
 
         protected override void OnMouseWheel(MouseEventArgs e)
         {
-            //base.OnMouseWheel(e);
+            base.OnMouseWheel(e);
         }
 
 

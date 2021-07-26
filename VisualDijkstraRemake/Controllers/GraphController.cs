@@ -69,7 +69,12 @@ namespace VisualDijkstraRemake.Controllers
 
         public void newEdge(Node a, Node b, int weight)
         {
-            _graph.CreateNewEdge(a, b, weight);
+            try
+            {
+                _graph.CreateNewEdge(a, b, weight);
+            }
+            catch (DuplicatedEdgeException) { }
+            catch (DuplicatedNodeException) { }
             _view.Invalidate();
             _saved = false;
         }
