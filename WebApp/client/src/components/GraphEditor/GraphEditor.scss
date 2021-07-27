@@ -1,0 +1,25 @@
+.graph-editor {
+  .graph-toolbar {
+    border: 2px solid black;
+  }
+
+  .graph-box {
+    border: 2px solid black;
+    width: 100%;
+
+    .node {
+      stroke: rgb(0, 0, 0);
+      stroke-width: 8px;
+      fill: rgb(255, 255, 255);
+    }
+
+    .node-text {
+      font: bold 30px sans-serif;
+    }
+
+    .edge {
+      stroke: rgb(0, 0, 0);
+      stroke-width: 8px;
+    }
+  }
+}
