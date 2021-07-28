@@ -3,9 +3,17 @@ import * as d3 from "d3";
 import "d3-selection-multi";
 import Lodash from "lodash";
 
+import AddNodeIcon from "./icons/add.png";
+
 const GraphBox = (props) => {
   let svg = useRef(null);
+  let graphGroup = useRef(null);
   let [graph, setGraph] = useState({});
+
+  let [nodeCreationRequested, setNodeCreationRequested] = useState(false);
+  let [nodeCreationText, setNodeCreationText] = useState("");
+
+  let [transformPos, setTransformPos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     let holdGraph = {
@@ -33,13 +41,22 @@ const GraphBox = (props) => {
 
   useEffect(() => {
     console.log("Rendering", graph, 4);
-    if (
-      !(
-        graph &&
-        Object.keys(graph).length === 0 &&
-        graph.constructor === Object
-      )
-    ) {
+    if (Object.keys(graph).length !== 0 && graphGroup) {
+      d3.select(graphGroup.current).selectAll("*").remove();
+
+      console.log(graphGroup.current);
+
+      d3.select(svg.current).call(
+        d3
+          .drag()
+          .on("drag", draggedd)
+          .on("start", dragstarted)
+          .on("end", dragended)
+      );
+
+      let svgGroup = d3.select(graphGroup.current);
+
+      /*
       let svgGroup = d3
         .select(svg.current)
         .call(
@@ -51,6 +68,7 @@ const GraphBox = (props) => {
         )
         .append("g")
         .attr("transform", "translate(0,0)");
+      */
 
       var edge = svgGroup
         .append("g")
@@ -87,13 +105,11 @@ const GraphBox = (props) => {
           return (d.dest.y + d.source.y) / 2;
         });
 
-      var g_node = svgGroup
+      var node = svgGroup
         .append("g")
         .selectAll("circle")
         .data(graph.nodes)
-        .enter();
-
-      var node = g_node
+        .enter()
         .append("circle")
         .attr("class", "node")
         .attr("r", 30)
@@ -157,12 +173,14 @@ const GraphBox = (props) => {
           .attr("y", d.y + 10);
       }
 
+      /*
       function getTranslation(transform) {
         var g = document.createElementNS("http://www.w3.org/2000/svg", "g");
         g.setAttributeNS(null, "transform", transform);
         var matrix = g.transform.baseVal.consolidate().matrix;
         return [matrix.e, matrix.f];
       }
+      */
 
       function dragstarted(event, d) {
         event.sourceEvent.stopPropagation();
@@ -171,12 +189,15 @@ const GraphBox = (props) => {
 
       function draggedd(event) {
         //var t = d3.transform(svgGroup.attr("transform")).translate;
-        var t = getTranslation(svgGroup.attr("transform"));
-
-        svgGroup.attr(
-          "transform",
-          "translate(" + (t[0] + event.dx) + "," + (t[1] + event.dy) + ")"
-        );
+        //var t = getTranslation(svgGroup.attr("transform"));
+        setTransformPos((previous) => ({
+          x: previous.x + event.dx,
+          y: previous.y + event.dy,
+        }));
+        //svgGroup.attr(
+        //  "transform",
+        //  "translate(" + (t[0] + event.dx) + "," + (t[1] + event.dy) + ")"
+        //);
       }
 
       function dragended(event, d) {}
@@ -184,25 +205,49 @@ const GraphBox = (props) => {
   }, [graph]);
 
   return (
-    <svg
-      className="graph-box"
-      ref={svg}
-      {...props}
-      width="800"
-      height="600"
-      onDoubleClick={(e) => {
-        console.log(e.target.className.baseVal);
-        if (e.target.className.baseVal === "graph-box") {
-          console.log("Will render?");
+    <div className="graph-editor">
+      <div className="graph-toolbar">
+        <img
+          src={AddNodeIcon}
+          alt="Add new node"
+          onClick={() => {
+            setNodeCreationRequested(true);
+          }}
+        />
+        <input
+          type="text"
+          onChange={(e) => {
+            setNodeCreationText(e.target.value);
+          }}
+          value={nodeCreationText}
+        />
+      </div>
+      <svg
+        className="graph-box"
+        ref={svg}
+        {...props}
+        width="800"
+        height="600"
+        onClick={(e) => {
+          if (
+            e.target.className.baseVal === "graph-box" &&
+            nodeCreationRequested
+          ) {
+            let holdGraph = Lodash.cloneDeep(graph);
+            holdGraph.nodes.push({ x: 200, y: 150, name: nodeCreationText });
+            setGraph(holdGraph);
+            setNodeCreationRequested(false);
 
-          let holdGraph = Lodash.cloneDeep(graph);
-          holdGraph.nodes.push({ x: 200, y: 150, name: "G" });
-          setGraph(holdGraph);
-
-          //setGraph({ ...graph, dfdf: 3 });
-        }
-      }}
-    />
+            //setGraph({ ...graph, dfdf: 3 });
+          }
+        }}
+      >
+        <g
+          ref={graphGroup}
+          transform={"translate(" + transformPos.x + "," + transformPos.y + ")"}
+        ></g>
+      </svg>
+    </div>
   );
 };
 
