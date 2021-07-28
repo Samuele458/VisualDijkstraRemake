@@ -3,6 +3,8 @@ import * as d3 from "d3";
 import "d3-selection-multi";
 import Lodash from "lodash";
 
+import * as GraphUtils from "../../../../utils/graphUtils";
+
 import AddNodeIcon from "./icons/add.png";
 import AddEdgeIcon from "./icons/route.png";
 import RemoveIcon from "./icons/delete.png";
@@ -21,6 +23,9 @@ const GraphBox = (props) => {
   let [firstNode, setFirstNode] = useState(null);
 
   let [nodeRemovalRequested, setNodeRemovalRequested] = useState(false);
+
+  let [nodeUnderEdit, setNodeUnderEdit] = useState(null);
+  let [inputBoxPos, setInputBoxPos] = useState({ x: 0, y: 0 });
 
   let [transformPos, setTransformPos] = useState({ x: 0, y: 0 });
   let [scale, setScale] = useState(1);
@@ -50,9 +55,7 @@ const GraphBox = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log("Attempt to render", 4);
     if (Object.keys(graph).length !== 0 && graphGroup) {
-      console.log("rendering", graph, 4);
       d3.select(graphGroup.current).selectAll("*").remove();
 
       d3.select(svg.current).call(
@@ -63,34 +66,19 @@ const GraphBox = (props) => {
           .on("end", dragended)
       );
 
-      d3.select(svg.current).call(
-        d3.zoom().on("zoom", function (event) {
-          if (Math.sign(event.sourceEvent.deltaY) === -1) {
-            setScale((previous) => previous * 1.1);
-          } else {
-            setScale((previous) => previous * 0.9);
-          }
-
-          //d3.select(graphGroup.current).attr("transform", event.transform);
-        })
-      );
+      d3.select(svg.current)
+        .call(
+          d3.zoom().on("zoom", function (event) {
+            if (Math.sign(event.sourceEvent.deltaY) === -1) {
+              setScale((previous) => previous * 1.1);
+            } else {
+              setScale((previous) => previous * 0.9);
+            }
+          })
+        )
+        .on("dblclick.zoom", null);
 
       let svgGroup = d3.select(graphGroup.current);
-
-      /*
-      let svgGroup = d3
-        .select(svg.current)
-        .call(
-          d3
-            .drag()
-            .on("drag", draggedd)
-            .on("start", dragstarted)
-            .on("end", dragended)
-        )
-        .append("g")
-        .attr("transform", "translate(0,0)");
-      */
-
       var edge = svgGroup
         .append("g")
         .selectAll("line")
@@ -119,12 +107,8 @@ const GraphBox = (props) => {
         .append("text")
         .text((d) => d.weight)
         .attr("class", "weight-text")
-        .attr("x", function (d) {
-          return (d.dest.x + d.source.x) / 2;
-        })
-        .attr("y", function (d) {
-          return (d.dest.y + d.source.y) / 2;
-        });
+        .attr("x", (edge) => GraphUtils.evaluateWeightPos("x", edge))
+        .attr("y", (edge) => GraphUtils.evaluateWeightPos("y", edge));
 
       var node = svgGroup
         .append("g")
@@ -151,8 +135,8 @@ const GraphBox = (props) => {
         .append("text")
         .text((d) => d.name)
         .attr("name", (d) => d.name)
-        .attr("contenteditable", "true")
         .attr("class", "node-text")
+        .attr("focusable", "true")
         .attr("x", function (d) {
           return d.x - 10;
         })
@@ -164,6 +148,16 @@ const GraphBox = (props) => {
       function dragged(event, d) {
         d.x = event.x;
         d.y = event.y;
+        console.log(nodeUnderEdit, d.name);
+
+        if (nodeUnderEdit !== null) {
+          if (nodeUnderEdit.name === d.name)
+            setInputBoxPos({
+              x: event.sourceEvent.clientX,
+              y: event.sourceEvent.clientY,
+            });
+        }
+
         node
           .filter(function (n) {
             return n === d;
@@ -187,8 +181,8 @@ const GraphBox = (props) => {
 
         weight
           .filter((edge) => edge.dest === d || edge.source === d)
-          .attr("x", (edge) => (edge.dest.x + edge.source.x) / 2)
-          .attr("y", (edge) => (edge.dest.y + edge.source.y) / 2);
+          .attr("x", (edge) => GraphUtils.evaluateWeightPos("x", edge))
+          .attr("y", (edge) => GraphUtils.evaluateWeightPos("y", edge));
 
         node_text
           .filter(function (n) {
@@ -198,31 +192,21 @@ const GraphBox = (props) => {
           .attr("y", d.y + 10);
       }
 
-      /*
-      function getTranslation(transform) {
-        var g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-        g.setAttributeNS(null, "transform", transform);
-        var matrix = g.transform.baseVal.consolidate().matrix;
-        return [matrix.e, matrix.f];
-      }
-      */
-
       function dragstarted(event, d) {
         event.sourceEvent.stopPropagation();
         event.sourceEvent.preventDefault();
       }
 
       function draggedd(event) {
-        //var t = d3.transform(svgGroup.attr("transform")).translate;
-        //var t = getTranslation(svgGroup.attr("transform"));
         setTransformPos((previous) => ({
           x: previous.x + event.dx,
           y: previous.y + event.dy,
         }));
-        //svgGroup.attr(
-        //  "transform",
-        //  "translate(" + (t[0] + event.dx) + "," + (t[1] + event.dy) + ")"
-        //);
+
+        setInputBoxPos((previous) => ({
+          x: previous.x + event.dx,
+          y: previous.y + event.dy,
+        }));
       }
 
       function dragended(event, d) {}
@@ -275,105 +259,138 @@ const GraphBox = (props) => {
           }}
         />
       </div>
-      <svg
-        className="graph-box"
-        ref={svg}
-        {...props}
-        width="800"
-        height="600"
-        onClick={(e) => {
-          var dim = e.target.getBoundingClientRect();
-          var x = e.clientX - dim.left - transformPos.x;
-          var y = e.clientY - dim.top - transformPos.y;
-
-          if (
-            e.target.className.baseVal === "graph-box" &&
-            nodeCreationRequested
-          ) {
+      <div>
+        <svg
+          className="graph-box"
+          ref={svg}
+          {...props}
+          width="800"
+          height="600"
+          onDoubleClick={(e) => {
             if (
-              graph.nodes.filter((n) => n.name === nodeCreationText).length ===
-              0
+              e.target.className.baseVal === "node" ||
+              e.target.className.baseVal === "node-text"
             ) {
+              let name = e.target.getAttribute("name");
+              let node = graph.nodes.find((n) => n.name === name);
+
+              //console.log(e);
+              setNodeUnderEdit(node);
+              setInputBoxPos({ x: e.clientX, y: e.clientY });
+              console.log(e.clientX, e.clientY);
+            }
+          }}
+          onClick={(e) => {
+            let dim = e.target.getBoundingClientRect();
+            let x = e.clientX - dim.left - transformPos.x;
+            let y = e.clientY - dim.top - transformPos.y;
+
+            if (
+              e.target.className.baseVal === "graph-box" &&
+              nodeCreationRequested
+            ) {
+              if (
+                graph.nodes.filter((n) => n.name === nodeCreationText)
+                  .length === 0
+              ) {
+                let holdGraph = Lodash.cloneDeep(graph);
+                holdGraph.nodes.push({
+                  x: x * (1 / scale),
+                  y: y * (1 / scale),
+                  name: nodeCreationText,
+                });
+                setGraph(holdGraph);
+              }
+              //setGraph({ ...graph, dfdf: 3 });
+            } else if (
+              edgeCreationRequested &&
+              firstNode === null &&
+              (e.target.className.baseVal === "node" ||
+                e.target.className.baseVal === "node-text")
+            ) {
+              let name = e.target.getAttribute("name");
+              let node = graph.nodes.find((n) => n.name === name);
+
+              if (typeof node != "undefined") {
+                setFirstNode(node);
+              }
+              //setEdgeCreationRequested(false);
+            } else if (
+              edgeCreationRequested &&
+              firstNode != null &&
+              (e.target.className.baseVal === "node" ||
+                e.target.className.baseVal === "node-text")
+            ) {
+              let name = e.target.getAttribute("name");
+              let node = graph.nodes.find((n) => n.name === name);
+
+              if (typeof node != "undefined") {
+                let holdGraph = Lodash.cloneDeep(graph);
+                holdGraph.edges.push({
+                  source: holdGraph.nodes.find(
+                    (n) => n.name === firstNode.name
+                  ),
+                  dest: holdGraph.nodes.find((n) => n.name === node.name),
+                  weight: 3,
+                });
+
+                setGraph(holdGraph);
+              }
+
+              setEdgeCreationRequested(false);
+              setFirstNode(null);
+            } else if (
+              nodeRemovalRequested &&
+              firstNode === null &&
+              (e.target.className.baseVal === "node" ||
+                e.target.className.baseVal === "node-text")
+            ) {
+              let name = e.target.getAttribute("name");
               let holdGraph = Lodash.cloneDeep(graph);
-              holdGraph.nodes.push({
-                x: x * (1 / scale),
-                y: y * (1 / scale),
-                name: nodeCreationText,
-              });
-              setGraph(holdGraph);
-            }
-            //setGraph({ ...graph, dfdf: 3 });
-          } else if (
-            edgeCreationRequested &&
-            firstNode === null &&
-            (e.target.className.baseVal === "node" ||
-              e.target.className.baseVal === "node-text")
-          ) {
-            let name = e.target.getAttribute("name");
-            let node = graph.nodes.find((n) => n.name === name);
-
-            if (typeof node != "undefined") {
-              setFirstNode(node);
-            }
-            //setEdgeCreationRequested(false);
-          } else if (
-            edgeCreationRequested &&
-            firstNode != null &&
-            (e.target.className.baseVal === "node" ||
-              e.target.className.baseVal === "node-text")
-          ) {
-            let name = e.target.getAttribute("name");
-            let node = graph.nodes.find((n) => n.name === name);
-
-            if (typeof node != "undefined") {
-              let holdGraph = Lodash.cloneDeep(graph);
-              holdGraph.edges.push({
-                source: holdGraph.nodes.find((n) => n.name === firstNode.name),
-                dest: holdGraph.nodes.find((n) => n.name === node.name),
-                weight: 3,
-              });
+              holdGraph.nodes = holdGraph.nodes.filter(
+                (node) => node.name !== name
+              );
+              holdGraph.edges = holdGraph.edges.filter(
+                (edge) => edge.source.name !== name && edge.dest.name !== name
+              );
 
               setGraph(holdGraph);
+              setNodeRemovalRequested(false);
+            } else if (
+              e.target.className.baseVal !== "node" &&
+              e.target.className.baseVal !== "node-text"
+            ) {
+              setNodeUnderEdit(null);
             }
-
-            setEdgeCreationRequested(false);
-            setFirstNode(null);
-          } else if (
-            nodeRemovalRequested &&
-            firstNode === null &&
-            (e.target.className.baseVal === "node" ||
-              e.target.className.baseVal === "node-text")
-          ) {
-            let name = e.target.getAttribute("name");
-            let holdGraph = Lodash.cloneDeep(graph);
-            holdGraph.nodes = holdGraph.nodes.filter(
-              (node) => node.name !== name
-            );
-            holdGraph.edges = holdGraph.edges.filter(
-              (edge) => edge.source.name !== name && edge.dest.name !== name
-            );
-
-            setGraph(holdGraph);
-            setNodeRemovalRequested(false);
-          } else {
-          }
-          setNodeCreationRequested(false);
-        }}
-      >
-        <g
-          ref={graphGroup}
-          className="graph-group"
-          transform={
-            "translate(" +
-            transformPos.x +
-            "," +
-            transformPos.y +
-            ") scale(" +
-            scale +
-            ")"
-          }
-        ></g>
-      </svg>
+            setNodeCreationRequested(false);
+          }}
+        >
+          <g
+            ref={graphGroup}
+            className="graph-group"
+            transform={
+              "translate(" +
+              transformPos.x +
+              "," +
+              transformPos.y +
+              ") scale(" +
+              scale +
+              ")"
+            }
+          ></g>
+        </svg>
+        <div
+          id="graph-input-box"
+          style={{
+            top: inputBoxPos.y + 30,
+            left: inputBoxPos.x - 100,
+            visibility: nodeUnderEdit === null ? "hidden" : "visible",
+          }}
+        >
+          <input type="text" />
+          <button>Set</button>
+        </div>
+      </div>
     </div>
   );
 };

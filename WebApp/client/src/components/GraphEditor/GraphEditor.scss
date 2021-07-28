@@ -28,3 +28,19 @@
     }
   }
 }
+
+#graph-input-box {
+  width: 200px;
+  height: 30px;
+  position: fixed;
+  font-size: 12px;
+  text-align: center;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.864);
+  border-radius: 3px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  bottom: 50px;
+}
