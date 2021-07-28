@@ -4,13 +4,25 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    width: 40rem;
+    margin: auto;
+    position: relative;
+    top: 2rem;
+    background-color: white;
+    -webkit-box-shadow: 0px 0px 29px -6px rgba(0, 0, 0, 0.19);
+    -moz-box-shadow: 0px 0px 29px -6px rgba(0, 0, 0, 0.19);
+    box-shadow: 0px 0px 29px -6px rgba(0, 0, 0, 0.19);
+    padding: 0.3rem;
   }
 
-  .graph-box {
-    border-top: 2px solid black;
-    border-bottom: 2px solid black;
-
-    width: 100%;
+  .graph-svg {
+    width: 50rem;
+    margin: auto;
+    display: block;
+    -webkit-box-shadow: 0px 0px 29px -6px rgba(0, 0, 0, 0.35);
+    -moz-box-shadow: 0px 0px 29px -6px rgba(0, 0, 0, 0.35);
+    box-shadow: 0px 0px 29px -6px rgba(0, 0, 0, 0.35);
+    z-index: -1;
 
     .node {
       stroke: rgb(0, 0, 0);
@@ -31,16 +43,31 @@
 
 #graph-input-box {
   width: 200px;
-  height: 30px;
+  height: 1.3rem;
   position: fixed;
   font-size: 12px;
   text-align: center;
   color: white;
-  background-color: rgba(0, 0, 0, 0.864);
   border-radius: 3px;
   display: flex;
   justify-content: center;
   align-content: center;
-  flex-direction: column;
+  flex-direction: row;
   bottom: 50px;
+  z-index: 30;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 0px 21px -6px rgba(0, 0, 0, 0.69);
+  -moz-box-shadow: 0px 0px 21px -6px rgba(0, 0, 0, 0.69);
+  box-shadow: 0px 0px 21px -6px rgba(0, 0, 0, 0.69);
+
+  .input-text {
+    border: none;
+    outline: 0px;
+    border-radius: 5px;
+    display: block;
+    width: 10rem;
+  }
+
+  .submit {
+  }
 }
