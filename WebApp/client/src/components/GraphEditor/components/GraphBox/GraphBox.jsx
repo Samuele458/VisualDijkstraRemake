@@ -5,6 +5,9 @@ import Lodash from "lodash";
 
 import AddNodeIcon from "./icons/add.png";
 import AddEdgeIcon from "./icons/route.png";
+import RemoveIcon from "./icons/delete.png";
+import ZoomInIcon from "./icons/zoom-in.png";
+import ZoomOutIcon from "./icons/zoom-out.png";
 
 const GraphBox = (props) => {
   let svg = useRef(null);
@@ -17,7 +20,10 @@ const GraphBox = (props) => {
   let [edgeCreationRequested, setEdgeCreationRequested] = useState(false);
   let [firstNode, setFirstNode] = useState(null);
 
+  let [nodeRemovalRequested, setNodeRemovalRequested] = useState(false);
+
   let [transformPos, setTransformPos] = useState({ x: 0, y: 0 });
+  let [scale, setScale] = useState(1);
 
   useEffect(() => {
     let holdGraph = {
@@ -59,8 +65,13 @@ const GraphBox = (props) => {
 
       d3.select(svg.current).call(
         d3.zoom().on("zoom", function (event) {
-          console.log(svg);
-          d3.select(graphGroup.current).attr("transform", event.transform);
+          if (Math.sign(event.sourceEvent.deltaY) === -1) {
+            setScale((previous) => previous * 1.1);
+          } else {
+            setScale((previous) => previous * 0.9);
+          }
+
+          //d3.select(graphGroup.current).attr("transform", event.transform);
         })
       );
 
@@ -140,6 +151,7 @@ const GraphBox = (props) => {
         .append("text")
         .text((d) => d.name)
         .attr("name", (d) => d.name)
+        .attr("contenteditable", "true")
         .attr("class", "node-text")
         .attr("x", function (d) {
           return d.x - 10;
@@ -241,6 +253,27 @@ const GraphBox = (props) => {
             setEdgeCreationRequested(true);
           }}
         />
+        <img
+          src={ZoomInIcon}
+          alt="ZoomIn"
+          onClick={() => {
+            setScale((previous) => previous * 1.1);
+          }}
+        />
+        <img
+          src={ZoomOutIcon}
+          alt="ZoomOut"
+          onClick={() => {
+            setScale((previous) => previous * 0.9);
+          }}
+        />
+        <img
+          src={RemoveIcon}
+          alt="Remove node"
+          onClick={() => {
+            setNodeRemovalRequested(true);
+          }}
+        />
       </div>
       <svg
         className="graph-box"
@@ -262,7 +295,11 @@ const GraphBox = (props) => {
               0
             ) {
               let holdGraph = Lodash.cloneDeep(graph);
-              holdGraph.nodes.push({ x: x, y: y, name: nodeCreationText });
+              holdGraph.nodes.push({
+                x: x * (1 / scale),
+                y: y * (1 / scale),
+                name: nodeCreationText,
+              });
               setGraph(holdGraph);
             }
             //setGraph({ ...graph, dfdf: 3 });
@@ -301,6 +338,23 @@ const GraphBox = (props) => {
 
             setEdgeCreationRequested(false);
             setFirstNode(null);
+          } else if (
+            nodeRemovalRequested &&
+            firstNode === null &&
+            (e.target.className.baseVal === "node" ||
+              e.target.className.baseVal === "node-text")
+          ) {
+            let name = e.target.getAttribute("name");
+            let holdGraph = Lodash.cloneDeep(graph);
+            holdGraph.nodes = holdGraph.nodes.filter(
+              (node) => node.name !== name
+            );
+            holdGraph.edges = holdGraph.edges.filter(
+              (edge) => edge.source.name !== name && edge.dest.name !== name
+            );
+
+            setGraph(holdGraph);
+            setNodeRemovalRequested(false);
           } else {
           }
           setNodeCreationRequested(false);
@@ -308,7 +362,16 @@ const GraphBox = (props) => {
       >
         <g
           ref={graphGroup}
-          transform={"translate(" + transformPos.x + "," + transformPos.y + ")"}
+          className="graph-group"
+          transform={
+            "translate(" +
+            transformPos.x +
+            "," +
+            transformPos.y +
+            ") scale(" +
+            scale +
+            ")"
+          }
         ></g>
       </svg>
     </div>
