@@ -150,7 +150,6 @@ const GraphBox = (props) => {
       function dragged(event, d) {
         d.x = event.x;
         d.y = event.y;
-        console.log(nodeUnderEdit, d.name);
 
         if (nodeUnderEdit !== null) {
           if (nodeUnderEdit.name === d.name)
@@ -218,7 +217,7 @@ const GraphBox = (props) => {
   }, [graph, nodeUnderEdit]);
 
   return (
-    <div className="graph-editor">
+    <div className="graph-box-wrapper">
       <div className="graph-toolbar">
         <img
           src={AddNodeIcon}
@@ -278,9 +277,7 @@ const GraphBox = (props) => {
             let name = e.target.getAttribute("name");
             let node = graph.nodes.find((n) => n.name === name);
 
-            //console.log(e);
             setNodeUnderEdit(node);
-            console.log("Nodeunderedit: ", name, node, nodeUnderEdit);
             setInputBoxInfo({ text: name, x: e.clientX, y: e.clientY });
           } else if (e.target.className.baseVal === "weight-text") {
             let nodesNames = GraphUtils.decodeEdgeName(
