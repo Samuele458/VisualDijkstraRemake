@@ -15,7 +15,7 @@ import CheckIcon from "./icons/check.png";
 const GraphBox = (props) => {
   let svg = useRef(null);
   let graphGroup = useRef(null);
-  let [graph, setGraph] = useState({});
+  let [graph, setGraph] = useState({ nodes: [], edges: [] });
 
   let [nodeCreationRequested, setNodeCreationRequested] = useState(false);
   let [nodeCreationText, setNodeCreationText] = useState("");
@@ -32,19 +32,20 @@ const GraphBox = (props) => {
   let [scale, setScale] = useState(1);
 
   useEffect(() => {
+    let graphObj = props.graph.data;
+    graphObj.edges.forEach(function (edge) {
+      edge.source = graphObj.nodes.find((node) => node.name === edge.source);
+      edge.dest = graphObj.nodes.find((node) => node.name === edge.dest);
+    });
+    console.log(graphObj);
+    setGraph(graphObj, "props:", props);
+  }, [props.graph]);
+
+  /*
+  useEffect(() => {
     let holdGraph = {
-      nodes: [
-        { x: 444, y: 275, name: "A" },
-        { x: 378, y: 324, name: "B" },
-        { x: 478, y: 278, name: "C" },
-        { x: 471, y: 256, name: "D" },
-      ],
-      edges: [
-        { source: "A", dest: "D", weight: 3 },
-        { source: "D", dest: "C", weight: 3 },
-        { source: "B", dest: "C", weight: 3 },
-        { source: "B", dest: "A", weight: 3 },
-      ],
+      nodes: [],
+      edges: [],
     };
 
     holdGraph.edges.forEach(function (edge) {
@@ -53,10 +54,10 @@ const GraphBox = (props) => {
     });
 
     setGraph(holdGraph);
-  }, []);
+  }, []);*/
 
   useEffect(() => {
-    if (Object.keys(graph).length !== 0 && graphGroup) {
+    if (graph !== 0 && graphGroup) {
       d3.select(graphGroup.current).selectAll("*").remove();
 
       d3.select(svg.current).call(

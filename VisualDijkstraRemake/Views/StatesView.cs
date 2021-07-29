@@ -37,7 +37,6 @@ namespace VisualDijkstraRemake.Views
             dataGridView1.DataSource = _statesData;
         }
 
-
         public void SetStates(List<GraphState> states)
         {
             scrollPanel1.Controls.Clear();
