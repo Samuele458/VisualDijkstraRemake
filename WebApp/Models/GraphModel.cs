@@ -1,6 +1,6 @@
 ﻿namespace WebApp.Models
 {
-    public class GraphModel
+    public class GraphModelhhhh
     {
         public int GraphId { get; set; }
 
