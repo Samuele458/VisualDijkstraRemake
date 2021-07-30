@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
+using WebApp.Data;
+using WebApp.Utils;
 
 namespace WebApp
 {
@@ -24,7 +27,7 @@ namespace WebApp
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
 
-
+            services.AddDbContext<UserContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("VisualDijkstraConn")));
 
             //JSON serializer
             services.AddControllersWithViews()
@@ -36,6 +39,10 @@ namespace WebApp
                 );
 
             services.AddControllers();
+
+            // UserRepository is a type of IUserRepository 
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<JwtService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
