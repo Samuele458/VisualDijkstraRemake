@@ -10,7 +10,9 @@ namespace WebApp.Models
 
         public string Email { get; set; }
 
-        [JsonIgnore]
+
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
         public string Password { get; set; }
     }
 }

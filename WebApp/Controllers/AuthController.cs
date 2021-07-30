@@ -74,7 +74,7 @@ namespace WebApp.Controllers
 
                 int userId = int.Parse(token.Issuer);
 
-                User user = _repository.GetById(userId);
+                var user = _repository.GetById(userId);
 
                 return Ok(user);
             }
@@ -82,6 +82,18 @@ namespace WebApp.Controllers
             {
                 return Unauthorized();
             }
+        }
+
+
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            Response.Cookies.Delete("jwt");
+
+            return Ok(new
+            {
+                message = "success"
+            });
         }
     }
 }
