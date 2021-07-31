@@ -5,6 +5,7 @@ import GraphEditor from "./components/GraphEditor";
 import Navbar from "./components/Navbar";
 import Dialog from "./components/Dialog";
 import SignupForm from "./components/SignupForm";
+import LoginForm from "./components/LoginForm";
 
 import "./app.scss";
 
@@ -52,6 +53,11 @@ function App() {
         {displaySignup && (
           <Dialog handleClose={toggleSignupBox}>
             <SignupForm />
+          </Dialog>
+        )}
+        {displayLogin && (
+          <Dialog handleClose={toggleLoginBox}>
+            <LoginForm />
           </Dialog>
         )}
         <GraphEditor />
