@@ -55,6 +55,16 @@
     -webkit-box-shadow: 0px 0px 29px -6px rgba(0, 0, 0, 0.35);
     -moz-box-shadow: 0px 0px 29px -6px rgba(0, 0, 0, 0.35);
     box-shadow: 0px 0px 29px -6px rgba(0, 0, 0, 0.35);
+    position: relative;
+
+    .close-dialog {
+      position: relative;
+      top: 0rem;
+      left: 90%;
+      width: 2rem;
+      height: 2rem;
+      display: block;
+    }
   }
 }
 
@@ -63,22 +73,28 @@
     display: block;
     margin-top: 2rem;
 
+    .form-item-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
     .form-label {
-      display: inline-block;
+      display: block;
       padding-bottom: 0.5rem;
     }
 
     .form-error {
-      display: inline-block;
+      display: block;
       font-size: 80%;
-      color: rgb(98, 55, 255);
-      width: 60%;
+      color: rgb(255, 47, 47);
       text-align: right;
       transition: 1s;
+      padding-right: 1rem;
     }
 
     .form-input {
-      display: block;
+      display: inline-block;
       width: 98%;
       padding: 0.6rem;
       transition: 0.2s;

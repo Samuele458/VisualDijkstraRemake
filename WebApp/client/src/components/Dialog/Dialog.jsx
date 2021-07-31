@@ -1,7 +1,12 @@
 const Dialog = (props) => {
   return (
     <div className="dialog-box">
-      <div className="dialog">{props.children}</div>
+      <div className="dialog">
+        <p className="close-dialog" onClick={props.handleClose}>
+          X
+        </p>
+        {props.children}
+      </div>
     </div>
   );
 };

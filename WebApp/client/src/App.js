@@ -26,7 +26,7 @@ function App() {
         toggleSignupBox={toggleSignupBox}
       />
       {displaySignup && (
-        <Dialog>
+        <Dialog handleClose={toggleSignupBox}>
           <SignupForm />
         </Dialog>
       )}
