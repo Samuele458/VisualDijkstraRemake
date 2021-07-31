@@ -7,14 +7,14 @@ const GraphEditor = () => {
   const [currentGraph, setCurrentGraph] = useState(undefined);
 
   useEffect(() => {
-    console.log("URL: ", process.env.REACT_APP_API);
+    /*console.log("URL: ", process.env.REACT_APP_API);
     axios.get(`/api/graph/?name=grafo3`).then((res) => {
       let data = res.data[0];
       setCurrentGraph({
         name: data.GraphName,
         data: JSON.parse(data.GraphData),
       });
-    });
+    });*/
   }, []);
   console.log(currentGraph);
   return (

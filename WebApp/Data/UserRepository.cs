@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using WebApp.Models;
 
 namespace WebApp.Data
@@ -14,6 +15,7 @@ namespace WebApp.Data
 
         public User Create(User user)
         {
+
             _context.Users.Add(user);
             user.Id = _context.SaveChanges();
 
@@ -27,16 +29,41 @@ namespace WebApp.Data
 
         public User GetById(int id)
         {
-            return _context.Users.FirstOrDefault(u => u.Id == id);
+            return _context
+                        .Users
+                        .Include(u => u.Graphs)
+                        .FirstOrDefault(u => u.Id == id);
+
         }
 
         public GraphModel CreateGraph(User user, GraphModel graph)
         {
-            //GetById(userId).Graphs.Add(graph);
             graph.User = user;
             user.Graphs.Add(graph);
             _context.Graphs.Add(graph);
-            graph.Id = _context.SaveChanges();
+            _context.SaveChanges();
+
+            return graph;
+        }
+
+        public GraphModel ReadGraph(string graphName, User user)
+        {
+            return _context
+                        .Graphs
+                        .FirstOrDefault(g => g.UserId == user.Id && g.Name == graphName);
+        }
+
+        public GraphModel UpdateGraph(User user, string graphName, string newData)
+        {
+            GraphModel graph = _context
+                .Graphs
+                .FirstOrDefault(g => g.UserId == user.Id && g.Name == graphName);
+
+            if (graph != default(GraphModel))
+            {
+                graph.Data = newData;
+                _context.SaveChanges();
+            }
 
             return graph;
         }

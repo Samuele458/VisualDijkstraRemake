@@ -9,8 +9,8 @@ using WebApp.Data;
 namespace WebApp.Migrations
 {
     [DbContext(typeof(UserContext))]
-    [Migration("20210731003614_ReferencesUpdate")]
-    partial class ReferencesUpdate
+    [Migration("20210731081202_update")]
+    partial class update
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

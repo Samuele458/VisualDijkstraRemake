@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using WebApp.Data;
 using WebApp.Dtos;
 using WebApp.Models;
@@ -76,7 +77,14 @@ namespace WebApp.Controllers
 
                 var user = _repository.GetById(userId);
 
-                return Ok(user);
+
+
+                return Ok(new
+                {
+                    Name = user.Name,
+                    Email = user.Email,
+                    Graphs = user.Graphs.Select(g => g.Name)
+                });
             }
             catch (Exception)
             {
@@ -97,7 +105,7 @@ namespace WebApp.Controllers
         }
 
         [HttpPost("graph")]
-        public IActionResult NewGraph()
+        public IActionResult CreateGraph(CreateGraphDto dto)
         {
             User user;
             try
@@ -117,11 +125,83 @@ namespace WebApp.Controllers
 
             GraphModel graph = new GraphModel
             {
-                Name = "AAAA",
-                Data = "DATAA",
+                Name = dto.Name,
+                Data = dto.Data,
             };
 
-            return Created("success", _repository.CreateGraph(user, graph));
+            try
+            {
+                _repository.CreateGraph(user, graph);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+
+            return Created("success", graph);
+        }
+
+        [HttpGet("graph")]
+        public IActionResult ReadGraph(ReadGraphDto dto)
+        {
+            User user;
+
+            try
+            {
+                string jwt = Request.Cookies["jwt"];
+
+                JwtSecurityToken token = _jwtService.Verify(jwt);
+
+                int userId = int.Parse(token.Issuer);
+
+                user = _repository.GetById(userId);
+
+            }
+            catch (Exception)
+            {
+                return Unauthorized();
+            }
+
+            GraphModel graph = _repository.ReadGraph(dto.Name, user);
+
+            if (graph == default(GraphModel))
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(graph);
+            }
+        }
+
+
+        [HttpPut("graph")]
+        public IActionResult UpdateGraph(CreateGraphDto dto)
+        {
+            User user;
+
+            try
+            {
+                string jwt = Request.Cookies["jwt"];
+                JwtSecurityToken token = _jwtService.Verify(jwt);
+                int userId = int.Parse(token.Issuer);
+                user = _repository.GetById(userId);
+            }
+            catch (Exception)
+            {
+                return Unauthorized();
+            }
+
+            GraphModel graph = _repository.UpdateGraph(user, dto.Name, dto.Data);
+
+            if (graph == default(GraphModel))
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(graph);
+            }
         }
     }
 }
