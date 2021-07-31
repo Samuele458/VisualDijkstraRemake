@@ -9,5 +9,8 @@ namespace WebApp.Data
         User GetByEmail(string email);
 
         User GetById(int id);
+
+        GraphModel CreateGraph(User user, GraphModel graph);
+
     }
 }

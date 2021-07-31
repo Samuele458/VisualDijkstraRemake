@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace WebApp.Models
 {
@@ -10,9 +11,15 @@ namespace WebApp.Models
 
         public string Email { get; set; }
 
-
-
         [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
         public string Password { get; set; }
+
+        public virtual List<GraphModel> Graphs { get; set; }
+
+        public User()
+        {
+            Graphs = new List<GraphModel>();
+
+        }
     }
 }

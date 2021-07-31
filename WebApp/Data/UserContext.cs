@@ -9,9 +9,16 @@ namespace WebApp.Data
 
         public DbSet<User> Users { get; set; }
 
+        public DbSet<GraphModel> Graphs { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>(entity => { entity.HasIndex(e => e.Email).IsUnique(); });
+
+            modelBuilder.Entity<GraphModel>()
+                .HasOne(g => g.User)
+                .WithMany(u => u.Graphs)
+                .IsRequired();
         }
     }
 }

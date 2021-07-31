@@ -29,5 +29,18 @@ namespace WebApp.Data
         {
             return _context.Users.FirstOrDefault(u => u.Id == id);
         }
+
+        public GraphModel CreateGraph(User user, GraphModel graph)
+        {
+            //GetById(userId).Graphs.Add(graph);
+            graph.User = user;
+            user.Graphs.Add(graph);
+            _context.Graphs.Add(graph);
+            graph.Id = _context.SaveChanges();
+
+            return graph;
+        }
+
+
     }
 }

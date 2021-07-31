@@ -95,5 +95,33 @@ namespace WebApp.Controllers
                 message = "success"
             });
         }
+
+        [HttpPost("graph")]
+        public IActionResult NewGraph()
+        {
+            User user;
+            try
+            {
+                string jwt = Request.Cookies["jwt"];
+
+                JwtSecurityToken token = _jwtService.Verify(jwt);
+
+                int userId = int.Parse(token.Issuer);
+
+                user = _repository.GetById(userId);
+            }
+            catch (Exception)
+            {
+                return Unauthorized();
+            }
+
+            GraphModel graph = new GraphModel
+            {
+                Name = "AAAA",
+                Data = "DATAA",
+            };
+
+            return Created("success", _repository.CreateGraph(user, graph));
+        }
     }
 }
