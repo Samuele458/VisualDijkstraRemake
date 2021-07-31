@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 import GraphEditor from "./components/GraphEditor";
 import Navbar from "./components/Navbar";
@@ -7,9 +8,12 @@ import SignupForm from "./components/SignupForm";
 
 import "./app.scss";
 
+import AuthApi from "./AuthApi";
+
 function App() {
   const [displayLogin, setDisplayLogin] = useState(false);
   const [displaySignup, setDisplaySignup] = useState(false);
+  const [loggedUser, setLoggedUser] = useState(null);
 
   const toggleLoginBox = () => {
     setDisplayLogin(!displayLogin);
@@ -19,18 +23,39 @@ function App() {
     setDisplaySignup(!displaySignup);
   };
 
+  const handleLogout = () => {
+    axios
+      .post("/api/logout")
+      .then((response) => {
+        setLoggedUser(null);
+      })
+      .catch((error) => {
+        console.log("ERROR LOGOUT", error);
+      });
+  };
+
+  useEffect(() => {
+    if (loggedUser != null) {
+      setDisplayLogin(false);
+      setDisplaySignup(false);
+    }
+  }, [loggedUser]);
+
   return (
     <div>
-      <Navbar
-        toggleLoginBox={toggleLoginBox}
-        toggleSignupBox={toggleSignupBox}
-      />
-      {displaySignup && (
-        <Dialog handleClose={toggleSignupBox}>
-          <SignupForm />
-        </Dialog>
-      )}
-      <GraphEditor />
+      <AuthApi.Provider value={{ loggedUser, setLoggedUser }}>
+        <Navbar
+          toggleLoginBox={toggleLoginBox}
+          toggleSignupBox={toggleSignupBox}
+          handleLogout={handleLogout}
+        />
+        {displaySignup && (
+          <Dialog handleClose={toggleSignupBox}>
+            <SignupForm />
+          </Dialog>
+        )}
+        <GraphEditor />
+      </AuthApi.Provider>
     </div>
   );
 }

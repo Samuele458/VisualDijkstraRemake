@@ -1,9 +1,12 @@
-import React, { useRef } from "react";
-import ReactDOM from "react-dom";
-
+import React, { useRef, useContext } from "react";
 import { useForm } from "react-hook-form";
+import axios from "axios";
+
+import AuthApi from "../../AuthApi";
 
 const SignupForm = () => {
+  const Auth = useContext(AuthApi);
+
   const {
     register,
     handleSubmit,
@@ -15,7 +18,29 @@ const SignupForm = () => {
   password.current = watch("password", "");
 
   const onSubmit = async (data) => {
-    console.log(errors, data);
+    axios
+      .post("/api/register", {
+        Name: data.username,
+        Email: data.email,
+        Password: data.password,
+      })
+      .then((response) => {
+        axios
+          .post("/api/login", {
+            Email: data.email,
+            Password: data.password,
+          })
+          .then((response) => {
+            console.log("SUCCESS LOGIN", response);
+            Auth.setLoggedUser(data);
+          })
+          .catch((error) => {
+            console.log("ERROR LOGIN", error);
+          });
+      })
+      .catch((error) => {
+        console.log("ERROR", error);
+      });
   };
   console.log(errors);
 
