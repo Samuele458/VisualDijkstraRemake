@@ -1,4 +1,4 @@
-import React, { useRef, useContext } from "react";
+import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 
@@ -50,10 +50,10 @@ const LoginForm = () => {
           <label htmlFor="password" className="form-label">
             Password
           </label>
-          {errors.password && errors.password.type == "required" && (
+          {errors.password && errors.password.type === "required" && (
             <p className="form-error">Password required</p>
           )}
-          {errors.password && errors.password.type == "minLength" && (
+          {errors.password && errors.password.type === "minLength" && (
             <p className="form-error">Password must be at least 8 characters</p>
           )}
         </div>

@@ -34,3 +34,27 @@ export const edgeAlreadyExists = (graph, sourceName, destName) => {
 
   return typeof edgeFound !== "undefined";
 };
+
+export const encodeGraphReferences = (graph) => {
+  graph.edges.forEach((edge) => {
+    edge.source = graph.nodes.find((node) => node.name === edge.source);
+    edge.dest = graph.nodes.find((node) => node.name === edge.dest);
+  });
+  return graph;
+};
+
+export const decodeGraphReferences = (graph) => {
+  graph.edges.forEach((edge) => {
+    edge.source = edge.source.name;
+    edge.dest = edge.dest.name;
+  });
+  return graph;
+};
+
+export const sanitizeCoordinates = (graph) => {
+  graph.nodes.forEach((node) => {
+    node.x = Math.round(node.x);
+    node.y = Math.round(node.y);
+  });
+  return graph;
+};

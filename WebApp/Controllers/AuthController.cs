@@ -142,7 +142,7 @@ namespace WebApp.Controllers
         }
 
         [HttpGet("graph")]
-        public IActionResult ReadGraph(ReadGraphDto dto)
+        public IActionResult ReadGraph(string name)
         {
             User user;
 
@@ -162,7 +162,7 @@ namespace WebApp.Controllers
                 return Unauthorized();
             }
 
-            GraphModel graph = _repository.ReadGraph(dto.Name, user);
+            GraphModel graph = _repository.ReadGraph(name, user);
 
             if (graph == default(GraphModel))
             {

@@ -1,17 +1,24 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
 import * as d3 from "d3";
 import "d3-selection-multi";
-import Lodash, { set } from "lodash";
+import Lodash from "lodash";
 
 import * as GraphUtils from "../../../../utils/graphUtils";
 
-import AddNodeIcon from "./icons/add.png";
-import AddEdgeIcon from "./icons/route.png";
-import RemoveIcon from "./icons/delete.png";
-import ZoomInIcon from "./icons/zoom-in.png";
-import ZoomOutIcon from "./icons/zoom-out.png";
-import CheckIcon from "./icons/check.png";
-import SaveIcon from "./icons/save.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faMinusCircle,
+  faPlusCircle,
+  faLink,
+  faDownload,
+  faSearchPlus,
+  faSearchMinus,
+  faSave,
+  faCloud,
+  faCheckCircle,
+} from "@fortawesome/free-solid-svg-icons";
+
+import CheckIcon from "../../icons/check.png";
 
 import AuthApi from "../../../../AuthApi";
 
@@ -33,7 +40,6 @@ const GraphBox = (props) => {
   let [graph, setGraph] = useState({ nodes: [], edges: [] });
 
   let [nodeCreationRequested, setNodeCreationRequested] = useState(false);
-  let [nodeCreationText, setNodeCreationText] = useState("");
 
   let [edgeCreationRequested, setEdgeCreationRequested] = useState(false);
   let [firstNode, setFirstNode] = useState(null);
@@ -54,10 +60,7 @@ const GraphBox = (props) => {
       graphObj.edges.length > 0 &&
       typeof graphObj.edges[0].source === "string"
     )
-      graphObj.edges.forEach(function (edge) {
-        edge.source = graphObj.nodes.find((node) => node.name === edge.source);
-        edge.dest = graphObj.nodes.find((node) => node.name === edge.dest);
-      });
+      GraphUtils.encodeGraphReferences(graphObj);
     console.log("REFRESHING GRAPH FROM PROPS", props.graph);
     setGraph(graphObj, "props:", props);
   }, [props.graph]);
@@ -292,8 +295,9 @@ const GraphBox = (props) => {
     <div className="graph-box-wrapper">
       <div className="graph-toolbar">
         {Auth.loggedUser && (
-          <img
-            src={SaveIcon}
+          <FontAwesomeIcon
+            icon={faSave}
+            className="btn-icon"
             alt="Save"
             onClick={() => {
               props.handleGraphChange(graph);
@@ -301,46 +305,46 @@ const GraphBox = (props) => {
           />
         )}
 
-        <img
-          src={AddNodeIcon}
+        <FontAwesomeIcon
+          icon={faPlusCircle}
+          className="btn-icon"
           alt="Add new node"
           onClick={() => {
             setNodeCreationRequested(true);
           }}
         />
-        <input
-          type="text"
-          onChange={(e) => {
-            setNodeCreationText(e.target.value);
+
+        <FontAwesomeIcon
+          icon={faMinusCircle}
+          className="btn-icon"
+          alt="Remove node"
+          onClick={() => {
+            setNodeRemovalRequested(true);
           }}
-          value={nodeCreationText}
         />
-        <img
-          src={AddEdgeIcon}
+
+        <FontAwesomeIcon
+          icon={faLink}
+          className="btn-icon"
           alt="Add new edge"
           onClick={() => {
             setEdgeCreationRequested(true);
           }}
         />
-        <img
-          src={ZoomInIcon}
-          alt="ZoomIn"
+        <FontAwesomeIcon
+          icon={faSearchPlus}
+          className="btn-icon"
+          alt="Zoom in"
           onClick={() => {
             setScale((previous) => previous * 1.1);
           }}
         />
-        <img
-          src={ZoomOutIcon}
-          alt="ZoomOut"
+        <FontAwesomeIcon
+          icon={faSearchMinus}
+          className="btn-icon"
+          alt="Zoom out"
           onClick={() => {
             setScale((previous) => previous * 0.9);
-          }}
-        />
-        <img
-          src={RemoveIcon}
-          alt="Remove node"
-          onClick={() => {
-            setNodeRemovalRequested(true);
           }}
         />
       </div>
@@ -389,15 +393,12 @@ const GraphBox = (props) => {
             e.target.className.baseVal === "graph-svg" &&
             nodeCreationRequested
           ) {
-            if (
-              graph.nodes.filter((n) => n.name === nodeCreationText).length ===
-              0
-            ) {
+            if (graph.nodes.filter((n) => n.name === "").length === 0) {
               let holdGraph = Lodash.cloneDeep(graph);
               holdGraph.nodes.push({
                 x: x * (1 / scale),
                 y: y * (1 / scale),
-                name: nodeCreationText,
+                name: "",
               });
               setGraph(holdGraph);
 
@@ -502,14 +503,15 @@ const GraphBox = (props) => {
             }));
           }}
           onKeyDown={(e) => {
-            if (e.keyCode == 13) {
+            if (e.keyCode === 13) {
               setInputBonValue();
             }
           }}
         />
         <img
           src={CheckIcon}
-          className="submit"
+          className="submit btn-icon"
+          alt=""
           onClick={() => {
             setInputBonValue();
           }}
