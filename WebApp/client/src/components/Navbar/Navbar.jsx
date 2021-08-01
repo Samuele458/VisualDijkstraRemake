@@ -5,8 +5,6 @@ import AuthApi from "../../AuthApi";
 const Navbar = (props) => {
   const Auth = useContext(AuthApi);
 
-  console.log("NAVBAR:", Auth.loggedUser);
-
   return (
     <nav className="navbar">
       <ul className="nav-list">

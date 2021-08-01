@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import * as d3 from "d3";
 import "d3-selection-multi";
 import Lodash, { set } from "lodash";
@@ -11,6 +11,9 @@ import RemoveIcon from "./icons/delete.png";
 import ZoomInIcon from "./icons/zoom-in.png";
 import ZoomOutIcon from "./icons/zoom-out.png";
 import CheckIcon from "./icons/check.png";
+import SaveIcon from "./icons/save.png";
+
+import AuthApi from "../../../../AuthApi";
 
 const useFocus = () => {
   const htmlElRef = useRef(null);
@@ -23,6 +26,8 @@ const useFocus = () => {
 };
 
 const GraphBox = (props) => {
+  const Auth = useContext(AuthApi);
+
   let svg = useRef(null);
   let graphGroup = useRef(null);
   let [graph, setGraph] = useState({ nodes: [], edges: [] });
@@ -44,12 +49,16 @@ const GraphBox = (props) => {
   const [inputRef, setInputFocus] = useFocus();
 
   useEffect(() => {
-    let graphObj = props.graph.data;
-    graphObj.edges.forEach(function (edge) {
-      edge.source = graphObj.nodes.find((node) => node.name === edge.source);
-      edge.dest = graphObj.nodes.find((node) => node.name === edge.dest);
-    });
-    console.log(graphObj);
+    let graphObj = Lodash.cloneDeep(props.graph);
+    if (
+      graphObj.edges.length > 0 &&
+      typeof graphObj.edges[0].source === "string"
+    )
+      graphObj.edges.forEach(function (edge) {
+        edge.source = graphObj.nodes.find((node) => node.name === edge.source);
+        edge.dest = graphObj.nodes.find((node) => node.name === edge.dest);
+      });
+    console.log("REFRESHING GRAPH FROM PROPS", props.graph);
     setGraph(graphObj, "props:", props);
   }, [props.graph]);
 
@@ -69,9 +78,12 @@ const GraphBox = (props) => {
   }, []);*/
 
   useEffect(() => {
-    if (graph !== 0 && graphGroup) {
-      d3.select(graphGroup.current).selectAll("*").remove();
+    if (graph && graphGroup) {
+      console.log("HEre is graph: ", graph);
+      //saving file
+      //props.handleGraphChange(graph);
 
+      d3.select(graphGroup.current).selectAll("*").remove();
       d3.select(svg.current).call(
         d3
           .drag()
@@ -129,7 +141,7 @@ const GraphBox = (props) => {
         .attr("cy", function (d) {
           return d.y;
         })
-        .call(d3.drag().on("drag", dragged));
+        .call(d3.drag().on("drag", dragged).on("start", dragstarted));
 
       var weight = svgGroup
         .append("g")
@@ -158,7 +170,7 @@ const GraphBox = (props) => {
         .attr("cy", function (d) {
           return d.y;
         })
-        .call(d3.drag().on("drag", dragged));
+        .call(d3.drag().on("drag", dragged).on("start", dragstarted));
 
       var node_text = svgGroup
         .append("g")
@@ -177,11 +189,14 @@ const GraphBox = (props) => {
         .attr("y", function (d) {
           return d.y + 10;
         })
-        .call(d3.drag().on("drag", dragged));
+        .call(d3.drag().on("drag", dragged).on("start", dragstarted));
 
       function dragged(event, d) {
         d.x = event.x;
         d.y = event.y;
+
+        //saving file
+        //props.handleGraphChange(graph);
 
         if (nodeUnderEdit !== null) {
           if (nodeUnderEdit.name === d.name)
@@ -234,9 +249,9 @@ const GraphBox = (props) => {
           .attr("y", d.y + 10);
       }
 
-      function dragstarted(event, d) {
+      function dragstarted(event) {
         event.sourceEvent.stopPropagation();
-        event.sourceEvent.preventDefault();
+        //event.sourceEvent.preventDefault();
       }
 
       function draggedd(event) {
@@ -276,6 +291,16 @@ const GraphBox = (props) => {
   return (
     <div className="graph-box-wrapper">
       <div className="graph-toolbar">
+        {Auth.loggedUser && (
+          <img
+            src={SaveIcon}
+            alt="Save"
+            onClick={() => {
+              props.handleGraphChange(graph);
+            }}
+          />
+        )}
+
         <img
           src={AddNodeIcon}
           alt="Add new node"
@@ -319,7 +344,6 @@ const GraphBox = (props) => {
           }}
         />
       </div>
-
       <svg
         className="graph-svg"
         ref={svg}
@@ -358,6 +382,8 @@ const GraphBox = (props) => {
           let dim = e.target.getBoundingClientRect();
           let x = e.clientX - dim.left - transformPos.x;
           let y = e.clientY - dim.top - transformPos.y;
+
+          console.log("MOUSE DOWN", x, y);
 
           if (
             e.target.className.baseVal === "graph-svg" &&

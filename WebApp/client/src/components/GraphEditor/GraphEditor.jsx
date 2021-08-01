@@ -1,35 +1,52 @@
 import "./GraphEditor.scss";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import GraphBox from "./components/GraphBox";
+import Lodash from "lodash";
 import axios from "axios";
+
+import AuthApi from "../../AuthApi";
+
 const GraphEditor = () => {
-  const [currentGraph, setCurrentGraph] = useState(undefined);
+  const Auth = useContext(AuthApi);
+
+  const [currentGraph, setCurrentGraph] = useState({ nodes: [], edges: [] });
+  const [currentName, setCurrentName] = useState("Untitled");
+  const [wasUploaded, setWasUploaded] = useState(false);
 
   useEffect(() => {
-    /*console.log("URL: ", process.env.REACT_APP_API);
-    axios.get(`/api/graph/?name=grafo3`).then((res) => {
-      let data = res.data[0];
-      setCurrentGraph({
-        name: data.GraphName,
-        data: JSON.parse(data.GraphData),
-      });
-    });*/
-  }, []);
-  console.log(currentGraph);
-  return (
-    <div className="graph-editor">
-      <div className="graph-sidebar">
-        <p>{currentGraph && currentGraph.GraphData}</p>
-      </div>
+    if (!Auth.loggedUser) {
+      setCurrentGraph({ nodes: [], edges: [] });
+      setCurrentName("Untitled");
+      setWasUploaded(false);
+    }
+  }, [Auth.loggedUser]);
 
-      <GraphBox
-        graph={
-          currentGraph
-            ? currentGraph
-            : { name: "Untitled", data: { nodes: [], edges: [] } }
-        }
-      />
+  const handleGraphChange = (graph) => {
+    console.log("Handling graph change...", graph);
+
+    setCurrentGraph(graph);
+  };
+
+  //if (!readyToSave) return null;
+  console.log("Re rendering");
+  return (
+    <div className="graph-editor-box">
+      {Auth.loggedUser && (
+        <input
+          type="text"
+          value={currentName}
+          onChange={(e) => {
+            if (!wasUploaded) setCurrentName(e.target.value);
+          }}
+        />
+      )}
+
+      <div className="graph-editor">
+        <div className="graph-sidebar" onClick={() => {}}></div>
+
+        <GraphBox graph={currentGraph} handleGraphChange={handleGraphChange} />
+      </div>
     </div>
   );
 };
