@@ -24,3 +24,13 @@ export const decodeEdgeName = (name) => {
 export const encodeEdgeName = (source, dest) => {
   return source.name + "-" + dest.name;
 };
+
+export const edgeAlreadyExists = (graph, sourceName, destName) => {
+  let edgeFound = graph.edges.find(
+    (edge) =>
+      (edge.source.name === sourceName && edge.dest.name === destName) ||
+      (edge.source.name === destName && edge.dest.name === sourceName)
+  );
+
+  return typeof edgeFound !== "undefined";
+};

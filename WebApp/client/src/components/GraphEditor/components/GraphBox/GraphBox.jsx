@@ -12,6 +12,16 @@ import ZoomInIcon from "./icons/zoom-in.png";
 import ZoomOutIcon from "./icons/zoom-out.png";
 import CheckIcon from "./icons/check.png";
 
+const useFocus = () => {
+  const htmlElRef = useRef(null);
+  const setFocus = () => {
+    htmlElRef.current && htmlElRef.current.focus();
+    console.log("FOCUS:", htmlElRef.current);
+  };
+
+  return [htmlElRef, setFocus];
+};
+
 const GraphBox = (props) => {
   let svg = useRef(null);
   let graphGroup = useRef(null);
@@ -30,6 +40,8 @@ const GraphBox = (props) => {
 
   let [transformPos, setTransformPos] = useState({ x: 0, y: 0 });
   let [scale, setScale] = useState(1);
+
+  const [inputRef, setInputFocus] = useFocus();
 
   useEffect(() => {
     let graphObj = props.graph.data;
@@ -241,7 +253,25 @@ const GraphBox = (props) => {
 
       function dragended(event, d) {}
     }
+    setInputFocus();
   }, [graph, nodeUnderEdit]);
+
+  const setInputBonValue = () => {
+    let holdGraph = Lodash.cloneDeep(graph);
+
+    if (typeof nodeUnderEdit.weight === "undefined") {
+      holdGraph.nodes.find((node) => node.name === nodeUnderEdit.name).name =
+        inputBoxInfo.text;
+    } else {
+      holdGraph.edges.find(
+        (edge) =>
+          edge.source.name === nodeUnderEdit.source.name &&
+          edge.dest.name === nodeUnderEdit.dest.name
+      ).weight = parseInt(inputBoxInfo.text);
+    }
+    setGraph(holdGraph);
+    setNodeUnderEdit(null);
+  };
 
   return (
     <div className="graph-box-wrapper">
@@ -344,6 +374,10 @@ const GraphBox = (props) => {
                 name: nodeCreationText,
               });
               setGraph(holdGraph);
+
+              let node = holdGraph.nodes.find((n) => n.name === "");
+              setNodeUnderEdit(node);
+              setInputBoxInfo({ text: "", x: e.clientX, y: e.clientY });
             }
             //setGraph({ ...graph, dfdf: 3 });
           } else if (
@@ -368,7 +402,10 @@ const GraphBox = (props) => {
             let name = e.target.getAttribute("name");
             let node = graph.nodes.find((n) => n.name === name);
 
-            if (typeof node != "undefined") {
+            if (
+              typeof node != "undefined" &&
+              !GraphUtils.edgeAlreadyExists(graph, node.name, firstNode.name)
+            ) {
               let holdGraph = Lodash.cloneDeep(graph);
               holdGraph.edges.push({
                 source: holdGraph.nodes.find((n) => n.name === firstNode.name),
@@ -430,6 +467,7 @@ const GraphBox = (props) => {
         <input
           type="text"
           className="input-text"
+          ref={inputRef}
           value={inputBoxInfo.text}
           onChange={(e) => {
             setInputBoxInfo((previous) => ({
@@ -437,26 +475,17 @@ const GraphBox = (props) => {
               text: e.target.value,
             }));
           }}
+          onKeyDown={(e) => {
+            if (e.keyCode == 13) {
+              setInputBonValue();
+            }
+          }}
         />
         <img
           src={CheckIcon}
           className="submit"
           onClick={() => {
-            let holdGraph = Lodash.cloneDeep(graph);
-
-            if (typeof nodeUnderEdit.weight === "undefined") {
-              holdGraph.nodes.find(
-                (node) => node.name === nodeUnderEdit.name
-              ).name = inputBoxInfo.text;
-            } else {
-              holdGraph.edges.find(
-                (edge) =>
-                  edge.source.name === nodeUnderEdit.source.name &&
-                  edge.dest.name === nodeUnderEdit.dest.name
-              ).weight = parseInt(inputBoxInfo.text);
-            }
-            setGraph(holdGraph);
-            setNodeUnderEdit(null);
+            setInputBonValue();
           }}
         />
       </div>
