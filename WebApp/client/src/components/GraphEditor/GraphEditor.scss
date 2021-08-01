@@ -43,7 +43,11 @@
       .node {
         stroke: rgb(0, 0, 0);
         stroke-width: 8px;
-        fill: rgb(255, 255, 255);
+        fill: rgba(255, 255, 255, 0.712);
+      }
+
+      .node-bg {
+        fill: white;
       }
 
       .node-text {

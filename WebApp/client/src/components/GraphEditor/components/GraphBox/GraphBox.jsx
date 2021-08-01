@@ -81,6 +81,7 @@ const GraphBox = (props) => {
         .on("dblclick.zoom", null);
 
       let svgGroup = d3.select(graphGroup.current);
+
       var edge = svgGroup
         .append("g")
         .selectAll("line")
@@ -88,18 +89,35 @@ const GraphBox = (props) => {
         .enter()
         .append("line")
         .attr("class", "edge")
-        .attr("x1", function (d) {
+        .attr("x1", (d) => {
           return d.source.x;
         })
-        .attr("y1", function (d) {
+        .attr("y1", (d) => {
           return d.source.y;
         })
-        .attr("x2", function (d) {
+        .attr("x2", (d) => {
           return d.dest.x;
         })
-        .attr("y2", function (d) {
+        .attr("y2", (d) => {
           return d.dest.y;
         });
+
+      var node_bg = svgGroup
+        .append("g")
+        .selectAll("circle")
+        .data(graph.nodes)
+        .enter()
+        .append("circle")
+        .attr("name", (d) => d.name)
+        .attr("class", "node-bg")
+        .attr("r", 30)
+        .attr("cx", function (d) {
+          return d.x;
+        })
+        .attr("cy", function (d) {
+          return d.y;
+        })
+        .call(d3.drag().on("drag", dragged));
 
       var weight = svgGroup
         .append("g")
@@ -140,8 +158,9 @@ const GraphBox = (props) => {
         .attr("name", (d) => d.name)
         .attr("class", "node-text")
         .attr("focusable", "true")
+        .attr("text-anchor", "middle")
         .attr("x", function (d) {
-          return d.x - 10;
+          return d.x;
         })
         .attr("y", function (d) {
           return d.y + 10;
@@ -163,6 +182,13 @@ const GraphBox = (props) => {
         }
 
         node
+          .filter(function (n) {
+            return n === d;
+          })
+          .attr("cx", d.x)
+          .attr("cy", d.y);
+
+        node_bg
           .filter(function (n) {
             return n === d;
           })
@@ -192,7 +218,7 @@ const GraphBox = (props) => {
           .filter(function (n) {
             return n === d;
           })
-          .attr("x", d.x - 10)
+          .attr("x", d.x)
           .attr("y", d.y + 10);
       }
 
