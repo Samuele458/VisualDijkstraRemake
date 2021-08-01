@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
+using VisualDijkstraRemake.Models;
+using VisualDijkstraRemake.Utils;
 using WebApp.Data;
 using WebApp.Dtos;
 using WebApp.Models;
@@ -121,6 +125,39 @@ namespace WebApp.Controllers
             {
                 return Ok(graph);
             }
+        }
+
+        [HttpGet("graph/solve")]
+        public IActionResult Solve(string name, string source, string dest)
+        {
+            User user;
+
+            try
+            {
+                string jwt = Request.Cookies["jwt"];
+                JwtSecurityToken token = _jwtService.Verify(jwt);
+                int userId = int.Parse(token.Issuer);
+                user = _userRepository.GetById(userId);
+            }
+            catch (Exception)
+            {
+                return Unauthorized();
+            }
+
+            Debug.WriteLine(name + " " + source + " " + dest);
+
+            GraphModel graphModel = _graphRepository.ReadGraph(name, user);
+            if (graphModel == default(GraphModel))
+            {
+                return NotFound();
+            }
+
+            Graph graph = GraphUtils.decodeGraphFromJSONString(graphModel.Data);
+
+            Dijkstra solver = new Dijkstra(graph);
+            List<GraphState> states = solver.Solve(source, dest);
+
+            return Ok(states);
         }
     }
 }

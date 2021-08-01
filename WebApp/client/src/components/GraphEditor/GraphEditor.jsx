@@ -83,6 +83,20 @@ const GraphEditor = () => {
     }
   };
 
+  const handlePathRequest = (sourceName, destName) => {
+    console.log(sourceName, "-->", destName);
+    axios
+      .get(
+        `/api/graph/solve?name=${currentName}&source=${sourceName}&dest=${destName}`
+      )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log("ERROR LOGOUT", error);
+      });
+  };
+
   const loadGraph = (name) => {
     axios
       .get(`/api/graph?Name=${name}`)
@@ -130,6 +144,7 @@ const GraphEditor = () => {
           <GraphBox
             graph={currentGraph}
             handleGraphChange={handleGraphChange}
+            handlePathRequest={handlePathRequest}
           />
         </div>
       </div>

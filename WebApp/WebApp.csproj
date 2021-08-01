@@ -25,5 +25,9 @@
     <Folder Include="Migrations\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\VisualDijkstraLib\VisualDijkstraLib.csproj" />
+  </ItemGroup>
+
 
 </Project>

@@ -10,12 +10,10 @@ import {
   faMinusCircle,
   faPlusCircle,
   faLink,
-  faDownload,
   faSearchPlus,
   faSearchMinus,
   faSave,
-  faCloud,
-  faCheckCircle,
+  faRoute,
 } from "@fortawesome/free-solid-svg-icons";
 
 import CheckIcon from "../../icons/check.png";
@@ -35,22 +33,23 @@ const useFocus = () => {
 const GraphBox = (props) => {
   const Auth = useContext(AuthApi);
 
-  let svg = useRef(null);
-  let graphGroup = useRef(null);
-  let [graph, setGraph] = useState({ nodes: [], edges: [] });
+  const svg = useRef(null);
+  const graphGroup = useRef(null);
+  const [graph, setGraph] = useState({ nodes: [], edges: [] });
 
-  let [nodeCreationRequested, setNodeCreationRequested] = useState(false);
+  const [nodeCreationRequested, setNodeCreationRequested] = useState(false);
 
-  let [edgeCreationRequested, setEdgeCreationRequested] = useState(false);
-  let [firstNode, setFirstNode] = useState(null);
+  const [pathRequested, setPathRequested] = useState(true);
+  const [edgeCreationRequested, setEdgeCreationRequested] = useState(false);
+  const [firstNode, setFirstNode] = useState(null);
 
-  let [nodeRemovalRequested, setNodeRemovalRequested] = useState(false);
+  const [nodeRemovalRequested, setNodeRemovalRequested] = useState(false);
 
-  let [nodeUnderEdit, setNodeUnderEdit] = useState(null);
-  let [inputBoxInfo, setInputBoxInfo] = useState({ text: "", x: 0, y: 0 });
+  const [nodeUnderEdit, setNodeUnderEdit] = useState(null);
+  const [inputBoxInfo, setInputBoxInfo] = useState({ text: "", x: 0, y: 0 });
 
-  let [transformPos, setTransformPos] = useState({ x: 0, y: 0 });
-  let [scale, setScale] = useState(1);
+  const [transformPos, setTransformPos] = useState({ x: 0, y: 0 });
+  const [scale, setScale] = useState(1);
 
   const [inputRef, setInputFocus] = useFocus();
 
@@ -331,6 +330,17 @@ const GraphBox = (props) => {
             setEdgeCreationRequested(true);
           }}
         />
+        {Auth.loggedUser && (
+          <FontAwesomeIcon
+            icon={faRoute}
+            className="btn-icon"
+            alt="Evaluate path"
+            onClick={() => {
+              setPathRequested(true);
+            }}
+          />
+        )}
+
         <FontAwesomeIcon
           icon={faSearchPlus}
           className="btn-icon"
@@ -386,8 +396,6 @@ const GraphBox = (props) => {
           let dim = e.target.getBoundingClientRect();
           let x = e.clientX - dim.left - transformPos.x;
           let y = e.clientY - dim.top - transformPos.y;
-
-          console.log("MOUSE DOWN", x, y);
 
           if (
             e.target.className.baseVal === "graph-svg" &&
@@ -462,6 +470,34 @@ const GraphBox = (props) => {
 
             setGraph(holdGraph);
             setNodeRemovalRequested(false);
+          } else if (
+            pathRequested &&
+            firstNode === null &&
+            (e.target.className.baseVal === "node" ||
+              e.target.className.baseVal === "node-text")
+          ) {
+            let name = e.target.getAttribute("name");
+            let node = graph.nodes.find((n) => n.name === name);
+            console.log("First path req");
+            if (typeof node != "undefined") {
+              setFirstNode(node);
+            }
+          } else if (
+            pathRequested &&
+            firstNode != null &&
+            (e.target.className.baseVal === "node" ||
+              e.target.className.baseVal === "node-text")
+          ) {
+            let name = e.target.getAttribute("name");
+            let node = graph.nodes.find((n) => n.name === name);
+            console.log("Second path req");
+            if (typeof node != "undefined") {
+              console.log("solving");
+              props.handlePathRequest(node.name, firstNode.name);
+            }
+
+            setPathRequested(false);
+            setFirstNode(null);
           } else {
             setNodeUnderEdit(null);
           }

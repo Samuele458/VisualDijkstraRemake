@@ -181,6 +181,7 @@ namespace VisualDijkstraRemake.Utils
             {
 
                 var graphObj = JsonConvert.DeserializeObject<dynamic>(jsonString);
+                System.Diagnostics.Debug.WriteLine(jsonString);
 
 
                 foreach (var node in graphObj.nodes)
@@ -192,8 +193,8 @@ namespace VisualDijkstraRemake.Utils
 
                 foreach (var edge in graphObj.edges)
                 {
-                    graph.CreateNewEdge(graph.GetNode((string)edge.a),
-                                        graph.GetNode((string)edge.b),
+                    graph.CreateNewEdge(graph.GetNode((string)edge.source),
+                                        graph.GetNode((string)edge.dest),
                                         (int)edge.weight);
                 }
             }
