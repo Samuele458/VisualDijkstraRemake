@@ -42,6 +42,7 @@ namespace WebApp
 
             // UserRepository is a type of IUserRepository 
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IGraphRepository, GraphRepository>();
             services.AddScoped<JwtService>();
         }
 
