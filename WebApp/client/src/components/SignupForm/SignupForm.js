@@ -31,18 +31,12 @@ const SignupForm = () => {
             Password: data.password,
           })
           .then((response) => {
-            console.log("SUCCESS LOGIN", response);
             Auth.setLoggedUser(data);
           })
-          .catch((error) => {
-            console.log("ERROR LOGIN", error);
-          });
+          .catch((error) => {});
       })
-      .catch((error) => {
-        console.log("ERROR", error);
-      });
+      .catch((error) => {});
   };
-  console.log(errors);
 
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>

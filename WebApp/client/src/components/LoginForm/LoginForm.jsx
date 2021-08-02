@@ -20,12 +20,9 @@ const LoginForm = () => {
         Password: data.password,
       })
       .then((response) => {
-        console.log("SUCCESS LOGIN", response);
         Auth.setLoggedUser(data);
       })
-      .catch((error) => {
-        console.log("ERROR LOGIN", error);
-      });
+      .catch((error) => {});
   };
 
   return (

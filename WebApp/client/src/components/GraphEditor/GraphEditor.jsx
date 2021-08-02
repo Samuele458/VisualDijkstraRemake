@@ -27,7 +27,6 @@ const GraphEditor = () => {
       axios
         .get("/api/user")
         .then((response) => {
-          console.log("Done");
           setGraphNames(response.data.Graphs);
         })
         .catch((error) => {
@@ -44,9 +43,7 @@ const GraphEditor = () => {
   }, [Auth.loggedUser]);
 
   const handleGraphChange = (graph) => {
-    console.log("Handling graph change...", graph);
     if (alreadyUploaded) {
-      console.log("UPDATING");
       axios
         .put("/api/graph", {
           name: currentName,
@@ -57,7 +54,6 @@ const GraphEditor = () => {
           ),
         })
         .then((response) => {
-          console.log("Done");
           setAlreadyUploaded(true);
         })
         .catch((error) => {
@@ -74,7 +70,6 @@ const GraphEditor = () => {
           ),
         })
         .then((response) => {
-          console.log("Done");
           setAlreadyUploaded(true);
         })
         .catch((error) => {
@@ -83,25 +78,10 @@ const GraphEditor = () => {
     }
   };
 
-  const handlePathRequest = (sourceName, destName) => {
-    console.log(sourceName, "-->", destName);
-    axios
-      .get(
-        `/api/graph/solve?name=${currentName}&source=${sourceName}&dest=${destName}`
-      )
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log("ERROR LOGOUT", error);
-      });
-  };
-
   const loadGraph = (name) => {
     axios
       .get(`/api/graph?Name=${name}`)
       .then((response) => {
-        console.log("Done");
         setCurrentGraph(JSON.parse(response.data.Data));
         setCurrentName(name);
         setAlreadyUploaded(true);
@@ -143,8 +123,8 @@ const GraphEditor = () => {
           )}
           <GraphBox
             graph={currentGraph}
+            name={currentName}
             handleGraphChange={handleGraphChange}
-            handlePathRequest={handlePathRequest}
           />
         </div>
       </div>

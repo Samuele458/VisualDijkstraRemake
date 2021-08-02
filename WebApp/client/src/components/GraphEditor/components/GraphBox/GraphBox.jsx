@@ -4,6 +4,7 @@ import "d3-selection-multi";
 import Lodash from "lodash";
 
 import * as GraphUtils from "../../../../utils/graphUtils";
+import StatesViewer from "../../../StatesViewer";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -24,7 +25,6 @@ const useFocus = () => {
   const htmlElRef = useRef(null);
   const setFocus = () => {
     htmlElRef.current && htmlElRef.current.focus();
-    console.log("FOCUS:", htmlElRef.current);
   };
 
   return [htmlElRef, setFocus];
@@ -42,6 +42,8 @@ const GraphBox = (props) => {
   const [pathRequested, setPathRequested] = useState(true);
   const [edgeCreationRequested, setEdgeCreationRequested] = useState(false);
   const [firstNode, setFirstNode] = useState(null);
+  const [pathToSolve, setPathToSolve] = useState(null);
+  const [currentState, setCurrentState] = useState(null);
 
   const [nodeRemovalRequested, setNodeRemovalRequested] = useState(false);
 
@@ -81,10 +83,6 @@ const GraphBox = (props) => {
 
   useEffect(() => {
     if (graph && graphGroup) {
-      console.log("HEre is graph: ", graph);
-      //saving file
-      //props.handleGraphChange(graph);
-
       d3.select(graphGroup.current).selectAll("*").remove();
       d3.select(svg.current).call(
         d3
@@ -164,7 +162,7 @@ const GraphBox = (props) => {
         .enter()
         .append("circle")
         .attr("name", (d) => d.name)
-        .attr("class", "node")
+        .attr("class", (d) => "node")
         .attr("r", 30)
         .attr("cx", function (d) {
           return d.x;
@@ -478,8 +476,8 @@ const GraphBox = (props) => {
           ) {
             let name = e.target.getAttribute("name");
             let node = graph.nodes.find((n) => n.name === name);
-            console.log("First path req");
-            if (typeof node != "undefined") {
+
+            if (typeof node !== "undefined") {
               setFirstNode(node);
             }
           } else if (
@@ -490,10 +488,14 @@ const GraphBox = (props) => {
           ) {
             let name = e.target.getAttribute("name");
             let node = graph.nodes.find((n) => n.name === name);
-            console.log("Second path req");
-            if (typeof node != "undefined") {
-              console.log("solving");
-              props.handlePathRequest(node.name, firstNode.name);
+            if (typeof node !== "undefined") {
+              setPathToSolve({
+                name: props.name,
+                source: name,
+                dest: firstNode.name,
+              });
+              //console.log(firstNode);
+              //props.handlePathRequest(node.name, firstNode.name);
             }
 
             setPathRequested(false);
@@ -553,6 +555,7 @@ const GraphBox = (props) => {
           }}
         />
       </div>
+      <StatesViewer pathToSolve={pathToSolve} setState={setCurrentState} />
     </div>
   );
 };
