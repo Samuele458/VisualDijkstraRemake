@@ -58,3 +58,49 @@ export const sanitizeCoordinates = (graph) => {
   });
   return graph;
 };
+
+export const deducePathClassName = (item, state) => {
+  if (state) {
+    /*if (item && item.source) {
+      const result = state.NodesStates.find(
+        (d) => d.Name === item.source.name && d.Previous === "DEFAULT_PREVIOUS_NODE"
+      );
+      console.log("Edge: ", item);
+      return " path";
+      //lo stampa se
+      //source
+    }*/
+
+    if (item && item.name) {
+      const result = state.NodesStates.find(
+        (d) => d.Name === item.name && d.Previous !== "DEFAULT_PREVIOUS_NODE"
+      );
+
+      if (result) return " path";
+      else return "";
+    }
+  }
+  return "";
+};
+
+export const setupPath = (nodes, edges, state) => {
+  console.log("nodes:", nodes);
+  nodes.forEach((node, i) => {
+    console.log("Node:", node.getAttribute("name"));
+    if (state.NodesStates.find((n) => n.Name === node.getAttribute("name"))) {
+      node.className = "node path";
+    }
+  });
+};
+
+export const evaluatePathFromState = (state) => {
+  let path = [];
+  let currentNode = state.Dest;
+  while (currentNode !== "DEFAULT_PREVIOUS_NODE") {
+    path.push(currentNode);
+    currentNode = state.StatesNodes.find(
+      (s) => s.Name === currentNode
+    ).Previous;
+  }
+  return path;
+};

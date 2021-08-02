@@ -83,6 +83,7 @@ const GraphBox = (props) => {
 
   useEffect(() => {
     if (graph && graphGroup) {
+      console.log("Refreshing graph...");
       d3.select(graphGroup.current).selectAll("*").remove();
       d3.select(svg.current).call(
         d3
@@ -112,7 +113,28 @@ const GraphBox = (props) => {
         .data(graph.edges)
         .enter()
         .append("line")
-        .attr("class", "edge")
+        .attr("name", (d) => GraphUtils.encodeEdgeName(d.source, d.dest))
+        .attr("class", (d) => {
+          if (currentState) {
+            /*
+            const sourceState = currentState.NodesStates.find(
+              (s) => s.Name === d.source.name
+            );
+
+            const destState = currentState.NodesStates.find(
+              (s) => s.Name === d.dest.name
+            );
+
+            if (
+              sourceState.Previous === destState.Name ||
+              destState.Previous === sourceState.Name
+            ) {
+              return "edge path";
+            }*/
+          }
+
+          return "edge";
+        })
         .attr("x1", (d) => {
           return d.source.x;
         })
@@ -162,7 +184,19 @@ const GraphBox = (props) => {
         .enter()
         .append("circle")
         .attr("name", (d) => d.name)
-        .attr("class", (d) => "node")
+        .attr("class", (d) => {
+          if (currentState) {
+            const state = currentState.NodesStates.find(
+              (s) => s.Name === d.name
+            );
+
+            if (state.Previous !== "DEFAULT_PREVIOUS_NODE") {
+              return "node path";
+            }
+          }
+
+          return "node";
+        })
         .attr("r", 30)
         .attr("cx", function (d) {
           return d.x;
@@ -171,6 +205,13 @@ const GraphBox = (props) => {
           return d.y;
         })
         .call(d3.drag().on("drag", dragged).on("start", dragstarted));
+
+      /*
+      if (currentState) {
+
+        GraphUtils.setupPath(node._groups[0], edge, currentState);
+
+      }*/
 
       var node_text = svgGroup
         .append("g")
@@ -269,7 +310,7 @@ const GraphBox = (props) => {
       function dragended(event, d) {}
     }
     setInputFocus();
-  }, [graph, nodeUnderEdit]);
+  }, [graph, nodeUnderEdit, currentState]);
 
   const setInputBonValue = () => {
     let holdGraph = Lodash.cloneDeep(graph);

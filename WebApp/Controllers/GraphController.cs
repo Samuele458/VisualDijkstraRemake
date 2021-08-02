@@ -34,11 +34,8 @@ namespace WebApp.Controllers
             try
             {
                 string jwt = Request.Cookies["jwt"];
-
                 JwtSecurityToken token = _jwtService.Verify(jwt);
-
                 int userId = int.Parse(token.Issuer);
-
                 user = _userRepository.GetById(userId);
             }
             catch (Exception)
