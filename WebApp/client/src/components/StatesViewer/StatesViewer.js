@@ -20,7 +20,7 @@ const StatesViewer = (props) => {
     ) {
       setPathToSolve(props.pathToSolve);
     }
-  }, [props]);
+  }, [props, pathToSolve]);
 
   useEffect(() => {
     if (pathToSolve)

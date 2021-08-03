@@ -4,6 +4,16 @@
   box-sizing: border-box;
 }
 
+@for $i from 1 through 10 {
+  .zoom-#{$i} {
+    transition: transform 0.2s;
+
+    &:hover {
+      transform: scale(1 + $i / 10);
+    }
+  }
+}
+
 .navbar {
   background-color: rgb(32, 84, 255);
   width: 100%;
@@ -135,8 +145,14 @@
 }
 
 .btn-icon {
-  width: 30px;
+  @extend .zoom-3;
+  width: 30px !important;
   height: 30px;
   margin: 0.3rem;
   display: block;
+  position: relative;
+
+  &:active {
+    bottom: 0.15rem;
+  }
 }

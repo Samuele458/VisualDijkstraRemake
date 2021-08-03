@@ -44,7 +44,7 @@ const GraphBox = (props) => {
 
   //requests
   const [nodeCreationRequested, setNodeCreationRequested] = useState(false);
-  const [pathRequested, setPathRequested] = useState(true);
+  const [pathRequested, setPathRequested] = useState(false);
   const [edgeCreationRequested, setEdgeCreationRequested] = useState(false);
   const [nodeRemovalRequested, setNodeRemovalRequested] = useState(false);
 
@@ -86,11 +86,13 @@ const GraphBox = (props) => {
       d3.select(graphGroup.current).selectAll("*").remove();
 
       //handling of backgraund drag events
+      /*
       d3.select(svg.current).call(
-        d3.drag().on("drag", draggedd).on("start", dragstarted)
-      );
+        d3.drag().on("start", dragStarted).on("drag", dragBackground)
+      );*/
 
       //setting zoom
+      /*
       d3.select(svg.current)
         .call(
           d3.zoom().on("zoom", (event) => {
@@ -101,7 +103,26 @@ const GraphBox = (props) => {
             }
           })
         )
-        .on("dblclick.zoom", null);
+        .on("dblclick.zoom", null);*/
+
+      let mousedown = false;
+      d3.select(svg.current)
+        .on("mousedown", (event) => {
+          mousedown = true;
+        })
+        .on("mouseup", (event) => {
+          mousedown = false;
+        })
+        .on("mousemove", (event) => {
+          if (mousedown) console.log("DRAGGING");
+        })
+        .on("wheel", (event) => {
+          if (Math.sign(event.deltaY) === -1) {
+            setScale((previous) => previous * 1.1);
+          } else {
+            setScale((previous) => previous * 0.9);
+          }
+        });
 
       //drawable area
       let svgGroup = d3.select(graphGroup.current);
@@ -135,7 +156,6 @@ const GraphBox = (props) => {
             let path = GraphUtils.evaluatePathFromState(currentState);
             let sourceFound = path.indexOf(d.source.name);
             let destFound = path.indexOf(d.dest.name);
-            console.log(path, destFound, sourceFound);
             if (
               sourceFound !== -1 &&
               destFound !== -1 &&
@@ -173,8 +193,8 @@ const GraphBox = (props) => {
         })
         .attr("cy", function (d) {
           return d.y;
-        })
-        .call(d3.drag().on("drag", dragged).on("start", dragstarted));
+        });
+      //.call(d3.drag().on("start", dragStarted).on("drag", dragNode));
 
       let weight = svgGroup
         .append("g")
@@ -228,8 +248,8 @@ const GraphBox = (props) => {
         })
         .attr("cy", function (d) {
           return d.y;
-        })
-        .call(d3.drag().on("drag", dragged).on("start", dragstarted));
+        });
+      //.call(d3.drag().on("drag", dragNode).on("start", dragStarted));
 
       let nodeName = svgGroup
         .append("g")
@@ -247,10 +267,10 @@ const GraphBox = (props) => {
         })
         .attr("y", function (d) {
           return d.y + 10;
-        })
-        .call(d3.drag().on("drag", dragged).on("start", dragstarted));
+        });
+      //.call(d3.drag().on("drag", dragNode).on("start", dragStarted));
 
-      function dragged(event, d) {
+      function dragNode(event, d) {
         d.x = event.x;
         d.y = event.y;
 
@@ -308,12 +328,14 @@ const GraphBox = (props) => {
           .attr("y", d.y + 10);
       }
 
-      function dragstarted(event) {
+      function dragStarted(event) {
         event.sourceEvent.stopPropagation();
-        //event.sourceEvent.preventDefault();
+        event.sourceEvent.preventDefault();
       }
 
-      function draggedd(event) {
+      function dragBackground(event) {
+        event.sourceEvent.stopPropagation();
+        event.sourceEvent.preventDefault();
         setTransformPos((previous) => ({
           x: previous.x + event.dx,
           y: previous.y + event.dy,
@@ -328,7 +350,7 @@ const GraphBox = (props) => {
     setInputFocus();
   }, [graph, nodeUnderEdit, currentState, setInputFocus]);
 
-  const setInputBonValue = () => {
+  const setInputBoxValue = () => {
     let holdGraph = Lodash.cloneDeep(graph);
 
     if (typeof nodeUnderEdit.weight === "undefined") {
@@ -345,6 +367,20 @@ const GraphBox = (props) => {
     setNodeUnderEdit(null);
   };
 
+  /**
+   *  Clear any pending request
+   */
+  const clearRequests = () => {
+    setNodeCreationRequested(false);
+    setPathRequested(false);
+    setEdgeCreationRequested(false);
+    setNodeRemovalRequested(false);
+    setFirstNode(null);
+    setPathToSolve(null);
+    setCurrentState(null);
+    setNodeUnderEdit(null);
+  };
+
   return (
     <div className="graph-box-wrapper">
       <div className="graph-toolbar">
@@ -354,6 +390,7 @@ const GraphBox = (props) => {
             className="btn-icon"
             alt="Save"
             onClick={() => {
+              clearRequests();
               props.handleGraphChange(graph);
             }}
           />
@@ -364,6 +401,7 @@ const GraphBox = (props) => {
           className="btn-icon"
           alt="Add new node"
           onClick={() => {
+            clearRequests();
             setNodeCreationRequested(true);
           }}
         />
@@ -373,6 +411,7 @@ const GraphBox = (props) => {
           className="btn-icon"
           alt="Remove node"
           onClick={() => {
+            clearRequests();
             setNodeRemovalRequested(true);
           }}
         />
@@ -382,6 +421,7 @@ const GraphBox = (props) => {
           className="btn-icon"
           alt="Add new edge"
           onClick={() => {
+            clearRequests();
             setEdgeCreationRequested(true);
           }}
         />
@@ -391,6 +431,7 @@ const GraphBox = (props) => {
             className="btn-icon"
             alt="Evaluate path"
             onClick={() => {
+              clearRequests();
               setPathRequested(true);
             }}
           />
@@ -447,10 +488,11 @@ const GraphBox = (props) => {
             });
           }
         }}
-        onClick={(e) => {
+        onMouseDown={(e) => {
           let dim = e.target.getBoundingClientRect();
           let x = e.clientX - dim.left - transformPos.x;
           let y = e.clientY - dim.top - transformPos.y;
+          console.log("Mouse down or click?");
 
           if (
             e.target.className.baseVal === "graph-svg" &&
@@ -589,7 +631,7 @@ const GraphBox = (props) => {
         <input
           type="text"
           className="input-text"
-          ref={inputRef}
+          //ref={inputRef}
           value={inputBoxInfo.text}
           onChange={(e) => {
             setInputBoxInfo((previous) => ({
@@ -599,7 +641,7 @@ const GraphBox = (props) => {
           }}
           onKeyDown={(e) => {
             if (e.keyCode === 13) {
-              setInputBonValue();
+              setInputBoxValue();
             }
           }}
         />
@@ -608,7 +650,7 @@ const GraphBox = (props) => {
           className="submit btn-icon"
           alt=""
           onClick={() => {
-            setInputBonValue();
+            setInputBoxValue();
           }}
         />
       </div>

@@ -1,14 +1,25 @@
+/**
+ * Evaluate the angle (in radians) of a given edge
+ * @param {Object} edge - The edge to evaluate the angle of
+ * @returns {number} The angle in radians
+ */
 export const edgeAngle = (edge) => {
   return Math.atan2(edge.dest.x - edge.source.x, edge.dest.y - edge.source.y);
 };
 
+/**
+ * Evaluate the position of the weight text, for a single axis
+ * @param {string} axis - The axis "x" or "y"
+ * @param {Object} edge - The edge to which the weight belongs
+ * @returns {number} The weight position, for the given axis
+ */
 export const evaluateWeightPos = (axis, edge) => {
-  if (axis === "x") {
+  if (axis.toLowerCase() === "x") {
     return (
       (edge.dest.x + edge.source.x) / 2 -
       23 * Math.cos(2 * Math.PI - edgeAngle(edge))
     );
-  } else if (axis === "y") {
+  } else if (axis.toLowerCase() === "y") {
     return (
       (edge.dest.y + edge.source.y) / 2 -
       23 * Math.sin(2 * Math.PI - edgeAngle(edge))
@@ -16,15 +27,33 @@ export const evaluateWeightPos = (axis, edge) => {
   }
 };
 
+/**
+ * Create an edge name attribute like "A-B"
+ * @param {string} source - Source node name
+ * @param {string} dest - Dest node name
+ * @returns
+ */
+export const encodeEdgeName = (source, dest) => {
+  return source.name + "-" + dest.name;
+};
+
+/**
+ * Converts an edge name attribute in the form "A-B" to Object like { source "A", dest: "B" }
+ * @param {string} name - The edge name attrbute in the form "A-B"
+ * @returns Object in form { source "A", dest: "B" }
+ */
 export const decodeEdgeName = (name) => {
   const nodes = name.split("-");
   return { source: nodes[0], dest: nodes[1] };
 };
 
-export const encodeEdgeName = (source, dest) => {
-  return source.name + "-" + dest.name;
-};
-
+/**
+ * Determines if an edge already exists in a given graph object
+ * @param {Object} graph - Graph object
+ * @param {string} sourceName - Source node name
+ * @param {string} destName - Dest node name
+ * @returns True if already exists, false otherwise
+ */
 export const edgeAlreadyExists = (graph, sourceName, destName) => {
   let edgeFound = graph.edges.find(
     (edge) =>
@@ -35,6 +64,11 @@ export const edgeAlreadyExists = (graph, sourceName, destName) => {
   return typeof edgeFound !== "undefined";
 };
 
+/**
+ * Substitutes every node name inside edge objects, with its object reference
+ * @param {Object} graph - Graph object
+ * @returns The graph object
+ */
 export const encodeGraphReferences = (graph) => {
   graph.edges.forEach((edge) => {
     edge.source = graph.nodes.find((node) => node.name === edge.source);
@@ -43,6 +77,11 @@ export const encodeGraphReferences = (graph) => {
   return graph;
 };
 
+/**
+ * Substitutes every node object inside edge objects with its name
+ * @param {Object} graph
+ * @returns The graph object
+ */
 export const decodeGraphReferences = (graph) => {
   graph.edges.forEach((edge) => {
     edge.source = edge.source.name;
@@ -51,6 +90,11 @@ export const decodeGraphReferences = (graph) => {
   return graph;
 };
 
+/**
+ * Converts every coordinate to integer
+ * @param {*} graph - Grap object
+ * @returns The graph object
+ */
 export const sanitizeCoordinates = (graph) => {
   graph.nodes.forEach((node) => {
     node.x = Math.round(node.x);
@@ -59,41 +103,13 @@ export const sanitizeCoordinates = (graph) => {
   return graph;
 };
 
-export const deducePathClassName = (item, state) => {
-  if (state) {
-    /*if (item && item.source) {
-      const result = state.NodesStates.find(
-        (d) => d.Name === item.source.name && d.Previous === "DEFAULT_PREVIOUS_NODE"
-      );
-      console.log("Edge: ", item);
-      return " path";
-      //lo stampa se
-      //source
-    }*/
-
-    if (item && item.name) {
-      const result = state.NodesStates.find(
-        (d) => d.Name === item.name && d.Previous !== "DEFAULT_PREVIOUS_NODE"
-      );
-
-      if (result) return " path";
-      else return "";
-    }
-  }
-  return "";
-};
-
-export const setupPath = (nodes, edges, state) => {
-  console.log("nodes:", nodes);
-  nodes.forEach((node, i) => {
-    console.log("Node:", node.getAttribute("name"));
-    if (state.NodesStates.find((n) => n.Name === node.getAttribute("name"))) {
-      node.className = "node path";
-    }
-  });
-};
-
+/**
+ * Evaluate path from a given graph state
+ * @param {Object} state - State object
+ * @returns {Array.String} List of node names, from source to dest
+ */
 export const evaluatePathFromState = (state) => {
+  //TODO handle cases in which there is no path
   let path = [];
   let currentNode = state.Dest;
   while (currentNode !== "DEFAULT_PREVIOUS_NODE") {
