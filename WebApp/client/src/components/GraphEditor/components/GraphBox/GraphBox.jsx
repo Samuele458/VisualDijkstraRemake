@@ -33,19 +33,28 @@ const useFocus = () => {
 const GraphBox = (props) => {
   const Auth = useContext(AuthApi);
 
+  //reference to svg DOM object
   const svg = useRef(null);
+
+  //reference to g dom object
   const graphGroup = useRef(null);
+
+  //current graph model
   const [graph, setGraph] = useState({ nodes: [], edges: [] });
 
+  //requests
   const [nodeCreationRequested, setNodeCreationRequested] = useState(false);
-
   const [pathRequested, setPathRequested] = useState(true);
   const [edgeCreationRequested, setEdgeCreationRequested] = useState(false);
-  const [firstNode, setFirstNode] = useState(null);
-  const [pathToSolve, setPathToSolve] = useState(null);
-  const [currentState, setCurrentState] = useState(null);
-
   const [nodeRemovalRequested, setNodeRemovalRequested] = useState(false);
+
+  //hold first node in multi node requests (like edge creation, etc.)
+  const [firstNode, setFirstNode] = useState(null);
+
+  const [pathToSolve, setPathToSolve] = useState(null);
+
+  //solution state
+  const [currentState, setCurrentState] = useState(null);
 
   const [nodeUnderEdit, setNodeUnderEdit] = useState(null);
   const [inputBoxInfo, setInputBoxInfo] = useState({ text: "", x: 0, y: 0 });
@@ -53,49 +62,38 @@ const GraphBox = (props) => {
   const [transformPos, setTransformPos] = useState({ x: 0, y: 0 });
   const [scale, setScale] = useState(1);
 
+  //handling of focus in input box
   const [inputRef, setInputFocus] = useFocus();
 
   useEffect(() => {
+    //loading new graph from props
     let graphObj = Lodash.cloneDeep(props.graph);
     if (
       graphObj.edges.length > 0 &&
       typeof graphObj.edges[0].source === "string"
     )
       GraphUtils.encodeGraphReferences(graphObj);
-    console.log("REFRESHING GRAPH FROM PROPS", props.graph);
-    setGraph(graphObj, "props:", props);
+
+    setGraph(graphObj);
   }, [props.graph]);
 
-  /*
   useEffect(() => {
-    let holdGraph = {
-      nodes: [],
-      edges: [],
-    };
+    //graph rendering
 
-    holdGraph.edges.forEach(function (edge) {
-      edge.source = holdGraph.nodes.find((node) => node.name === edge.source);
-      edge.dest = holdGraph.nodes.find((node) => node.name === edge.dest);
-    });
-
-    setGraph(holdGraph);
-  }, []);*/
-
-  useEffect(() => {
+    //if both graph and graphBox exist
     if (graph && graphGroup) {
-      console.log("Refreshing graph...");
+      //removing all previous elements
       d3.select(graphGroup.current).selectAll("*").remove();
+
+      //handling of backgraund drag events
       d3.select(svg.current).call(
-        d3
-          .drag()
-          .on("drag", draggedd)
-          .on("start", dragstarted)
-          .on("end", dragended)
+        d3.drag().on("drag", draggedd).on("start", dragstarted)
       );
 
+      //setting zoom
       d3.select(svg.current)
         .call(
-          d3.zoom().on("zoom", function (event) {
+          d3.zoom().on("zoom", (event) => {
             if (Math.sign(event.sourceEvent.deltaY) === -1) {
               setScale((previous) => previous * 1.1);
             } else {
@@ -105,9 +103,11 @@ const GraphBox = (props) => {
         )
         .on("dblclick.zoom", null);
 
+      //drawable area
       let svgGroup = d3.select(graphGroup.current);
 
-      var edge = svgGroup
+      //egdes
+      let edge = svgGroup
         .append("g")
         .selectAll("line")
         .data(graph.edges)
@@ -115,8 +115,8 @@ const GraphBox = (props) => {
         .append("line")
         .attr("name", (d) => GraphUtils.encodeEdgeName(d.source, d.dest))
         .attr("class", (d) => {
+          let className = "edge";
           if (currentState) {
-            /*
             const sourceState = currentState.NodesStates.find(
               (s) => s.Name === d.source.name
             );
@@ -129,11 +129,22 @@ const GraphBox = (props) => {
               sourceState.Previous === destState.Name ||
               destState.Previous === sourceState.Name
             ) {
-              return "edge path";
-            }*/
+              className += " partial-path";
+            }
+
+            let path = GraphUtils.evaluatePathFromState(currentState);
+            let sourceFound = path.indexOf(d.source.name);
+            let destFound = path.indexOf(d.dest.name);
+            console.log(path, destFound, sourceFound);
+            if (
+              sourceFound !== -1 &&
+              destFound !== -1 &&
+              Math.abs(destFound - sourceFound) === 1
+            )
+              className += " path";
           }
 
-          return "edge";
+          return className;
         })
         .attr("x1", (d) => {
           return d.source.x;
@@ -148,7 +159,7 @@ const GraphBox = (props) => {
           return d.dest.y;
         });
 
-      var node_bg = svgGroup
+      let nodesBg = svgGroup
         .append("g")
         .selectAll("circle")
         .data(graph.nodes)
@@ -165,7 +176,7 @@ const GraphBox = (props) => {
         })
         .call(d3.drag().on("drag", dragged).on("start", dragstarted));
 
-      var weight = svgGroup
+      let weight = svgGroup
         .append("g")
         .selectAll("text")
         .data(graph.edges)
@@ -177,7 +188,7 @@ const GraphBox = (props) => {
         .attr("x", (edge) => GraphUtils.evaluateWeightPos("x", edge))
         .attr("y", (edge) => GraphUtils.evaluateWeightPos("y", edge));
 
-      var node = svgGroup
+      let node = svgGroup
         .append("g")
         .selectAll("circle")
         .data(graph.nodes)
@@ -185,17 +196,31 @@ const GraphBox = (props) => {
         .append("circle")
         .attr("name", (d) => d.name)
         .attr("class", (d) => {
-          if (currentState) {
+          let className = "node";
+          if (
+            currentState &&
+            currentState.NodesStates.find((s) => s.Name === d.name)
+          ) {
             const state = currentState.NodesStates.find(
               (s) => s.Name === d.name
             );
 
             if (state.Previous !== "DEFAULT_PREVIOUS_NODE") {
-              return "node path";
+              className += " partial-path";
+            }
+
+            let path = GraphUtils.evaluatePathFromState(currentState);
+
+            if (
+              d.name === currentState.Source ||
+              d.name === currentState.Dest ||
+              path.indexOf(d.name) !== -1
+            ) {
+              className += " path";
             }
           }
 
-          return "node";
+          return className;
         })
         .attr("r", 30)
         .attr("cx", function (d) {
@@ -206,14 +231,7 @@ const GraphBox = (props) => {
         })
         .call(d3.drag().on("drag", dragged).on("start", dragstarted));
 
-      /*
-      if (currentState) {
-
-        GraphUtils.setupPath(node._groups[0], edge, currentState);
-
-      }*/
-
-      var node_text = svgGroup
+      let nodeName = svgGroup
         .append("g")
         .selectAll("circle")
         .data(graph.nodes)
@@ -256,7 +274,7 @@ const GraphBox = (props) => {
           .attr("cx", d.x)
           .attr("cy", d.y);
 
-        node_bg
+        nodesBg
           .filter(function (n) {
             return n === d;
           })
@@ -282,7 +300,7 @@ const GraphBox = (props) => {
           .attr("x", (edge) => GraphUtils.evaluateWeightPos("x", edge))
           .attr("y", (edge) => GraphUtils.evaluateWeightPos("y", edge));
 
-        node_text
+        nodeName
           .filter(function (n) {
             return n === d;
           })
@@ -306,11 +324,9 @@ const GraphBox = (props) => {
           y: previous.y + event.dy,
         }));
       }
-
-      function dragended(event, d) {}
     }
     setInputFocus();
-  }, [graph, nodeUnderEdit, currentState]);
+  }, [graph, nodeUnderEdit, currentState, setInputFocus]);
 
   const setInputBonValue = () => {
     let holdGraph = Lodash.cloneDeep(graph);

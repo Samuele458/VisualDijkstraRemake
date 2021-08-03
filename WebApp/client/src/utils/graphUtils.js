@@ -98,7 +98,7 @@ export const evaluatePathFromState = (state) => {
   let currentNode = state.Dest;
   while (currentNode !== "DEFAULT_PREVIOUS_NODE") {
     path.push(currentNode);
-    currentNode = state.StatesNodes.find(
+    currentNode = state.NodesStates.find(
       (s) => s.Name === currentNode
     ).Previous;
   }

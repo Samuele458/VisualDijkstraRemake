@@ -9,7 +9,6 @@ import * as GraphUtils from "../../utils/graphUtils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCloud } from "@fortawesome/free-solid-svg-icons";
 
-import GraphsIcon from "./icons/cloud.png";
 import Dialog from "../Dialog";
 import AuthApi from "../../AuthApi";
 
