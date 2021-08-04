@@ -85,11 +85,11 @@ const GraphBox = (props) => {
       //removing all previous elements
       d3.select(graphGroup.current).selectAll("*").remove();
 
-      //handling of backgraund drag events
-      /*
+      //handling of background drag events
+
       d3.select(svg.current).call(
-        d3.drag().on("start", dragStarted).on("drag", dragBackground)
-      );*/
+        d3.drag().on("start", bgDragStarted).on("drag", bgOnDrag)
+      );
 
       //setting zoom
       /*
@@ -104,18 +104,24 @@ const GraphBox = (props) => {
           })
         )
         .on("dblclick.zoom", null);*/
-
-      let mousedown = false;
+      /*
       d3.select(svg.current)
-        .on("mousedown", (event) => {
-          mousedown = true;
+        .on("mousedown", (e) => {
+          let dim = e.target.getBoundingClientRect();
+          let x = e.clientX - dim.left - transformPos.x;
+          let y = e.clientY - dim.top - transformPos.y;
+
+          if (GraphUtils.onNode(e.target)) {
+            nodeUnderDrag = { x, y };
+          } else if (GraphUtils.onBackground(e.target)) {
+            BackgroundUnderDrag = { x, y };
+          }
         })
         .on("mouseup", (event) => {
-          mousedown = false;
+          nodeUnderDrag = null;
+          BackgroundUnderDrag = null;
         })
-        .on("mousemove", (event) => {
-          if (mousedown) console.log("DRAGGING");
-        })
+        .on("mousemove", handleMouseMove)
         .on("wheel", (event) => {
           if (Math.sign(event.deltaY) === -1) {
             setScale((previous) => previous * 1.1);
@@ -123,7 +129,7 @@ const GraphBox = (props) => {
             setScale((previous) => previous * 0.9);
           }
         });
-
+*/
       //drawable area
       let svgGroup = d3.select(graphGroup.current);
 
@@ -248,8 +254,14 @@ const GraphBox = (props) => {
         })
         .attr("cy", function (d) {
           return d.y;
-        });
-      //.call(d3.drag().on("drag", dragNode).on("start", dragStarted));
+        })
+        .call(
+          d3
+            .drag()
+            .on("start", dragNodeStarted)
+            .on("drag", nodeOnDrag)
+            .on("end", dragNodeEnded)
+        );
 
       let nodeName = svgGroup
         .append("g")
@@ -270,72 +282,93 @@ const GraphBox = (props) => {
         });
       //.call(d3.drag().on("drag", dragNode).on("start", dragStarted));
 
-      function dragNode(event, d) {
+      let longPress = null;
+      let currentNode = null;
+
+      let nodeCreationRequested2 = false;
+
+      function dragNodeStarted(e, d) {
+        currentNode = d.name;
+        setTimeout(() => {
+          if (currentNode === d.name) {
+          }
+        }, 100);
+      }
+
+      function dragNodeEnded(e, d) {
+        let longPress = null;
+        let currentNode = null;
+      }
+
+      function nodeOnDrag(event, d) {
         d.x = event.x;
         d.y = event.y;
 
-        //saving file
-        //props.handleGraphChange(graph);
+        currentNode = null;
 
-        if (nodeUnderEdit !== null) {
-          if (nodeUnderEdit.name === d.name)
-            setInputBoxInfo((previous) => ({
-              text: previous.text,
-              x: event.sourceEvent.clientX,
-              y: event.sourceEvent.clientY,
-            }));
-          else setNodeUnderEdit(null);
+        if (!longPress) {
+          if (nodeUnderEdit !== null) {
+            if (nodeUnderEdit.name === d.name)
+              setInputBoxInfo((previous) => ({
+                text: previous.text,
+                x: event.sourceEvent.clientX,
+                y: event.sourceEvent.clientY,
+              }));
+            else setNodeUnderEdit(null);
+          }
+
+          node
+            .filter(function (n) {
+              return n === d;
+            })
+            .attr("cx", d.x)
+            .attr("cy", d.y);
+
+          nodesBg
+            .filter(function (n) {
+              return n === d;
+            })
+            .attr("cx", d.x)
+            .attr("cy", d.y);
+
+          edge
+            .filter(function (l) {
+              return l.source.name === d.name;
+            })
+            .attr("x1", d.x)
+            .attr("y1", d.y);
+
+          edge
+            .filter(function (l) {
+              return l.dest.name === d.name;
+            })
+            .attr("x2", d.x)
+            .attr("y2", d.y);
+
+          weight
+            .filter((edge) => edge.dest === d || edge.source === d)
+            .attr("x", (edge) => GraphUtils.evaluateWeightPos("x", edge))
+            .attr("y", (edge) => GraphUtils.evaluateWeightPos("y", edge));
+
+          nodeName
+            .filter(function (n) {
+              return n === d;
+            })
+            .attr("x", d.x)
+            .attr("y", d.y + 10);
         }
-
-        node
-          .filter(function (n) {
-            return n === d;
-          })
-          .attr("cx", d.x)
-          .attr("cy", d.y);
-
-        nodesBg
-          .filter(function (n) {
-            return n === d;
-          })
-          .attr("cx", d.x)
-          .attr("cy", d.y);
-
-        edge
-          .filter(function (l) {
-            return l.source.name === d.name;
-          })
-          .attr("x1", d.x)
-          .attr("y1", d.y);
-
-        edge
-          .filter(function (l) {
-            return l.dest.name === d.name;
-          })
-          .attr("x2", d.x)
-          .attr("y2", d.y);
-
-        weight
-          .filter((edge) => edge.dest === d || edge.source === d)
-          .attr("x", (edge) => GraphUtils.evaluateWeightPos("x", edge))
-          .attr("y", (edge) => GraphUtils.evaluateWeightPos("y", edge));
-
-        nodeName
-          .filter(function (n) {
-            return n === d;
-          })
-          .attr("x", d.x)
-          .attr("y", d.y + 10);
       }
 
-      function dragStarted(event) {
-        event.sourceEvent.stopPropagation();
-        event.sourceEvent.preventDefault();
+      function bgDragStarted(e) {
+        e.sourceEvent.stopPropagation();
+        e.sourceEvent.preventDefault();
+
+        if (nodeCreationRequested2) {
+          nodeCreationRequested2 = false;
+        }
       }
 
-      function dragBackground(event) {
-        event.sourceEvent.stopPropagation();
-        event.sourceEvent.preventDefault();
+      function bgOnDrag(event) {
         setTransformPos((previous) => ({
           x: previous.x + event.dx,
           y: previous.y + event.dy,
@@ -488,11 +521,10 @@ const GraphBox = (props) => {
             });
           }
         }}
-        onMouseDown={(e) => {
+        onTouchStart={(e) => {
           let dim = e.target.getBoundingClientRect();
           let x = e.clientX - dim.left - transformPos.x;
           let y = e.clientY - dim.top - transformPos.y;
-          console.log("Mouse down or click?");
 
           if (
             e.target.className.baseVal === "graph-svg" &&
@@ -593,8 +625,6 @@ const GraphBox = (props) => {
                 source: name,
                 dest: firstNode.name,
               });
-              //console.log(firstNode);
-              //props.handlePathRequest(node.name, firstNode.name);
             }
 
             setPathRequested(false);

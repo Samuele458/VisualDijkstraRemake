@@ -120,3 +120,46 @@ export const evaluatePathFromState = (state) => {
   }
   return path;
 };
+
+/**
+ * Checks is a given event target belongs to a node or not
+ * @param {Object} target - Event target
+ * @returns {boolean} True if event was on node, false otherwise
+ */
+export const onNode = (target) => {
+  return (
+    target.className.baseVal === "node" ||
+    target.className.baseVal === "node-text"
+  );
+};
+
+/**
+ * Checks if a given event target belongs to background
+ * @param {*} target - Event target
+ * @returns {boolean} True if event was on node, false otherwise
+ */
+export const onBackground = (target) => {
+  return target.className.baseVal === "graph-svg";
+};
+
+/**
+ * Checks if a given event target belongs to edge
+ * @param {*} target - Event target
+ * @returns {boolean} True if event was on node, false otherwise
+ */
+export const onEdge = (target) => {
+  return target.className.baseval === "weight-text";
+};
+
+/**
+ * Evaluate delta position between basePos and currentPos.
+ * @param {Object} basePos base position, composed of x and y.
+ * @param {Object} currentPos - CurrentPosition, composed of x and y.
+ * @returns {Object} New position
+ */
+export const deltaPos = (basePos, currentPos) => {
+  return {
+    x: basePos.x - currentPos.x,
+    y: basePos.y - currentPos.y,
+  };
+};
