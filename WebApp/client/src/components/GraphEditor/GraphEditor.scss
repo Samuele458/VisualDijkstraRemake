@@ -95,7 +95,7 @@
     font-size: 12px;
     text-align: center;
     color: white;
-    background-color: transparent;
+    background-color: white;
     border-radius: 3px;
     display: flex;
     justify-content: center;
@@ -107,7 +107,6 @@
     -webkit-box-shadow: 0px 0px 40px -6px rgba(0, 0, 0, 0.8);
     -moz-box-shadow: 0px 0px 40px -6px rgba(0, 0, 0, 0.8);
     box-shadow: 0px 0px 40px -6px rgba(0, 0, 0, 0.8);
-
     .input-text {
       border: none;
       outline: 0px;
@@ -117,8 +116,19 @@
       padding: 0.4rem;
       height: 2rem;
     }
+
+    .btn-icon {
+      width: auto !important;
+      height: auto;
+      padding-right: 0.3rem;
+    }
   }
 }
+
+.alert {
+  border: 2px solid rgb(255, 53, 53);
+}
+
 .graph-names-box {
   display: flex;
   flex-direction: column;

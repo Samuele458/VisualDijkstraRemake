@@ -78,6 +78,21 @@ const GraphBox = (props) => {
   }, [props.graph]);
 
   useEffect(() => {
+    if (
+      nodeUnderEdit === null &&
+      graph.nodes.find((n) => n.name.length === 0)
+    ) {
+      let holdGraph = Lodash.cloneDeep(graph);
+      holdGraph.nodes = holdGraph.nodes.filter((node) => node.name !== "");
+      holdGraph.edges = holdGraph.edges.filter(
+        (edge) => edge.source.name !== "" && edge.dest.name !== ""
+      );
+
+      setGraph(holdGraph);
+    }
+  }, [nodeUnderEdit]);
+
+  useEffect(() => {
     //graph rendering
 
     //if both graph and graphBox exist
@@ -220,6 +235,7 @@ const GraphBox = (props) => {
         .enter()
         .append("text")
         .text((d) => d.weight)
+        .attr("text-anchor", "middle")
         .attr("class", "weight-text")
         .attr("name", (d) => GraphUtils.encodeEdgeName(d.source, d.dest))
         .attr("x", (edge) => GraphUtils.evaluateWeightPos("x", edge))
@@ -306,6 +322,8 @@ const GraphBox = (props) => {
       function dragNodeStarted(e, d) {
         currentNode = d.name;
 
+        setNodeUnderEdit(null);
+
         setTimeout(() => {
           if (currentNode === d.name) {
             longPress = true;
@@ -334,7 +352,8 @@ const GraphBox = (props) => {
           let node = graph.nodes.find((n) => n.name === d.name);
           if (
             typeof node !== "undefined" &&
-            !GraphUtils.edgeAlreadyExists(graph, node.name, firstNode.name)
+            !GraphUtils.edgeAlreadyExists(graph, node.name, firstNode.name) &&
+            firstNode.name !== node.name
           ) {
             let holdGraph = Lodash.cloneDeep(graph);
             holdGraph.edges.push({
@@ -396,7 +415,8 @@ const GraphBox = (props) => {
               graph,
               nodeOnMouseOver,
               e.sourceEvent.target.getAttribute("name")
-            )
+            ) &&
+            nodeOnMouseOver !== e.sourceEvent.target.getAttribute("name")
           ) {
             let holdGraph = Lodash.cloneDeep(graph);
             holdGraph.edges.push({
@@ -416,58 +436,57 @@ const GraphBox = (props) => {
       }
 
       function nodeOnDrag(event, d) {
-        if (!longPress) {
-          currentNode = null;
+        if (!nodeUnderEdit)
+          if (!longPress) {
+            currentNode = null;
 
-          d.x = event.x;
-          d.y = event.y;
-          node
-            .filter(function (n) {
-              return n === d;
-            })
-            .attr("cx", d.x)
-            .attr("cy", d.y);
+            d.x = event.x;
+            d.y = event.y;
+            node
+              .filter(function (n) {
+                return n === d;
+              })
+              .attr("cx", d.x)
+              .attr("cy", d.y);
 
-          nodesBg
-            .filter(function (n) {
-              return n === d;
-            })
-            .attr("cx", d.x)
-            .attr("cy", d.y);
+            nodesBg
+              .filter(function (n) {
+                return n === d;
+              })
+              .attr("cx", d.x)
+              .attr("cy", d.y);
 
-          edge
-            .filter(function (l) {
-              return l.source.name === d.name;
-            })
-            .attr("x1", d.x)
-            .attr("y1", d.y);
+            edge
+              .filter(function (l) {
+                return l.source.name === d.name;
+              })
+              .attr("x1", d.x)
+              .attr("y1", d.y);
 
-          edge
-            .filter(function (l) {
-              return l.dest.name === d.name;
-            })
-            .attr("x2", d.x)
-            .attr("y2", d.y);
+            edge
+              .filter(function (l) {
+                return l.dest.name === d.name;
+              })
+              .attr("x2", d.x)
+              .attr("y2", d.y);
 
-          weight
-            .filter((edge) => edge.dest === d || edge.source === d)
-            .attr("x", (edge) => GraphUtils.evaluateWeightPos("x", edge))
-            .attr("y", (edge) => GraphUtils.evaluateWeightPos("y", edge));
+            weight
+              .filter((edge) => edge.dest === d || edge.source === d)
+              .attr("x", (edge) => GraphUtils.evaluateWeightPos("x", edge))
+              .attr("y", (edge) => GraphUtils.evaluateWeightPos("y", edge));
 
-          nodeName
-            .filter(function (n) {
-              return n === d;
-            })
-            .attr("x", d.x)
-            .attr("y", d.y + 10);
-        } else {
-          d3.select("#edge-creation-line")
-            .attr("x2", event.x)
-            .attr("y2", event.y);
-        }
+            nodeName
+              .filter(function (n) {
+                return n === d;
+              })
+              .attr("x", d.x)
+              .attr("y", d.y + 10);
+          } else {
+            d3.select("#edge-creation-line")
+              .attr("x2", event.x)
+              .attr("y2", event.y);
+          }
       }
-
-      function nodeDragEnded(e, d) {}
 
       function bgDragStarted(e) {
         e.sourceEvent.stopPropagation();
@@ -493,6 +512,9 @@ const GraphBox = (props) => {
           }
           setNodeCreationRequested(false);
         }
+
+        setEdgeCreationRequested(false);
+        setFirstNode(null);
       }
 
       function bgOnDrag(event) {
@@ -513,14 +535,15 @@ const GraphBox = (props) => {
     setInputFocus();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [graph, nodeUnderEdit, currentState, setInputFocus]);
+  }, [graph, currentState, setInputFocus]);
 
   const setInputBoxValue = () => {
     let holdGraph = Lodash.cloneDeep(graph);
 
     if (typeof nodeUnderEdit.weight === "undefined") {
-      holdGraph.nodes.find((node) => node.name === nodeUnderEdit.name).name =
-        inputBoxInfo.text;
+      if (!holdGraph.nodes.find((n) => n.name === inputBoxInfo.text))
+        holdGraph.nodes.find((node) => node.name === nodeUnderEdit.name).name =
+          inputBoxInfo.text;
     } else {
       holdGraph.edges.find(
         (edge) =>
@@ -671,8 +694,8 @@ const GraphBox = (props) => {
       <div
         id="graph-input-box"
         style={{
-          top: nodeUnderEdit ? nodeUnderEdit.y + 20 : 0,
-          left: nodeUnderEdit ? nodeUnderEdit.y - 30 : 0,
+          top: inputBoxInfo.y + 20,
+          left: inputBoxInfo.x - 30,
           visibility: nodeUnderEdit === null ? "hidden" : "visible",
         }}
       >
@@ -684,7 +707,9 @@ const GraphBox = (props) => {
           onChange={(e) => {
             setInputBoxInfo((previous) => ({
               ...previous,
-              text: e.target.value,
+              text: e.target.value.toUpperCase().match(/^[A-Z0-9]{0,2}$/g)
+                ? e.target.value.toUpperCase()
+                : previous.text,
             }));
           }}
           onKeyDown={(e) => {
