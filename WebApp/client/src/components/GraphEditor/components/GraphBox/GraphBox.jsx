@@ -101,13 +101,15 @@ const GraphBox = (props) => {
       d3.select(graphGroup.current).selectAll("*").remove();
 
       //handling of background drag events
-      d3.select(svg.current).call(
-        d3
-          .drag()
-          .on("start", bgDragStarted)
-          .on("drag", bgOnDrag)
-          .on("end", bgDragEnded)
-      );
+      d3.select(svg.current)
+        .call(
+          d3
+            .drag()
+            .on("start", bgDragStarted)
+            .on("drag", bgOnDrag)
+            .on("end", bgDragEnded)
+        )
+        .on("dblclick", bgDoubleClick);
 
       //setting zoom
 
@@ -122,32 +124,7 @@ const GraphBox = (props) => {
           })
         )
         .on("dblclick.zoom", null);
-      /*
-      d3.select(svg.current)
-        .on("mousedown", (e) => {
-          let dim = e.target.getBoundingClientRect();
-          let x = e.clientX - dim.left - transformPos.x;
-          let y = e.clientY - dim.top - transformPos.y;
 
-          if (GraphUtils.onNode(e.target)) {
-            nodeUnderDrag = { x, y };
-          } else if (GraphUtils.onBackground(e.target)) {
-            BackgroundUnderDrag = { x, y };
-          }
-        })
-        .on("mouseup", (event) => {
-          nodeUnderDrag = null;
-          BackgroundUnderDrag = null;
-        })
-        .on("mousemove", handleMouseMove)
-        .on("wheel", (event) => {
-          if (Math.sign(event.deltaY) === -1) {
-            setScale((previous) => previous * 1.1);
-          } else {
-            setScale((previous) => previous * 0.9);
-          }
-        });
-*/
       //drawable area
       let svgGroup = d3.select(graphGroup.current);
 
@@ -288,7 +265,8 @@ const GraphBox = (props) => {
             .on("start", dragNodeStarted)
             .on("drag", nodeOnDrag)
             .on("end", dragNodeEnded)
-        );
+        )
+        .on("dblclick", nodeDoubleClick);
 
       let nodeName = svgGroup
         .append("g")
@@ -313,7 +291,8 @@ const GraphBox = (props) => {
             .on("start", dragNodeStarted)
             .on("drag", nodeOnDrag)
             .on("end", dragNodeEnded)
-        );
+        )
+        .on("dblclick", nodeDoubleClick);
 
       let longPress = null;
       let currentNode = null;
@@ -483,9 +462,18 @@ const GraphBox = (props) => {
               .attr("y", d.y + 10);
           } else {
             d3.select("#edge-creation-line")
-              .attr("x2", event.x)
-              .attr("y2", event.y);
+              .attr("x2", event.x + 15)
+              .attr("y2", event.y + 15);
           }
+      }
+
+      function nodeDoubleClick(e, d) {
+        setNodeUnderEdit(d);
+        setInputBoxInfo({
+          text: d.name,
+          x: d.x * scale + transformPos.x,
+          y: d.y * scale + transformPos.y + 60,
+        });
       }
 
       function bgDragStarted(e) {
@@ -531,6 +519,29 @@ const GraphBox = (props) => {
     }
 
     function bgDragEnded(e) {}
+
+    function bgDoubleClick(e, d) {
+      if (GraphUtils.onBackground(e.target)) {
+        clearRequests();
+        if (graph.nodes.filter((n) => n.name === "").length === 0) {
+          let holdGraph = Lodash.cloneDeep(graph);
+          holdGraph.nodes.push({
+            x: (e.x - transformPos.x) * (1 / scale),
+            y: (e.y - transformPos.y) * (1 / scale),
+            name: "",
+          });
+          setGraph(holdGraph);
+
+          let node = holdGraph.nodes.find((n) => n.name === "");
+          setNodeUnderEdit(node);
+          setInputBoxInfo({
+            text: "",
+            x: e.x,
+            y: e.y + 60,
+          });
+        }
+      }
+    }
 
     setInputFocus();
 
@@ -648,7 +659,7 @@ const GraphBox = (props) => {
         {...props}
         width="800"
         height="600"
-        onDoubleClick={(e) => {
+        onMouseDown={(e) => {
           if (
             e.target.className.baseVal === "node" ||
             e.target.className.baseVal === "node-text"
@@ -702,7 +713,7 @@ const GraphBox = (props) => {
         <input
           type="text"
           className="input-text"
-          //ref={inputRef}
+          ref={inputRef}
           value={inputBoxInfo.text}
           onChange={(e) => {
             setInputBoxInfo((previous) => ({
