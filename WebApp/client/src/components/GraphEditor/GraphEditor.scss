@@ -80,17 +80,22 @@
         .path {
           stroke: rgb(255, 30, 30);
         }
+
+        .creating-edge {
+          stroke: rgb(255, 174, 0);
+        }
       }
     }
   }
 
   #graph-input-box {
-    width: 200px;
-    height: 1.3rem;
+    width: 60px;
+    height: 2rem;
     position: fixed;
     font-size: 12px;
     text-align: center;
     color: white;
+    background-color: transparent;
     border-radius: 3px;
     display: flex;
     justify-content: center;
@@ -99,16 +104,18 @@
     bottom: 50px;
     z-index: 30;
     border-radius: 5px;
-    -webkit-box-shadow: 0px 0px 21px -6px rgba(0, 0, 0, 0.69);
-    -moz-box-shadow: 0px 0px 21px -6px rgba(0, 0, 0, 0.69);
-    box-shadow: 0px 0px 21px -6px rgba(0, 0, 0, 0.69);
+    -webkit-box-shadow: 0px 0px 40px -6px rgba(0, 0, 0, 0.8);
+    -moz-box-shadow: 0px 0px 40px -6px rgba(0, 0, 0, 0.8);
+    box-shadow: 0px 0px 40px -6px rgba(0, 0, 0, 0.8);
 
     .input-text {
       border: none;
       outline: 0px;
       border-radius: 5px;
       display: block;
-      width: 10rem;
+      width: 40px;
+      padding: 0.4rem;
+      height: 2rem;
     }
   }
 }

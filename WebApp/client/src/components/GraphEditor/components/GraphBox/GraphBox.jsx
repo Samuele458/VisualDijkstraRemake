@@ -86,13 +86,16 @@ const GraphBox = (props) => {
       d3.select(graphGroup.current).selectAll("*").remove();
 
       //handling of background drag events
-
       d3.select(svg.current).call(
-        d3.drag().on("start", bgDragStarted).on("drag", bgOnDrag)
+        d3
+          .drag()
+          .on("start", bgDragStarted)
+          .on("drag", bgOnDrag)
+          .on("end", bgDragEnded)
       );
 
       //setting zoom
-      /*
+
       d3.select(svg.current)
         .call(
           d3.zoom().on("zoom", (event) => {
@@ -103,7 +106,7 @@ const GraphBox = (props) => {
             }
           })
         )
-        .on("dblclick.zoom", null);*/
+        .on("dblclick.zoom", null);
       /*
       d3.select(svg.current)
         .on("mousedown", (e) => {
@@ -133,6 +136,14 @@ const GraphBox = (props) => {
       //drawable area
       let svgGroup = d3.select(graphGroup.current);
 
+      svgGroup
+        .append("line")
+        .attr("id", "edge-creation-line")
+        .attr("class", "edge creating-edge")
+        .attr("x1", 0)
+        .attr("y1", 0)
+        .attr("x2", 0)
+        .attr("y2", 0);
       //egdes
       let edge = svgGroup
         .append("g")
@@ -279,44 +290,137 @@ const GraphBox = (props) => {
         })
         .attr("y", function (d) {
           return d.y + 10;
-        });
-      //.call(d3.drag().on("drag", dragNode).on("start", dragStarted));
+        })
+        .call(
+          d3
+            .drag()
+            .on("start", dragNodeStarted)
+            .on("drag", nodeOnDrag)
+            .on("end", dragNodeEnded)
+        );
 
       let longPress = null;
       let currentNode = null;
-
-      let nodeCreationRequested2 = false;
+      let nodeOnMouseOver = null;
 
       function dragNodeStarted(e, d) {
         currentNode = d.name;
+
         setTimeout(() => {
           if (currentNode === d.name) {
+            longPress = true;
+            nodeOnMouseOver = currentNode;
+            d3.select("#edge-creation-line")
+              .attr("x1", d.x)
+              .attr("y1", d.y)
+              .attr("x2", d.x)
+              .attr("y2", d.y);
+            d3.selectAll(".node").attr("class", (n) =>
+              n.name === d.name ? "node creating-edge" : "node"
+            );
           }
-        }, 100);
+        }, 350);
+
+        if (edgeCreationRequested && firstNode === null) {
+          //creating new node
+
+          let node = graph.nodes.find((n) => n.name === d.name);
+          if (typeof node != "undefined") {
+            setFirstNode(node);
+          }
+        } else if (edgeCreationRequested && firstNode !== null) {
+          //picking first node of edge
+
+          let node = graph.nodes.find((n) => n.name === d.name);
+          if (
+            typeof node !== "undefined" &&
+            !GraphUtils.edgeAlreadyExists(graph, node.name, firstNode.name)
+          ) {
+            let holdGraph = Lodash.cloneDeep(graph);
+            holdGraph.edges.push({
+              source: holdGraph.nodes.find((n) => n.name === firstNode.name),
+              dest: holdGraph.nodes.find((n) => n.name === node.name),
+              weight: 3,
+            });
+
+            setGraph(holdGraph);
+          }
+          setEdgeCreationRequested(false);
+          setFirstNode(null);
+        } else if (nodeRemovalRequested) {
+          let holdGraph = Lodash.cloneDeep(graph);
+          holdGraph.nodes = holdGraph.nodes.filter(
+            (node) => node.name !== d.name
+          );
+          holdGraph.edges = holdGraph.edges.filter(
+            (edge) => edge.source.name !== d.name && edge.dest.name !== d.name
+          );
+
+          setGraph(holdGraph);
+          setNodeRemovalRequested(false);
+        } else if (pathRequested && firstNode === null) {
+          let node = graph.nodes.find((n) => n.name === d.name);
+
+          if (typeof node !== "undefined") {
+            setFirstNode(node);
+          }
+        } else if (pathRequested && firstNode !== null) {
+          let name = d.name;
+          let node = graph.nodes.find((n) => n.name === name);
+          if (typeof node !== "undefined") {
+            setPathToSolve({
+              name: props.name,
+              source: name,
+              dest: firstNode.name,
+            });
+          }
+
+          setPathRequested(false);
+          setFirstNode(null);
+        }
       }
 
       function dragNodeEnded(e, d) {
-        let longPress = null;
-        let currentNode = null;
+        if (longPress) {
+          d3.select("#edge-creation-line")
+            .attr("x1", d.x)
+            .attr("y1", d.y)
+            .attr("x2", d.x)
+            .attr("y2", d.y);
+
+          d3.selectAll(".node").attr("class", "node");
+
+          if (
+            GraphUtils.onNode(e.sourceEvent.target) &&
+            !GraphUtils.edgeAlreadyExists(
+              graph,
+              nodeOnMouseOver,
+              e.sourceEvent.target.getAttribute("name")
+            )
+          ) {
+            let holdGraph = Lodash.cloneDeep(graph);
+            holdGraph.edges.push({
+              source: holdGraph.nodes.find((n) => n.name === nodeOnMouseOver),
+              dest: holdGraph.nodes.find(
+                (n) => n.name === e.sourceEvent.target.getAttribute("name")
+              ),
+              weight: 3,
+            });
+
+            setGraph(holdGraph);
+          }
+        }
+
+        longPress = null;
+        currentNode = null;
       }
 
       function nodeOnDrag(event, d) {
-        d.x = event.x;
-        d.y = event.y;
-
-        currentNode = null;
-
         if (!longPress) {
-          if (nodeUnderEdit !== null) {
-            if (nodeUnderEdit.name === d.name)
-              setInputBoxInfo((previous) => ({
-                text: previous.text,
-                x: event.sourceEvent.clientX,
-                y: event.sourceEvent.clientY,
-              }));
-            else setNodeUnderEdit(null);
-          }
+          currentNode = null;
 
+          d.x = event.x;
+          d.y = event.y;
           node
             .filter(function (n) {
               return n === d;
@@ -356,15 +460,38 @@ const GraphBox = (props) => {
             })
             .attr("x", d.x)
             .attr("y", d.y + 10);
+        } else {
+          d3.select("#edge-creation-line")
+            .attr("x2", event.x)
+            .attr("y2", event.y);
         }
       }
+
+      function nodeDragEnded(e, d) {}
 
       function bgDragStarted(e) {
         e.sourceEvent.stopPropagation();
         e.sourceEvent.preventDefault();
 
-        if (nodeCreationRequested2) {
-          nodeCreationRequested2 = false;
+        if (nodeCreationRequested) {
+          if (graph.nodes.filter((n) => n.name === "").length === 0) {
+            let holdGraph = Lodash.cloneDeep(graph);
+            holdGraph.nodes.push({
+              x: (e.x - transformPos.x) * (1 / scale),
+              y: (e.y - transformPos.y) * (1 / scale),
+              name: "",
+            });
+            setGraph(holdGraph);
+
+            let node = holdGraph.nodes.find((n) => n.name === "");
+            setNodeUnderEdit(node);
+            setInputBoxInfo({
+              text: "",
+              x: e.x,
+              y: e.y + 60,
+            });
+          }
+          setNodeCreationRequested(false);
         }
       }
 
@@ -380,7 +507,12 @@ const GraphBox = (props) => {
         }));
       }
     }
+
+    function bgDragEnded(e) {}
+
     setInputFocus();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [graph, nodeUnderEdit, currentState, setInputFocus]);
 
   const setInputBoxValue = () => {
@@ -521,120 +653,6 @@ const GraphBox = (props) => {
             });
           }
         }}
-        onTouchStart={(e) => {
-          let dim = e.target.getBoundingClientRect();
-          let x = e.clientX - dim.left - transformPos.x;
-          let y = e.clientY - dim.top - transformPos.y;
-
-          if (
-            e.target.className.baseVal === "graph-svg" &&
-            nodeCreationRequested
-          ) {
-            if (graph.nodes.filter((n) => n.name === "").length === 0) {
-              let holdGraph = Lodash.cloneDeep(graph);
-              holdGraph.nodes.push({
-                x: x * (1 / scale),
-                y: y * (1 / scale),
-                name: "",
-              });
-              setGraph(holdGraph);
-
-              let node = holdGraph.nodes.find((n) => n.name === "");
-              setNodeUnderEdit(node);
-              setInputBoxInfo({ text: "", x: e.clientX, y: e.clientY });
-            }
-            //setGraph({ ...graph, dfdf: 3 });
-          } else if (
-            edgeCreationRequested &&
-            firstNode === null &&
-            (e.target.className.baseVal === "node" ||
-              e.target.className.baseVal === "node-text")
-          ) {
-            let name = e.target.getAttribute("name");
-            let node = graph.nodes.find((n) => n.name === name);
-
-            if (typeof node != "undefined") {
-              setFirstNode(node);
-            }
-            //setEdgeCreationRequested(false);
-          } else if (
-            edgeCreationRequested &&
-            firstNode != null &&
-            (e.target.className.baseVal === "node" ||
-              e.target.className.baseVal === "node-text")
-          ) {
-            let name = e.target.getAttribute("name");
-            let node = graph.nodes.find((n) => n.name === name);
-
-            if (
-              typeof node != "undefined" &&
-              !GraphUtils.edgeAlreadyExists(graph, node.name, firstNode.name)
-            ) {
-              let holdGraph = Lodash.cloneDeep(graph);
-              holdGraph.edges.push({
-                source: holdGraph.nodes.find((n) => n.name === firstNode.name),
-                dest: holdGraph.nodes.find((n) => n.name === node.name),
-                weight: 3,
-              });
-
-              setGraph(holdGraph);
-            }
-
-            setEdgeCreationRequested(false);
-            setFirstNode(null);
-          } else if (
-            nodeRemovalRequested &&
-            firstNode === null &&
-            (e.target.className.baseVal === "node" ||
-              e.target.className.baseVal === "node-text")
-          ) {
-            let name = e.target.getAttribute("name");
-            let holdGraph = Lodash.cloneDeep(graph);
-            holdGraph.nodes = holdGraph.nodes.filter(
-              (node) => node.name !== name
-            );
-            holdGraph.edges = holdGraph.edges.filter(
-              (edge) => edge.source.name !== name && edge.dest.name !== name
-            );
-
-            setGraph(holdGraph);
-            setNodeRemovalRequested(false);
-          } else if (
-            pathRequested &&
-            firstNode === null &&
-            (e.target.className.baseVal === "node" ||
-              e.target.className.baseVal === "node-text")
-          ) {
-            let name = e.target.getAttribute("name");
-            let node = graph.nodes.find((n) => n.name === name);
-
-            if (typeof node !== "undefined") {
-              setFirstNode(node);
-            }
-          } else if (
-            pathRequested &&
-            firstNode != null &&
-            (e.target.className.baseVal === "node" ||
-              e.target.className.baseVal === "node-text")
-          ) {
-            let name = e.target.getAttribute("name");
-            let node = graph.nodes.find((n) => n.name === name);
-            if (typeof node !== "undefined") {
-              setPathToSolve({
-                name: props.name,
-                source: name,
-                dest: firstNode.name,
-              });
-            }
-
-            setPathRequested(false);
-            setFirstNode(null);
-          } else {
-            setNodeUnderEdit(null);
-          }
-
-          setNodeCreationRequested(false);
-        }}
       >
         <g
           ref={graphGroup}
@@ -653,8 +671,8 @@ const GraphBox = (props) => {
       <div
         id="graph-input-box"
         style={{
-          top: inputBoxInfo.y + 30,
-          left: inputBoxInfo.x - 100,
+          top: nodeUnderEdit ? nodeUnderEdit.y + 20 : 0,
+          left: nodeUnderEdit ? nodeUnderEdit.y - 30 : 0,
           visibility: nodeUnderEdit === null ? "hidden" : "visible",
         }}
       >
