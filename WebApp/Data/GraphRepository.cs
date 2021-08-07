@@ -23,18 +23,18 @@ namespace WebApp.Data
             return graph;
         }
 
-        public GraphModel ReadGraph(string graphName, User user)
+        public GraphModel ReadGraph(int graphId, User user)
         {
             return _context
                         .Graphs
-                        .FirstOrDefault(g => g.UserId == user.Id && g.Name == graphName);
+                        .FirstOrDefault(g => g.UserId == user.Id && g.Id == graphId);
         }
 
-        public GraphModel UpdateGraph(User user, string graphName, string newData)
+        public GraphModel UpdateGraph(User user, int graphId, string newData)
         {
             GraphModel graph = _context
                 .Graphs
-                .FirstOrDefault(g => g.UserId == user.Id && g.Name == graphName);
+                .FirstOrDefault(g => g.UserId == user.Id && g.Id == graphId);
 
             if (graph != default(GraphModel))
             {

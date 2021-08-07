@@ -15,8 +15,6 @@ namespace WebApp.Data
         {
             modelBuilder.Entity<User>(entity => { entity.HasIndex(e => e.Email).IsUnique(); });
 
-            modelBuilder.Entity<GraphModel>(entity => { entity.HasIndex(e => e.Name).IsUnique(); });
-
             modelBuilder.Entity<GraphModel>()
                 .HasOne(g => g.User)
                 .WithMany(u => u.Graphs)

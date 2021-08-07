@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using VisualDijkstraRemake.Models;
 using VisualDijkstraRemake.Utils;
@@ -62,7 +61,7 @@ namespace WebApp.Controllers
         }
 
         [HttpGet("graph")]
-        public IActionResult ReadGraph(string name)
+        public IActionResult ReadGraph(int id)
         {
             User user;
 
@@ -82,7 +81,7 @@ namespace WebApp.Controllers
                 return Unauthorized();
             }
 
-            GraphModel graph = _graphRepository.ReadGraph(name, user);
+            GraphModel graph = _graphRepository.ReadGraph(id, user);
 
             if (graph == default(GraphModel))
             {
@@ -112,7 +111,7 @@ namespace WebApp.Controllers
                 return Unauthorized();
             }
 
-            GraphModel graph = _graphRepository.UpdateGraph(user, dto.Name, dto.Data);
+            GraphModel graph = _graphRepository.UpdateGraph(user, dto.Id, dto.Data);
 
             if (graph == default(GraphModel))
             {
@@ -125,7 +124,7 @@ namespace WebApp.Controllers
         }
 
         [HttpGet("graph/solve")]
-        public IActionResult Solve(string name, string source, string dest)
+        public IActionResult Solve(int id, string source, string dest)
         {
             User user;
 
@@ -141,9 +140,7 @@ namespace WebApp.Controllers
                 return Unauthorized();
             }
 
-            Debug.WriteLine(name + " " + source + " " + dest);
-
-            GraphModel graphModel = _graphRepository.ReadGraph(name, user);
+            GraphModel graphModel = _graphRepository.ReadGraph(id, user);
             if (graphModel == default(GraphModel))
             {
                 return NotFound();

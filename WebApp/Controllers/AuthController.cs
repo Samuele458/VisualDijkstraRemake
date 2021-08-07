@@ -83,7 +83,7 @@ namespace WebApp.Controllers
                 {
                     Name = user.Name,
                     Email = user.Email,
-                    Graphs = user.Graphs.Select(g => g.Name)
+                    Graphs = user.Graphs.Select(g => new { name = g.Name, id = g.Id })
                 });
             }
             catch (Exception)

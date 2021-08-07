@@ -78,6 +78,11 @@ const GraphBox = (props) => {
   }, [props.graph]);
 
   useEffect(() => {
+    //removing inputbox when zoomin/zoomout
+    setNodeUnderEdit(null);
+  }, [scale]);
+
+  useEffect(() => {
     if (
       nodeUnderEdit === null &&
       graph.nodes.find((n) => n.name.length === 0)
@@ -97,6 +102,7 @@ const GraphBox = (props) => {
 
     //if both graph and graphBox exist
     if (graph && graphGroup) {
+      props.handleGraphChange(graph);
       //removing all previous elements
       d3.select(graphGroup.current).selectAll("*").remove();
 
@@ -379,6 +385,8 @@ const GraphBox = (props) => {
       }
 
       function dragNodeEnded(e, d) {
+        let holdGraph = Lodash.cloneDeep(graph);
+
         if (longPress) {
           d3.select("#edge-creation-line")
             .attr("x1", d.x)
@@ -397,7 +405,6 @@ const GraphBox = (props) => {
             ) &&
             nodeOnMouseOver !== e.sourceEvent.target.getAttribute("name")
           ) {
-            let holdGraph = Lodash.cloneDeep(graph);
             holdGraph.edges.push({
               source: holdGraph.nodes.find((n) => n.name === nodeOnMouseOver),
               dest: holdGraph.nodes.find(
@@ -409,6 +416,8 @@ const GraphBox = (props) => {
             setGraph(holdGraph);
           }
         }
+        console.log(holdGraph);
+        props.handleGraphChange(holdGraph);
 
         longPress = null;
         currentNode = null;
