@@ -416,7 +416,6 @@ const GraphBox = (props) => {
             setGraph(holdGraph);
           }
         }
-        console.log(holdGraph);
         props.handleGraphChange(holdGraph);
 
         longPress = null;

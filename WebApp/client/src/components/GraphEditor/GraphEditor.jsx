@@ -30,6 +30,23 @@ const GraphEditor = () => {
   const [tempName, setTempName] = useState();
 
   useEffect(() => {
+    if (alreadyUploaded) {
+      console.log("Updating name to: ", currentName);
+      axios
+        .put("/api/graph", {
+          id: currentId,
+          name: currentName,
+        })
+        .then((response) => {
+          reloadGraphs();
+        })
+        .catch((error) => {
+          console.log("Error on saving graph: ", error);
+        });
+    }
+  }, [currentName]);
+
+  useEffect(() => {
     if (savedGraph) {
       if (alreadyUploaded) {
         axios
@@ -42,7 +59,6 @@ const GraphEditor = () => {
             ),
           })
           .then((response) => {
-            console.log("Updated: ", currentId);
             setAlreadyUploaded(true);
           })
           .catch((error) => {
@@ -69,7 +85,7 @@ const GraphEditor = () => {
     }
   }, [savedGraph]);
 
-  useEffect(() => {
+  function reloadGraphs() {
     if (Auth.loggedUser)
       axios
         .get("/api/user")
@@ -79,6 +95,10 @@ const GraphEditor = () => {
         .catch((error) => {
           console.log("ERROR LOGOUT", error);
         });
+  }
+
+  useEffect(() => {
+    reloadGraphs();
   }, [alreadyUploaded, Auth.loggedUser]);
 
   useEffect(() => {
@@ -130,7 +150,6 @@ const GraphEditor = () => {
               alt=""
               onClick={() => {
                 if (!nameUnderEdit) {
-                  console.log("Setting " + tempName);
                   setTempName(currentName);
                 } else {
                   if (tempName.length > 0) setCurrentName(tempName);
@@ -145,10 +164,7 @@ const GraphEditor = () => {
                 className="graph-name-input"
                 value={tempName}
                 onChange={(e) => {
-                  if (
-                    !alreadyUploaded &&
-                    e.target.value.match(/^[A-Za-z0-9\s]*$/g)
-                  )
+                  if (e.target.value.match(/^[A-Za-z0-9\s]*$/g))
                     setTempName(e.target.value);
                 }}
                 onKeyDown={(e) => {
