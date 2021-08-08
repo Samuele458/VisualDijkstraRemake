@@ -9,6 +9,8 @@ namespace WebApp.Data
 
         GraphModel ReadGraph(int graphId, User user);
 
-        GraphModel UpdateGraph(User user, int graphId, string newData);
+        GraphModel UpdateGraphData(User user, int graphId, string newData);
+
+        GraphModel UpdateGraphName(User user, int graphId, string newName);
     }
 }

@@ -111,9 +111,18 @@ namespace WebApp.Controllers
                 return Unauthorized();
             }
 
-            GraphModel graph = _graphRepository.UpdateGraph(user, dto.Id, dto.Data);
+            GraphModel graph = null;
 
-            if (graph == default(GraphModel))
+            if (!string.IsNullOrEmpty(dto.Data))
+            {
+                graph = _graphRepository.UpdateGraphData(user, dto.Id, dto.Data);
+            }
+            else if (!string.IsNullOrEmpty(dto.Name))
+            {
+                graph = _graphRepository.UpdateGraphName(user, dto.Id, dto.Name);
+            }
+
+            if (graph != null && graph == default(GraphModel))
             {
                 return NotFound();
             }

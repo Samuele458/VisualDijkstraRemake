@@ -152,8 +152,30 @@
 
 .graph-name-box {
   position: absolute;
-  top: 89vh;
+  top: 88vh;
   right: 4rem;
+  display: flex;
+  transition: all 0.5s ease-in-out;
+  background-color: white;
+  border-radius: 0.5rem;
+  padding: 0.3rem;
+
+  &:hover {
+    -webkit-box-shadow: 0px 0px 21px -6px rgba(0, 0, 0, 0.69);
+    -moz-box-shadow: 0px 0px 21px -6px rgba(0, 0, 0, 0.69);
+    box-shadow: 0px 0px 21px -6px rgba(0, 0, 0, 0.69);
+  }
+
+  .graph-name-label {
+    border: none;
+    outline: 0px;
+    border-radius: 5px;
+    display: block;
+    transition: all 0.5s;
+    padding: 0.5rem;
+    font-size: 19px;
+    width: 10rem;
+  }
 
   .graph-name-input {
     border: none;
@@ -163,12 +185,7 @@
     transition: all 0.5s;
     padding: 0.5rem;
     font-size: 19px;
-  }
-
-  .graph-name-input:focus {
-    -webkit-box-shadow: 0px 0px 21px -6px rgba(0, 0, 0, 0.69);
-    -moz-box-shadow: 0px 0px 21px -6px rgba(0, 0, 0, 0.69);
-    box-shadow: 0px 0px 21px -6px rgba(0, 0, 0, 0.69);
+    width: 10rem;
   }
 }
 

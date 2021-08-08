@@ -30,7 +30,7 @@ namespace WebApp.Data
                         .FirstOrDefault(g => g.UserId == user.Id && g.Id == graphId);
         }
 
-        public GraphModel UpdateGraph(User user, int graphId, string newData)
+        public GraphModel UpdateGraphData(User user, int graphId, string newData)
         {
             GraphModel graph = _context
                 .Graphs
@@ -39,6 +39,21 @@ namespace WebApp.Data
             if (graph != default(GraphModel))
             {
                 graph.Data = newData;
+                _context.SaveChanges();
+            }
+
+            return graph;
+        }
+
+        public GraphModel UpdateGraphName(User user, int graphId, string newName)
+        {
+            GraphModel graph = _context
+                .Graphs
+                .FirstOrDefault(g => g.UserId == user.Id && g.Id == graphId);
+
+            if (graph != default(GraphModel))
+            {
+                graph.Name = newName;
                 _context.SaveChanges();
             }
 

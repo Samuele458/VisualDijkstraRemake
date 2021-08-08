@@ -48,7 +48,10 @@ const StatesViewer = (props) => {
   }, [states]);
 
   return (
-    <div className="states-viewer">
+    <div
+      className="states-viewer"
+      style={{ visibility: states === null ? "hidden" : "visible" }}
+    >
       <div className="states-picker">
         {states &&
           states.map((s, i) => {

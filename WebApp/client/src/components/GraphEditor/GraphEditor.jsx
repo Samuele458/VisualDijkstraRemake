@@ -7,7 +7,11 @@ import axios from "axios";
 import * as GraphUtils from "../../utils/graphUtils";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCloud } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCloud,
+  faPencilAlt,
+  faCheckCircle,
+} from "@fortawesome/free-solid-svg-icons";
 
 import Dialog from "../Dialog";
 import AuthApi from "../../AuthApi";
@@ -22,6 +26,8 @@ const GraphEditor = () => {
   const [alreadyUploaded, setAlreadyUploaded] = useState(false);
   const [displayGraphs, setDisplayGraphs] = useState(false);
   const [graphNames, setGraphNames] = useState([]);
+  const [nameUnderEdit, setNameUnderEdit] = useState(false);
+  const [tempName, setTempName] = useState();
 
   useEffect(() => {
     if (savedGraph) {
@@ -113,15 +119,48 @@ const GraphEditor = () => {
     <>
       <div className="graph-editor-box">
         {Auth.loggedUser && (
-          <div className="graph-name-box">
-            <input
-              type="text"
-              className="graph-name-input"
-              value={currentName}
-              onChange={(e) => {
-                if (!alreadyUploaded) setCurrentName(e.target.value);
+          <div
+            className={
+              nameUnderEdit ? "graph-name-box shadow" : "graph-name-box"
+            }
+          >
+            <FontAwesomeIcon
+              icon={nameUnderEdit ? faCheckCircle : faPencilAlt}
+              className="btn-icon"
+              alt=""
+              onClick={() => {
+                if (!nameUnderEdit) {
+                  console.log("Setting " + tempName);
+                  setTempName(currentName);
+                } else {
+                  if (tempName.length > 0) setCurrentName(tempName);
+                }
+
+                setNameUnderEdit((previous) => !previous);
               }}
             />
+            {nameUnderEdit ? (
+              <input
+                type="text"
+                className="graph-name-input"
+                value={tempName}
+                onChange={(e) => {
+                  if (
+                    !alreadyUploaded &&
+                    e.target.value.match(/^[A-Za-z0-9\s]*$/g)
+                  )
+                    setTempName(e.target.value);
+                }}
+                onKeyDown={(e) => {
+                  if (e.keyCode === 13) {
+                    if (tempName.length > 0) setCurrentName(tempName);
+                    setNameUnderEdit((previous) => !previous);
+                  }
+                }}
+              />
+            ) : (
+              <p className="graph-name-label">{currentName}</p>
+            )}
           </div>
         )}
 
