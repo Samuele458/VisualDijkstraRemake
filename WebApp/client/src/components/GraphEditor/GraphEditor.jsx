@@ -2,6 +2,7 @@ import "./GraphEditor.scss";
 import React, { useEffect, useState, useContext } from "react";
 
 import GraphBox from "./components/GraphBox";
+import GraphsMenu from "./components/GraphsMenu";
 import Lodash, { isBuffer } from "lodash";
 import axios from "axios";
 import * as GraphUtils from "../../utils/graphUtils";
@@ -120,21 +121,6 @@ const GraphEditor = () => {
     }
   };
 
-  const loadGraph = (graphObj) => {
-    axios
-      .get(`/api/graph?Id=${graphObj.id}`)
-      .then((response) => {
-        setCurrentId(response.data.Id);
-        setCurrentGraph(JSON.parse(response.data.Data));
-        setCurrentName(graphObj.name);
-        setAlreadyUploaded(true);
-        setDisplayGraphs(false);
-      })
-      .catch((error) => {
-        console.log("ERROR LOGOUT", error);
-      });
-  };
-
   return (
     <>
       <div className="graph-editor-box">
@@ -200,7 +186,7 @@ const GraphEditor = () => {
           />
         </div>
       </div>
-      {displayGraphs && (
+      {/*displayGraphs && (
         <Dialog
           handleClose={() => {
             setDisplayGraphs(false);
@@ -220,6 +206,19 @@ const GraphEditor = () => {
             })}
           </div>
         </Dialog>
+          )*/}
+      {displayGraphs && (
+        <GraphsMenu
+          graphs={graphNames}
+          setGraph={(graph) => {
+            setCurrentId(graph.Id);
+            setCurrentGraph(JSON.parse(graph.Data));
+            setCurrentName(graph.Name);
+            setAlreadyUploaded(true);
+            setDisplayGraphs(false);
+          }}
+          handleClose={() => setDisplayGraphs(false)}
+        />
       )}
     </>
   );
