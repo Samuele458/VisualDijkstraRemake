@@ -135,6 +135,8 @@
   max-height: 50vh;
   overflow-y: scroll;
   overflow-x: auto;
+  padding: 1rem;
+  width: 30rem;
 
   .graph-name-item {
     background-color: rgb(255, 255, 255);
@@ -161,9 +163,13 @@
   }
 
   .graph-name-item:hover {
-    -webkit-box-shadow: 0px 16px 24px -11px rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: 0px 16px 24px -11px rgba(0, 0, 0, 0.75);
-    box-shadow: 0px 16px 24px -11px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: 0px 0px 23px -10px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 23px -10px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 23px -10px rgba(0, 0, 0, 0.75);
+  }
+
+  .current {
+    border: 2px solid rgb(41, 73, 252);
   }
 }
 

@@ -217,6 +217,7 @@ const GraphEditor = () => {
             setAlreadyUploaded(true);
             setDisplayGraphs(false);
           }}
+          currentId={currentId}
           handleClose={() => setDisplayGraphs(false)}
         />
       )}
