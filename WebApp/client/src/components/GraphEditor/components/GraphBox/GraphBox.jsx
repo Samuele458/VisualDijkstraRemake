@@ -41,6 +41,7 @@ const GraphBox = (props) => {
 
   //current graph model
   const [graph, setGraph] = useState({ nodes: [], edges: [] });
+  const [renderedGraph, setRenderedGraph] = useState(null);
 
   //requests
   const [nodeCreationRequested, setNodeCreationRequested] = useState(false);
@@ -101,7 +102,9 @@ const GraphBox = (props) => {
     //graph rendering
 
     //if both graph and graphBox exist
-    if (graph && graphGroup) {
+    if (graph && graphGroup /*&& !Lodash.isEqual(graph, renderedGraph)*/) {
+      //setRenderedGraph(Lodash.cloneDeep(graph));
+
       props.handleGraphChange(graph);
       //removing all previous elements
       d3.select(graphGroup.current).selectAll("*").remove();
@@ -374,6 +377,7 @@ const GraphBox = (props) => {
           if (typeof node !== "undefined") {
             setPathToSolve({
               name: props.name,
+              id: props.id,
               source: name,
               dest: firstNode.name,
             });
@@ -554,7 +558,15 @@ const GraphBox = (props) => {
     setInputFocus();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [graph, currentState, setInputFocus]);
+  }, [
+    graph,
+    currentState,
+    nodeCreationRequested,
+    edgeCreationRequested,
+    pathRequested,
+    firstNode,
+    transformPos,
+  ]);
 
   const setInputBoxValue = () => {
     let holdGraph = Lodash.cloneDeep(graph);
@@ -667,6 +679,7 @@ const GraphBox = (props) => {
         {...props}
         width="800"
         height="600"
+        /*
         onMouseDown={(e) => {
           if (
             e.target.className.baseVal === "node" ||
@@ -695,6 +708,7 @@ const GraphBox = (props) => {
             });
           }
         }}
+        */
       >
         <g
           ref={graphGroup}

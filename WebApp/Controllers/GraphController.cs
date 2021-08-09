@@ -122,6 +122,8 @@ namespace WebApp.Controllers
                 graph = _graphRepository.UpdateGraphName(user, dto.Id, dto.Name);
             }
 
+            System.Threading.Thread.Sleep(500);
+
             if (graph != null && graph == default(GraphModel))
             {
                 return NotFound();

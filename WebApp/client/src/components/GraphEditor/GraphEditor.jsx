@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext } from "react";
 
 import GraphBox from "./components/GraphBox";
 import GraphsMenu from "./components/GraphsMenu";
-import Lodash, { isBuffer } from "lodash";
+import Lodash, { isBuffer, templateSettings } from "lodash";
 import axios from "axios";
 import * as GraphUtils from "../../utils/graphUtils";
 
@@ -14,8 +14,9 @@ import {
   faCheckCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
-import Dialog from "../Dialog";
 import AuthApi from "../../AuthApi";
+import Loading from "../Loading";
+import GraphSaver from "./components/GraphSaver/GraphSaver";
 
 const GraphEditor = () => {
   const Auth = useContext(AuthApi);
@@ -30,9 +31,33 @@ const GraphEditor = () => {
   const [nameUnderEdit, setNameUnderEdit] = useState(false);
   const [tempName, setTempName] = useState();
 
+  const savingStates = {
+    NONE: 0,
+    SAVING: 1,
+    SAVED: 2,
+    ERROR: 3,
+  };
+  const [showIsSaving, setShowIsSaving] = useState(savingStates.NONE);
+  const [savingTimeout, setSavingTimeout] = useState();
+
+  const test = React.useRef(8);
+
+  useEffect(() => {
+    /*if (showIsSaving === savingStates.SAVED) {
+      clearTimeout(savingTimeout);
+      setSavingTimeout(
+        setTimeout(() => {
+          if (showIsSaving === savingStates.SAVED) {
+            setShowIsSaving(savingStates.NONE);
+          }
+        }, 2000)
+      );
+    }*/
+  }, [showIsSaving]);
+
   useEffect(() => {
     if (alreadyUploaded) {
-      console.log("Updating name to: ", currentName);
+      setShowIsSaving(savingStates.SAVING);
       axios
         .put("/api/graph", {
           id: currentId,
@@ -40,15 +65,20 @@ const GraphEditor = () => {
         })
         .then((response) => {
           reloadGraphs();
+          setTimeout(() => {
+            setShowIsSaving(savingStates.SAVED);
+          }, 400);
         })
         .catch((error) => {
           console.log("Error on saving graph: ", error);
+          setShowIsSaving(savingStates.ERROR);
         });
     }
   }, [currentName]);
 
   useEffect(() => {
     if (savedGraph) {
+      setShowIsSaving(savingStates.SAVING);
       if (alreadyUploaded) {
         axios
           .put("/api/graph", {
@@ -61,9 +91,11 @@ const GraphEditor = () => {
           })
           .then((response) => {
             setAlreadyUploaded(true);
+            setShowIsSaving(savingStates.SAVED);
           })
           .catch((error) => {
             console.log("Error on saving graph: ", error);
+            setShowIsSaving(savingStates.ERROR);
           });
       } else if (savedGraph.nodes.length > 0) {
         axios
@@ -78,10 +110,14 @@ const GraphEditor = () => {
           .then((response) => {
             setCurrentId(response.data.Id);
             setAlreadyUploaded(true);
+            setShowIsSaving(savingStates.SAVED);
           })
           .catch((error) => {
             console.log("Error on creating graph: ", error);
+            setShowIsSaving(savingStates.ERROR);
           });
+      } else {
+        setShowIsSaving(savingStates.NONE);
       }
     }
   }, [savedGraph]);
@@ -183,6 +219,7 @@ const GraphEditor = () => {
             graph={currentGraph}
             name={currentName}
             handleGraphChange={handleGraphChange}
+            id={currentId}
           />
         </div>
       </div>
@@ -221,6 +258,23 @@ const GraphEditor = () => {
           handleClose={() => setDisplayGraphs(false)}
         />
       )}
+      {showIsSaving === savingStates.SAVING ? (
+        <div>
+          <Loading />
+          <p>Saving...</p>
+        </div>
+      ) : showIsSaving === savingStates.SAVED ? (
+        <div>
+          <p>saved</p>
+        </div>
+      ) : showIsSaving === savingStates.SAVED ? (
+        <div>
+          <p>Error on saving</p>
+        </div>
+      ) : (
+        <></>
+      )}
+      <GraphSaver a={test} />
     </>
   );
 };
