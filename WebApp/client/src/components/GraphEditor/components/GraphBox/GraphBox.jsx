@@ -41,7 +41,6 @@ const GraphBox = (props) => {
 
   //current graph model
   const [graph, setGraph] = useState({ nodes: [], edges: [] });
-  const [renderedGraph, setRenderedGraph] = useState(null);
 
   //requests
   const [nodeCreationRequested, setNodeCreationRequested] = useState(false);
@@ -96,6 +95,7 @@ const GraphBox = (props) => {
 
       setGraph(holdGraph);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nodeUnderEdit]);
 
   useEffect(() => {

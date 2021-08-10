@@ -23,7 +23,8 @@ const StatesViewer = (props) => {
   }, [props, pathToSolve]);
 
   useEffect(() => {
-    if (pathToSolve)
+    console.log("Path: ", pathToSolve);
+    if (pathToSolve && pathToSolve.name != "")
       axios
         .get(
           `/api/graph/solve?id=${pathToSolve.id}&source=${pathToSolve.source}&dest=${pathToSolve.dest}`
@@ -45,6 +46,7 @@ const StatesViewer = (props) => {
       setCurrentState(states[0]);
       props.setState(states[0]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [states]);
 
   return (

@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext } from "react";
 
 import GraphBox from "./components/GraphBox";
 import GraphsMenu from "./components/GraphsMenu";
-import Lodash, { isBuffer, templateSettings } from "lodash";
+import Lodash from "lodash";
 import axios from "axios";
 import * as GraphUtils from "../../utils/graphUtils";
 
@@ -38,23 +38,9 @@ const GraphEditor = () => {
     ERROR: 3,
   };
   const [showIsSaving, setShowIsSaving] = useState(savingStates.NONE);
-  const [savingTimeout, setSavingTimeout] = useState();
 
   useEffect(() => {
-    /*if (showIsSaving === savingStates.SAVED) {
-      clearTimeout(savingTimeout);
-      setSavingTimeout(
-        setTimeout(() => {
-          if (showIsSaving === savingStates.SAVED) {
-            setShowIsSaving(savingStates.NONE);
-          }
-        }, 2000)
-      );
-    }*/
-  }, [showIsSaving]);
-
-  useEffect(() => {
-    if (alreadyUploaded) {
+    if (alreadyUploaded && currentId !== null) {
       setShowIsSaving(savingStates.SAVING);
       axios
         .put("/api/graph", {
@@ -72,29 +58,37 @@ const GraphEditor = () => {
           setShowIsSaving(savingStates.ERROR);
         });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentName]);
 
   useEffect(() => {
     if (savedGraph) {
       setShowIsSaving(savingStates.SAVING);
       if (alreadyUploaded) {
-        axios
-          .put("/api/graph", {
-            id: currentId,
-            data: JSON.stringify(
-              GraphUtils.sanitizeCoordinates(
-                GraphUtils.decodeGraphReferences(Lodash.cloneDeep(savedGraph))
-              )
-            ),
-          })
-          .then((response) => {
-            setAlreadyUploaded(true);
-            setShowIsSaving(savingStates.SAVED);
-          })
-          .catch((error) => {
-            console.log("Error on saving graph: ", error);
-            setShowIsSaving(savingStates.ERROR);
-          });
+        if (
+          !Lodash.isEqual(
+            GraphUtils.decodeGraphReferences(Lodash.cloneDeep(savedGraph)),
+            currentGraph
+          ) &&
+          currentId !== null
+        )
+          axios
+            .put("/api/graph", {
+              id: currentId,
+              data: JSON.stringify(
+                GraphUtils.sanitizeCoordinates(
+                  GraphUtils.decodeGraphReferences(Lodash.cloneDeep(savedGraph))
+                )
+              ),
+            })
+            .then((response) => {
+              setAlreadyUploaded(true);
+              setShowIsSaving(savingStates.SAVED);
+            })
+            .catch((error) => {
+              console.log("Error on saving graph: ", error);
+              setShowIsSaving(savingStates.ERROR);
+            });
       } else if (savedGraph.nodes.length > 0) {
         axios
           .post("/api/graph", {
@@ -118,10 +112,10 @@ const GraphEditor = () => {
         setShowIsSaving(savingStates.NONE);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [savedGraph]);
 
   function reloadGraphs() {
-    console.log("RELOADING");
     if (Auth.loggedUser)
       axios
         .get("/api/user")
@@ -147,6 +141,7 @@ const GraphEditor = () => {
 
   useEffect(() => {
     reloadGraphs();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [alreadyUploaded, Auth.loggedUser]);
 
   useEffect(() => {
