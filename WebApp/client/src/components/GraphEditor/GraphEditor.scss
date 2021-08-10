@@ -143,7 +143,7 @@
     margin: 0.5rem;
     padding: 1rem;
     border-radius: 0.5rem;
-    cursor: pointer;
+
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -154,11 +154,16 @@
       position: relative;
       .graph-name-text {
         text-align: left;
+        cursor: pointer;
       }
 
       .update-date {
         font-size: 0.8rem;
       }
+    }
+
+    .graph-name-toolbar {
+      display: flex;
     }
   }
 
@@ -176,7 +181,7 @@
 .graph-name-box {
   position: absolute;
   top: 88vh;
-  right: 4rem;
+  right: 1rem;
   display: flex;
   transition: all 0.5s ease-in-out;
   background-color: white;
@@ -250,5 +255,21 @@
     .state-table {
       width: 100%;
     }
+  }
+}
+
+.saving-box {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  top: 88.5vh;
+  left: 1rem;
+
+  align-items: center;
+  justify-content: space-around;
+  height: 3rem;
+  color: rgba(66, 66, 66, 0.76);
+  p {
+    padding: 0.5rem;
   }
 }

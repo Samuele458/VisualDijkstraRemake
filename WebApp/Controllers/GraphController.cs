@@ -134,6 +134,34 @@ namespace WebApp.Controllers
             }
         }
 
+        [HttpDelete("graph")]
+        public IActionResult DeleteGraph(int id)
+        {
+            User user;
+
+            try
+            {
+                string jwt = Request.Cookies["jwt"];
+                JwtSecurityToken token = _jwtService.Verify(jwt);
+                int userId = int.Parse(token.Issuer);
+                user = _userRepository.GetById(userId);
+            }
+            catch (Exception)
+            {
+                return Unauthorized();
+            }
+
+            GraphModel graph = _graphRepository.DeleteGraph(id, user);
+            if (graph == default(GraphModel))
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(graph);
+            }
+        }
+
         [HttpGet("graph/solve")]
         public IActionResult Solve(int id, string source, string dest)
         {

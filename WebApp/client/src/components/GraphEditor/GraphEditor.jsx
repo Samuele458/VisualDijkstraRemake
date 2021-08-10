@@ -12,11 +12,11 @@ import {
   faCloud,
   faPencilAlt,
   faCheckCircle,
+  faHdd,
 } from "@fortawesome/free-solid-svg-icons";
 
 import AuthApi from "../../AuthApi";
 import Loading from "../Loading";
-import GraphSaver from "./components/GraphSaver/GraphSaver";
 
 const GraphEditor = () => {
   const Auth = useContext(AuthApi);
@@ -39,8 +39,6 @@ const GraphEditor = () => {
   };
   const [showIsSaving, setShowIsSaving] = useState(savingStates.NONE);
   const [savingTimeout, setSavingTimeout] = useState();
-
-  const test = React.useRef(8);
 
   useEffect(() => {
     /*if (showIsSaving === savingStates.SAVED) {
@@ -123,11 +121,24 @@ const GraphEditor = () => {
   }, [savedGraph]);
 
   function reloadGraphs() {
+    console.log("RELOADING");
     if (Auth.loggedUser)
       axios
         .get("/api/user")
         .then((response) => {
           setGraphNames(response.data.Graphs);
+
+          if (
+            currentId !== null &&
+            !response.data.Graphs.find((g) => g.id === currentId)
+          ) {
+            setCurrentId(null);
+            setCurrentGraph({ nodes: [], edges: [] });
+            setSavedGraph(null);
+            setCurrentName("Untitled");
+            setAlreadyUploaded(false);
+            setDisplayGraphs(false);
+          }
         })
         .catch((error) => {
           console.log("ERROR LOGOUT", error);
@@ -256,16 +267,20 @@ const GraphEditor = () => {
           }}
           currentId={currentId}
           handleClose={() => setDisplayGraphs(false)}
+          triggerUpdate={() => {
+            reloadGraphs();
+          }}
         />
       )}
       {showIsSaving === savingStates.SAVING ? (
-        <div>
+        <div className="saving-box">
           <Loading />
           <p>Saving...</p>
         </div>
       ) : showIsSaving === savingStates.SAVED ? (
-        <div>
-          <p>saved</p>
+        <div className="saving-box">
+          <FontAwesomeIcon icon={faHdd} className="standard-icon" />
+          <p>Saved</p>
         </div>
       ) : showIsSaving === savingStates.SAVED ? (
         <div>
@@ -274,7 +289,6 @@ const GraphEditor = () => {
       ) : (
         <></>
       )}
-      <GraphSaver a={test} />
     </>
   );
 };

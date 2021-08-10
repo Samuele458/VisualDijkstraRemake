@@ -53,7 +53,7 @@ const StatesViewer = (props) => {
       style={{ visibility: states === null ? "hidden" : "visible" }}
     >
       <div className="states-picker">
-        {/*states &&
+        {Array.isArray(states) &&
           states.map((s, i) => {
             return (
               <button
@@ -66,7 +66,7 @@ const StatesViewer = (props) => {
                 {i}
               </button>
             );
-          })*/}
+          })}
       </div>
       <div className="state-table-box">
         <table className="state-table">
@@ -75,7 +75,8 @@ const StatesViewer = (props) => {
             <th>Previous</th>
             <th>Distance</th>
           </tr>
-          {/*currentState &&
+          {currentState &&
+            currentState.NodesStates &&
             currentState.NodesStates.map((s) => {
               return (
                 <tr>
@@ -86,7 +87,7 @@ const StatesViewer = (props) => {
                   <th>{s.Distance === 999999999 ? "Inf" : s.Distance}</th>
                 </tr>
               );
-            })*/}
+            })}
         </table>
       </div>
     </div>

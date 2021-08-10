@@ -59,5 +59,20 @@ namespace WebApp.Data
 
             return graph;
         }
+
+        public GraphModel DeleteGraph(int id, User user)
+        {
+            GraphModel graph = ReadGraph(id, user);
+
+            if (graph != default(GraphModel))
+            {
+                _context
+                    .Graphs
+                    .Remove(graph);
+                _context.SaveChanges();
+            }
+
+            return graph;
+        }
     }
 }

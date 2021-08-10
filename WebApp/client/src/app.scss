@@ -159,8 +159,14 @@
   margin: 0.3rem;
   display: block;
   position: relative;
+  cursor: pointer;
 
   &:active {
     bottom: 0.15rem;
   }
+}
+
+.standard-icon {
+  width: 1.5rem !important;
+  height: 1.5rem !important;
 }
