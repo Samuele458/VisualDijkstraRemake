@@ -6,15 +6,28 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
 using WebApp.Data;
-using WebApp.Utils;
+using WebApp.Services;
 
 namespace WebApp
 {
     public class Startup
     {
+        /*
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+        }*/
+
+        public Startup(IWebHostEnvironment env)
+        {
+            System.Diagnostics.Debug.WriteLine(env.EnvironmentName);
+            var builder = new ConfigurationBuilder()
+            .SetBasePath(env.ContentRootPath)
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+            .AddEnvironmentVariables();
+            Configuration = builder.Build();
         }
 
         public IConfiguration Configuration { get; }
@@ -44,6 +57,8 @@ namespace WebApp
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IGraphRepository, GraphRepository>();
             services.AddScoped<JwtService>();
+
+            services.Configure<JwtOptions>(Configuration.GetSection("JwtConfig"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
