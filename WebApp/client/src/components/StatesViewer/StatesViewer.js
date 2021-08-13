@@ -20,10 +20,14 @@ const StatesViewer = (props) => {
     ) {
       setPathToSolve(props.pathToSolve);
     }
+
+    if (pathToSolve !== null && props.pathToSolve === null) {
+      setStates(null);
+      props.setState(null);
+    }
   }, [props, pathToSolve]);
 
   useEffect(() => {
-    console.log("Path: ", pathToSolve);
     if (pathToSolve && pathToSolve.name != "")
       axios
         .get(
@@ -39,7 +43,7 @@ const StatesViewer = (props) => {
       setStates(null);
       setCurrentState(null);
     }
-  }, [pathToSolve]);
+  }, [pathToSolve, pathToSolve.name]);
 
   useEffect(() => {
     if (states) {
@@ -48,6 +52,8 @@ const StatesViewer = (props) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [states]);
+
+  //if (pathToSolve === null) props.setState(null);
 
   return (
     <div

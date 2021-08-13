@@ -74,6 +74,7 @@ const GraphBox = (props) => {
     )
       GraphUtils.encodeGraphReferences(graphObj);
 
+    clearRequests();
     setGraph(graphObj);
   }, [props.graph]);
 
@@ -236,6 +237,11 @@ const GraphBox = (props) => {
         .attr("name", (d) => d.name)
         .attr("class", (d) => {
           let className = "node";
+
+          if (firstNode && firstNode.name === d.name) {
+            className += " first-node";
+          }
+
           if (
             currentState &&
             currentState.NodesStates.find((s) => s.Name === d.name)
@@ -480,6 +486,7 @@ const GraphBox = (props) => {
       }
 
       function nodeDoubleClick(e, d) {
+        clearRequests();
         setNodeUnderEdit(d);
         setInputBoxInfo({
           text: d.name,
