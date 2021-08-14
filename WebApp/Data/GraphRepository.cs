@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using WebApp.Models;
 
 namespace WebApp.Data
@@ -16,6 +17,10 @@ namespace WebApp.Data
         public GraphModel CreateGraph(User user, GraphModel graph)
         {
             graph.User = user;
+
+            graph.CreatedOn = DateTime.UtcNow;
+            graph.UpdatedOn = DateTime.UtcNow;
+
             user.Graphs.Add(graph);
             _context.Graphs.Add(graph);
             _context.SaveChanges();
@@ -38,6 +43,7 @@ namespace WebApp.Data
 
             if (graph != default(GraphModel))
             {
+                graph.UpdatedOn = DateTime.UtcNow;
                 graph.Data = newData;
                 _context.SaveChanges();
             }
@@ -53,6 +59,7 @@ namespace WebApp.Data
 
             if (graph != default(GraphModel))
             {
+                graph.UpdatedOn = DateTime.UtcNow;
                 graph.Name = newName;
                 _context.SaveChanges();
             }

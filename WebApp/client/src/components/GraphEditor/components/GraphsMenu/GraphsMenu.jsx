@@ -36,6 +36,9 @@ const GraphsMenu = (props) => {
       <div className="graph-names-box">
         {props.graphs &&
           props.graphs.map((grapObj) => {
+            console.log(grapObj);
+            let UpdatedOn = new Date(grapObj.updatedOn);
+
             return (
               <div
                 className={
@@ -52,7 +55,15 @@ const GraphsMenu = (props) => {
                     {grapObj.name}
                   </h3>
                   <p className="update-date">
-                    Last update: 23 May 2018 - 16:55
+                    Last update on
+                    {" " +
+                      UpdatedOn.toLocaleDateString("en-us", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      }) +
+                      " " +
+                      UpdatedOn.toLocaleTimeString()}
                   </p>
                 </div>
                 <div className="graph-name-toolbar">

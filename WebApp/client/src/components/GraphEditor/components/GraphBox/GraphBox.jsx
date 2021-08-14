@@ -610,17 +610,17 @@ const GraphBox = (props) => {
   return (
     <div className="graph-box-wrapper">
       <div className="graph-toolbar">
-        {Auth.loggedUser && (
-          <FontAwesomeIcon
-            icon={faSave}
-            className="btn-icon"
-            alt="Save"
-            onClick={() => {
-              clearRequests();
-              props.handleGraphChange(graph);
-            }}
-          />
-        )}
+        {props.externalButtons &&
+          props.externalButtons.map((btn) => {
+            return (
+              <FontAwesomeIcon
+                icon={btn.icon}
+                className="btn-icon"
+                alt=""
+                onClick={btn.onClick}
+              />
+            );
+          })}
 
         <FontAwesomeIcon
           icon={faPlusCircle}

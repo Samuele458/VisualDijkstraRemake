@@ -13,6 +13,7 @@ import {
   faPencilAlt,
   faCheckCircle,
   faHdd,
+  faFileMedical,
 } from "@fortawesome/free-solid-svg-icons";
 
 import AuthApi from "../../AuthApi";
@@ -163,6 +164,21 @@ const GraphEditor = () => {
     }
   };
 
+  let toolbarButtons = [
+    {
+      icon: faFileMedical,
+      onClick: (e) => {
+        console.log("Clicked");
+        setCurrentId(null);
+        setCurrentGraph({ nodes: [], edges: [] });
+        setSavedGraph(null);
+        setCurrentName("Untitled");
+        setAlreadyUploaded(false);
+        setDisplayGraphs(false);
+      },
+    },
+  ];
+
   return (
     <>
       <div className="graph-editor-box">
@@ -226,6 +242,7 @@ const GraphEditor = () => {
             name={currentName}
             handleGraphChange={handleGraphChange}
             id={currentId}
+            externalButtons={toolbarButtons}
           />
         </div>
       </div>

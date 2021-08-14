@@ -1,6 +1,7 @@
 ﻿
 
 using Newtonsoft.Json;
+using System;
 
 namespace WebApp.Models
 {
@@ -11,6 +12,10 @@ namespace WebApp.Models
         public string Name { get; set; }
 
         public string Data { get; set; }
+
+        public DateTime CreatedOn { get; set; }
+
+        public DateTime UpdatedOn { get; set; }
 
 
         public int UserId { get; set; }
