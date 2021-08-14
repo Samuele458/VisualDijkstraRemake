@@ -20,6 +20,7 @@ const LoginForm = () => {
         Password: data.password,
       })
       .then((response) => {
+        console.log(data);
         Auth.setLoggedUser(data);
       })
       .catch((error) => {});

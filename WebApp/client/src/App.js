@@ -42,6 +42,19 @@ function App() {
     }
   }, [loggedUser]);
 
+  useEffect(() => {
+    axios
+      .get("/api/user")
+      .then((response) => {
+        if (response.data && response.data.Email) {
+          setLoggedUser({ email: response.data.Email });
+        }
+      })
+      .catch((error) => {
+        console.log("ERROR LOGOUT", error);
+      });
+  }, []);
+
   return (
     <div>
       <AuthApi.Provider value={{ loggedUser, setLoggedUser }}>
