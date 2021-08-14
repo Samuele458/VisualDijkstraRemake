@@ -28,7 +28,7 @@ const StatesViewer = (props) => {
   }, [props, pathToSolve]);
 
   useEffect(() => {
-    if (pathToSolve && pathToSolve.name != "")
+    if (pathToSolve && pathToSolve.name !== "")
       axios
         .get(
           `/api/graph/solve?id=${pathToSolve.id}&source=${pathToSolve.source}&dest=${pathToSolve.dest}`

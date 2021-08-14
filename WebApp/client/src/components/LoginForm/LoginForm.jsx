@@ -3,9 +3,11 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 
 import AuthApi from "../../AuthApi";
+import useError from "../../hooks/useError";
 
 const LoginForm = () => {
   const Auth = useContext(AuthApi);
+  const { addError } = useError();
 
   const {
     register,
@@ -23,7 +25,9 @@ const LoginForm = () => {
         console.log(data);
         Auth.setLoggedUser(data);
       })
-      .catch((error) => {});
+      .catch((error) => {
+        addError("Login server error");
+      });
   };
 
   return (

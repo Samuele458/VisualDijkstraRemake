@@ -13,7 +13,6 @@ import {
   faLink,
   faSearchPlus,
   faSearchMinus,
-  faSave,
   faRoute,
 } from "@fortawesome/free-solid-svg-icons";
 

@@ -6,10 +6,12 @@ import Navbar from "./components/Navbar";
 import Dialog from "./components/Dialog";
 import SignupForm from "./components/SignupForm";
 import LoginForm from "./components/LoginForm";
+import ErrorNotification from "./components/ErrorNotification";
 
 import "./app.scss";
 
 import AuthApi from "./AuthApi";
+import ErrorProvider from "./providers/ErrorProvider";
 
 function App() {
   const [displayLogin, setDisplayLogin] = useState(false);
@@ -58,22 +60,27 @@ function App() {
   return (
     <div>
       <AuthApi.Provider value={{ loggedUser, setLoggedUser }}>
-        <Navbar
-          toggleLoginBox={toggleLoginBox}
-          toggleSignupBox={toggleSignupBox}
-          handleLogout={handleLogout}
-        />
-        {displaySignup && (
-          <Dialog handleClose={toggleSignupBox}>
-            <SignupForm />
-          </Dialog>
-        )}
-        {displayLogin && (
-          <Dialog handleClose={toggleLoginBox}>
-            <LoginForm />
-          </Dialog>
-        )}
-        <GraphEditor />
+        <ErrorProvider>
+          <ErrorNotification />
+          <Navbar
+            toggleLoginBox={toggleLoginBox}
+            toggleSignupBox={toggleSignupBox}
+            handleLogout={handleLogout}
+          />
+          {displaySignup && (
+            <Dialog handleClose={toggleSignupBox}>
+              <SignupForm />
+            </Dialog>
+          )}
+
+          {displayLogin && (
+            <Dialog handleClose={toggleLoginBox}>
+              <LoginForm />
+            </Dialog>
+          )}
+
+          <GraphEditor />
+        </ErrorProvider>
       </AuthApi.Provider>
     </div>
   );
