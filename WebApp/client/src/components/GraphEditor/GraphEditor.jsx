@@ -1,10 +1,12 @@
 import "./GraphEditor.scss";
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 
 import GraphBox from "./components/GraphBox";
 import GraphsMenu from "./components/GraphsMenu";
 import Lodash from "lodash";
 import axios from "axios";
+import FileSaver from "file-saver";
+
 import * as GraphUtils from "../../utils/graphUtils";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,6 +16,8 @@ import {
   faCheckCircle,
   faHdd,
   faFileMedical,
+  faDownload,
+  faFolderOpen,
 } from "@fortawesome/free-solid-svg-icons";
 
 import AuthApi from "../../AuthApi";
@@ -31,6 +35,7 @@ const GraphEditor = () => {
   const [graphNames, setGraphNames] = useState([]);
   const [nameUnderEdit, setNameUnderEdit] = useState(false);
   const [tempName, setTempName] = useState();
+  const inputFile = useRef(null);
 
   const savingStates = {
     NONE: 0,
@@ -164,11 +169,10 @@ const GraphEditor = () => {
     }
   };
 
-  let toolbarButtons = [
+  let sidebarButtons = [
     {
       icon: faFileMedical,
       onClick: (e) => {
-        console.log("Clicked");
         setCurrentId(null);
         setCurrentGraph({ nodes: [], edges: [] });
         setSavedGraph(null);
@@ -176,6 +180,31 @@ const GraphEditor = () => {
         setAlreadyUploaded(false);
         setDisplayGraphs(false);
       },
+      requireAuth: false,
+    },
+    {
+      icon: faDownload,
+      onClick: (e) => {
+        var blob = new Blob(
+          [
+            savedGraph
+              ? JSON.stringify(GraphUtils.decodeGraphReferences(savedGraph))
+              : JSON.stringify({ nodes: [], edges: [] }),
+          ],
+          {
+            type: "application/json;charset=utf-8",
+          }
+        );
+        FileSaver.saveAs(blob, `${currentName}.txt`);
+      },
+      requireAuth: true,
+    },
+    {
+      icon: faFolderOpen,
+      onClick: (e) => {
+        inputFile.current.click();
+      },
+      requireAuth: false,
     },
   ];
 
@@ -226,7 +255,7 @@ const GraphEditor = () => {
 
         <div className="graph-editor">
           {Auth.loggedUser && (
-            <div className="graph-sidebar">
+            <div className="cloud-btn">
               <FontAwesomeIcon
                 icon={faCloud}
                 className="btn-icon"
@@ -237,12 +266,59 @@ const GraphEditor = () => {
               />
             </div>
           )}
+
+          <input
+            type="file"
+            id="file"
+            ref={inputFile}
+            style={{ display: "none" }}
+            onChange={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+
+              let name = e.target.files[0].name;
+
+              const fileReader = new FileReader();
+
+              fileReader.readAsText(e.target.files[0], "UTF-8");
+              fileReader.onload = (e) => {
+                setCurrentGraph(
+                  GraphUtils.encodeGraphReferences(JSON.parse(e.target.result))
+                );
+
+                setCurrentId(null);
+                setSavedGraph(null);
+                setCurrentName(name);
+                setAlreadyUploaded(false);
+                setDisplayGraphs(false);
+                console.log(e.target.result);
+              };
+            }}
+          />
+          <div className="sidebar">
+            {sidebarButtons
+              .filter((btn) => {
+                return (
+                  (!Auth.loggedUser && !btn.requireAuth) || Auth.loggedUser
+                );
+              })
+              .map((btn) => {
+                return (
+                  <FontAwesomeIcon
+                    icon={btn.icon}
+                    className="btn-icon"
+                    alt=""
+                    onClick={btn.onClick}
+                  />
+                );
+              })}
+          </div>
           <GraphBox
             graph={currentGraph}
             name={currentName}
             handleGraphChange={handleGraphChange}
             id={currentId}
-            externalButtons={toolbarButtons}
+            externalButtons={[]}
           />
         </div>
       </div>

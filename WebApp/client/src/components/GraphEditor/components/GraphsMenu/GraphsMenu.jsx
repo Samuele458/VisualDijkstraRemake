@@ -34,6 +34,9 @@ const GraphsMenu = (props) => {
     <Dialog handleClose={props.handleClose}>
       <h2 style={{ padding: "0rem 0rem 1.5rem 1.5rem" }}>Load a graph</h2>
       <div className="graph-names-box">
+        {props.graphs && props.graphs.length === 0 && (
+          <p className="centered-text">No graph found</p>
+        )}
         {props.graphs &&
           props.graphs.map((grapObj) => {
             console.log(grapObj);
