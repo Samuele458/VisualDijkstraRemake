@@ -7,7 +7,11 @@ import {
   faExternalLinkAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
+import useError from "../../../../hooks/useError";
+
 const GraphsMenu = (props) => {
+  const { addError } = useError();
+
   const loadGraph = (graphObj) => {
     axios
       .get(`/api/graph?Id=${graphObj.id}`)
@@ -15,6 +19,7 @@ const GraphsMenu = (props) => {
         props.setGraph(response.data);
       })
       .catch((error) => {
+        addError("Server error");
         console.log("ERROR LOGOUT", error);
       });
   };
@@ -26,6 +31,7 @@ const GraphsMenu = (props) => {
         props.triggerUpdate();
       })
       .catch((error) => {
+        addError("Server error");
         console.log("ERROR LOGOUT", error);
       });
   };

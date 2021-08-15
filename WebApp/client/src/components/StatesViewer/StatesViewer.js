@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 
 import axios from "axios";
 
+import useError from "../../hooks/useError";
+
 const StatesViewer = (props) => {
   const [states, setStates] = useState(null);
   const [currentState, setCurrentState] = useState(null);
@@ -10,6 +12,8 @@ const StatesViewer = (props) => {
     source: "",
     dest: "",
   });
+
+  const { addError } = useError();
 
   useEffect(() => {
     if (
@@ -37,13 +41,13 @@ const StatesViewer = (props) => {
           setStates(response.data);
         })
         .catch((error) => {
-          console.log("ERROR LOGOUT", error);
+          addError("Server error");
         });
     else {
       setStates(null);
       setCurrentState(null);
     }
-  }, [pathToSolve, pathToSolve.name]);
+  }, [pathToSolve, pathToSolve.name, addError]);
 
   useEffect(() => {
     if (states) {

@@ -383,8 +383,8 @@ const GraphBox = (props) => {
             setPathToSolve({
               name: props.name,
               id: props.id,
-              source: name,
-              dest: firstNode.name,
+              source: firstNode.name,
+              dest: name,
             });
           }
 
@@ -492,6 +492,8 @@ const GraphBox = (props) => {
           x: d.x * scale + transformPos.x,
           y: d.y * scale + transformPos.y + 60,
         });
+
+        setInputFocus();
       }
 
       function bgDragStarted(e) {
@@ -557,11 +559,11 @@ const GraphBox = (props) => {
             x: e.x,
             y: e.y + 60,
           });
+
+          setInputFocus();
         }
       }
     }
-
-    setInputFocus();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [

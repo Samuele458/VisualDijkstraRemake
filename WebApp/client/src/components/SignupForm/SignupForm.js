@@ -4,6 +4,8 @@ import axios from "axios";
 
 import AuthApi from "../../AuthApi";
 
+import useError from "../../hooks/useError";
+
 const SignupForm = () => {
   const Auth = useContext(AuthApi);
 
@@ -13,6 +15,8 @@ const SignupForm = () => {
     formState: { errors },
     watch,
   } = useForm();
+
+  const { addError } = useError();
 
   const password = useRef({});
   password.current = watch("password", "");
@@ -33,9 +37,13 @@ const SignupForm = () => {
           .then((response) => {
             Auth.setLoggedUser(data);
           })
-          .catch((error) => {});
+          .catch((error) => {
+            addError("Server error");
+          });
       })
-      .catch((error) => {});
+      .catch((error) => {
+        addError("Server error");
+      });
   };
 
   return (

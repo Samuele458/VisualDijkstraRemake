@@ -33,7 +33,7 @@ function App() {
         setLoggedUser(null);
       })
       .catch((error) => {
-        console.log("ERROR LOGOUT", error);
+        console.log("Error");
       });
   };
 
@@ -52,9 +52,7 @@ function App() {
           setLoggedUser({ email: response.data.Email });
         }
       })
-      .catch((error) => {
-        console.log("ERROR LOGOUT", error);
-      });
+      .catch((error) => {});
   }, []);
 
   return (

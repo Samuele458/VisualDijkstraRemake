@@ -78,15 +78,18 @@
           stroke: rgb(0, 0, 0);
           stroke-width: 8px;
           fill: rgba(255, 255, 255, 0.712);
+          cursor: pointer;
         }
 
         .node-bg {
           fill: white;
+          cursor: pointer;
         }
 
         .node-text {
           font: bold 30px sans-serif;
           cursor: default;
+          cursor: pointer;
         }
 
         .edge {

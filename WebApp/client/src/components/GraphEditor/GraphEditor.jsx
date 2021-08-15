@@ -23,6 +23,8 @@ import {
 import AuthApi from "../../AuthApi";
 import Loading from "../Loading";
 
+import useError from "../../hooks/useError";
+
 const GraphEditor = () => {
   const Auth = useContext(AuthApi);
 
@@ -36,6 +38,8 @@ const GraphEditor = () => {
   const [nameUnderEdit, setNameUnderEdit] = useState(false);
   const [tempName, setTempName] = useState();
   const inputFile = useRef(null);
+
+  const { addError } = useError();
 
   const savingStates = {
     NONE: 0,
@@ -60,7 +64,7 @@ const GraphEditor = () => {
           }, 400);
         })
         .catch((error) => {
-          console.log("Error on saving graph: ", error);
+          addError("Server error");
           setShowIsSaving(savingStates.ERROR);
         });
     }
@@ -92,7 +96,7 @@ const GraphEditor = () => {
               setShowIsSaving(savingStates.SAVED);
             })
             .catch((error) => {
-              console.log("Error on saving graph: ", error);
+              addError("Server error");
               setShowIsSaving(savingStates.ERROR);
             });
       } else if (savedGraph.nodes.length > 0) {
@@ -111,7 +115,7 @@ const GraphEditor = () => {
             setShowIsSaving(savingStates.SAVED);
           })
           .catch((error) => {
-            console.log("Error on creating graph: ", error);
+            addError("Server error");
             setShowIsSaving(savingStates.ERROR);
           });
       } else {
@@ -141,7 +145,7 @@ const GraphEditor = () => {
           }
         })
         .catch((error) => {
-          console.log("ERROR LOGOUT", error);
+          addError("Server error");
         });
   }
 
