@@ -14,6 +14,16 @@
   }
 }
 
+.hflex {
+  display: flex;
+  flex-direction: row;
+}
+
+.vflex {
+  display: flex;
+  flex-direction: column;
+}
+
 .navbar {
   background-color: rgb(32, 84, 255);
   width: 100%;

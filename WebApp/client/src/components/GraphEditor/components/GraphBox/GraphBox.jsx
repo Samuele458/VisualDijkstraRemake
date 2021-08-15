@@ -14,6 +14,8 @@ import {
   faSearchPlus,
   faSearchMinus,
   faRoute,
+  faGreaterThan,
+  faLessThan,
 } from "@fortawesome/free-solid-svg-icons";
 
 import CheckIcon from "../../icons/check.png";
@@ -57,6 +59,13 @@ const GraphBox = (props) => {
 
   const [nodeUnderEdit, setNodeUnderEdit] = useState(null);
   const [inputBoxInfo, setInputBoxInfo] = useState({ text: "", x: 0, y: 0 });
+
+  const [weightUnderEdit, setWeightUnderEdit] = useState(null);
+  const [weightBoxInfo, setWeightBoxInfo] = useState({
+    source: "",
+    dest: "",
+    value: 1,
+  });
 
   const [transformPos, setTransformPos] = useState({ x: 0, y: 0 });
   const [scale, setScale] = useState(1);
@@ -732,6 +741,22 @@ const GraphBox = (props) => {
           }
         ></g>
       </svg>
+      <div id="weight-box">
+        <div className="hflex flex-center">
+          <FontAwesomeIcon
+            icon={faLessThan}
+            className="btn-icon"
+            alt="Decrement"
+          />
+          <input type="text" className="weight-input" />
+          <FontAwesomeIcon
+            icon={faGreaterThan}
+            className="btn-icon"
+            alt="Increment"
+          />
+        </div>
+        <img src={CheckIcon} className="submit btn-icon" alt="" />{" "}
+      </div>
       <div
         id="graph-input-box"
         style={{
