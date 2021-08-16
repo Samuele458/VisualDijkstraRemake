@@ -62,8 +62,6 @@ const GraphBox = (props) => {
 
   const [weightUnderEdit, setWeightUnderEdit] = useState(null);
   const [weightBoxInfo, setWeightBoxInfo] = useState({
-    source: "",
-    dest: "",
     value: 1,
   });
 
@@ -234,7 +232,8 @@ const GraphBox = (props) => {
         .attr("class", "weight-text")
         .attr("name", (d) => GraphUtils.encodeEdgeName(d.source, d.dest))
         .attr("x", (edge) => GraphUtils.evaluateWeightPos("x", edge))
-        .attr("y", (edge) => GraphUtils.evaluateWeightPos("y", edge));
+        .attr("y", (edge) => GraphUtils.evaluateWeightPos("y", edge))
+        .on("dblclick", weightDoubleClick);
 
       let node = svgGroup
         .append("g")
@@ -317,6 +316,12 @@ const GraphBox = (props) => {
         )
         .on("dblclick", nodeDoubleClick);
 
+      function weightDoubleClick(e, d) {
+        console.log("Double click weight", d);
+        setWeightUnderEdit(d);
+        setWeightBoxInfo((p) => ({ ...p, value: d.weight }));
+      }
+
       let longPress = null;
       let currentNode = null;
       let nodeOnMouseOver = null;
@@ -325,6 +330,7 @@ const GraphBox = (props) => {
         currentNode = d.name;
 
         setNodeUnderEdit(null);
+        setWeightUnderEdit(null);
 
         setTimeout(() => {
           if (currentNode === d.name) {
@@ -509,6 +515,8 @@ const GraphBox = (props) => {
         e.sourceEvent.stopPropagation();
         e.sourceEvent.preventDefault();
 
+        setWeightUnderEdit(null);
+
         if (nodeCreationRequested) {
           if (graph.nodes.filter((n) => n.name === "").length === 0) {
             let holdGraph = Lodash.cloneDeep(graph);
@@ -603,6 +611,19 @@ const GraphBox = (props) => {
     setNodeUnderEdit(null);
   };
 
+  const setWeightValue = () => {
+    let holdGraph = Lodash.cloneDeep(graph);
+
+    holdGraph.edges.find(
+      (edge) =>
+        edge.source.name === weightUnderEdit.source.name &&
+        edge.dest.name === weightUnderEdit.dest.name
+    ).weight = weightBoxInfo.value;
+
+    setGraph(holdGraph);
+    setWeightUnderEdit(null);
+  };
+
   /**
    *  Clear any pending request
    */
@@ -615,6 +636,7 @@ const GraphBox = (props) => {
     setPathToSolve(null);
     setCurrentState(null);
     setNodeUnderEdit(null);
+    setWeightUnderEdit(null);
   };
 
   return (
@@ -741,21 +763,56 @@ const GraphBox = (props) => {
           }
         ></g>
       </svg>
-      <div id="weight-box">
+      <div
+        id="weight-box"
+        style={{
+          visibility: weightUnderEdit ? "visible" : "hidden",
+          left: weightUnderEdit
+            ? GraphUtils.evaluateWeightPos("x", weightUnderEdit) * scale +
+              transformPos.x -
+              60
+            : 0,
+          top: weightUnderEdit
+            ? GraphUtils.evaluateWeightPos("y", weightUnderEdit) * scale +
+              transformPos.y +
+              10
+            : 0,
+        }}
+      >
         <div className="hflex flex-center">
           <FontAwesomeIcon
             icon={faLessThan}
             className="btn-icon"
             alt="Decrement"
+            onClick={() => {
+              setWeightBoxInfo((p) => ({
+                ...p,
+                value: p.value - 1 > 0 ? p.value - 1 : p.value,
+              }));
+            }}
           />
-          <input type="text" className="weight-input" />
+          <input
+            type="text"
+            className="weight-input"
+            value={weightBoxInfo.value}
+          />
           <FontAwesomeIcon
             icon={faGreaterThan}
             className="btn-icon"
             alt="Increment"
+            onClick={() => {
+              setWeightBoxInfo((p) => ({ ...p, value: p.value + 1 }));
+            }}
           />
         </div>
-        <img src={CheckIcon} className="submit btn-icon" alt="" />{" "}
+        <img
+          src={CheckIcon}
+          className="submit btn-icon"
+          alt=""
+          onClick={() => {
+            setWeightValue();
+          }}
+        />{" "}
       </div>
       <div
         id="graph-input-box"
