@@ -1,13 +1,17 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 
 import AuthApi from "../../AuthApi";
 import useError from "../../hooks/useError";
 
+import Loading from "../Loading";
+
 const LoginForm = () => {
   const Auth = useContext(AuthApi);
   const { addError } = useError();
+  const [onLoading, setOnLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const {
     register,
@@ -16,6 +20,8 @@ const LoginForm = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
+    setOnLoading(true);
+    setErrorMessage("");
     axios
       .post("/api/login", {
         Email: data.email,
@@ -23,9 +29,13 @@ const LoginForm = () => {
       })
       .then((response) => {
         Auth.setLoggedUser(data);
+        setOnLoading(false);
       })
       .catch((error) => {
-        addError("Login error");
+        if (error.response.status === 404)
+          setErrorMessage("Invalid credentials");
+        else addError("Login error");
+        setOnLoading(false);
       });
   };
 
@@ -71,6 +81,10 @@ const LoginForm = () => {
         <button type="submit" className="button">
           Submit
         </button>
+      </div>
+      <div className="toolbar">
+        {onLoading && <Loading />}
+        <p className="error">{errorMessage}</p>
       </div>
     </form>
   );

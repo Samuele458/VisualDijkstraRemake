@@ -1,4 +1,4 @@
-import React, { useRef, useContext } from "react";
+import React, { useRef, useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 
@@ -6,8 +6,12 @@ import AuthApi from "../../AuthApi";
 
 import useError from "../../hooks/useError";
 
+import Loading from "../Loading";
+
 const SignupForm = () => {
   const Auth = useContext(AuthApi);
+
+  const [onLoading, setOnLoading] = useState(false);
 
   const {
     register,
@@ -22,6 +26,7 @@ const SignupForm = () => {
   password.current = watch("password", "");
 
   const onSubmit = async (data) => {
+    setOnLoading(true);
     axios
       .post("/api/register", {
         Name: data.username,
@@ -36,13 +41,16 @@ const SignupForm = () => {
           })
           .then((response) => {
             Auth.setLoggedUser(data);
+            setOnLoading(false);
           })
           .catch((error) => {
             addError("Server error");
+            setOnLoading(false);
           });
       })
       .catch((error) => {
         addError("Server error");
+        setOnLoading(false);
       });
   };
 
@@ -128,6 +136,7 @@ const SignupForm = () => {
           Submit
         </button>
       </div>
+      <div className="toolbar">{onLoading && <Loading />}</div>
     </form>
   );
 };

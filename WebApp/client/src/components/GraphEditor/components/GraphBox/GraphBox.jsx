@@ -229,7 +229,7 @@ const GraphBox = (props) => {
         .append("text")
         .text((d) => d.weight)
         .attr("text-anchor", "middle")
-        .attr("class", "weight-text")
+        .attr("class", "weight-text noselect")
         .attr("name", (d) => GraphUtils.encodeEdgeName(d.source, d.dest))
         .attr("x", (edge) => GraphUtils.evaluateWeightPos("x", edge))
         .attr("y", (edge) => GraphUtils.evaluateWeightPos("y", edge))
@@ -317,7 +317,7 @@ const GraphBox = (props) => {
         .on("dblclick", nodeDoubleClick);
 
       function weightDoubleClick(e, d) {
-        console.log("Double click weight", d);
+        clearRequests();
         setWeightUnderEdit(d);
         setWeightBoxInfo((p) => ({ ...p, value: d.weight }));
       }

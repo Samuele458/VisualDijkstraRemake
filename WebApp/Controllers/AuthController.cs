@@ -42,12 +42,12 @@ namespace WebApp.Controllers
 
             if (user == null)
             {
-                return BadRequest(new { message = "Invalid credentials" });
+                return NotFound(new { message = "Invalid credentials" });
             }
 
             if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
             {
-                return BadRequest(new { message = "Invalid credentials" });
+                return NotFound(new { message = "Invalid credentials" });
             }
 
             string jwt = _jwtService.Generate(user.Id);
