@@ -15,6 +15,7 @@ function ErrorNotification() {
       open={!!error}
       className="error-notification-box"
       style={{ visibility: error ? "visible" : "hidden" }}
+      draggable
     >
       <FontAwesomeIcon
         icon={faTimes}

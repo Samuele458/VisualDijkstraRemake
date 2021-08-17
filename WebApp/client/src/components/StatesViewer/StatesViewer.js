@@ -16,12 +16,7 @@ const StatesViewer = (props) => {
   const { addError } = useError();
 
   useEffect(() => {
-    if (
-      props.pathToSolve &&
-      (pathToSolve.name !== props.pathToSolve.name ||
-        pathToSolve.source !== props.pathToSolve.source ||
-        pathToSolve.dest !== props.pathToSolve.dest)
-    ) {
+    if (props.pathToSolve && states === null) {
       setPathToSolve(props.pathToSolve);
     }
 
@@ -51,8 +46,8 @@ const StatesViewer = (props) => {
 
   useEffect(() => {
     if (states) {
-      setCurrentState(states[0]);
-      props.setState(states[0]);
+      setCurrentState(states[states.length - 1]);
+      props.setState(states[states.length - 1]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [states]);

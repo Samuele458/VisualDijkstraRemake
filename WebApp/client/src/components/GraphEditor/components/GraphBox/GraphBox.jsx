@@ -17,10 +17,10 @@ import {
   faGreaterThan,
   faLessThan,
 } from "@fortawesome/free-solid-svg-icons";
-
 import CheckIcon from "../../icons/check.png";
 
 import AuthApi from "../../../../AuthApi";
+import useError from "../../../../hooks/useError";
 
 const useFocus = () => {
   const htmlElRef = useRef(null);
@@ -42,6 +42,9 @@ const GraphBox = (props) => {
 
   //current graph model
   const [graph, setGraph] = useState({ nodes: [], edges: [] });
+
+  //error handling
+  const { addError } = useError();
 
   //requests
   const [nodeCreationRequested, setNodeCreationRequested] = useState(false);
@@ -600,6 +603,7 @@ const GraphBox = (props) => {
       if (!holdGraph.nodes.find((n) => n.name === inputBoxInfo.text))
         holdGraph.nodes.find((node) => node.name === nodeUnderEdit.name).name =
           inputBoxInfo.text;
+      else addError("Node already exists");
     } else {
       holdGraph.edges.find(
         (edge) =>
