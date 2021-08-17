@@ -778,8 +778,8 @@ const GraphBox = (props) => {
             : 0,
           top: weightUnderEdit
             ? GraphUtils.evaluateWeightPos("y", weightUnderEdit) * scale +
-              transformPos.y +
-              10
+              transformPos.y -
+              40
             : 0,
         }}
       >
@@ -821,7 +821,7 @@ const GraphBox = (props) => {
       <div
         id="graph-input-box"
         style={{
-          top: inputBoxInfo.y + 20,
+          top: inputBoxInfo.y - 20,
           left: inputBoxInfo.x - 30,
           visibility: nodeUnderEdit === null ? "hidden" : "visible",
         }}
