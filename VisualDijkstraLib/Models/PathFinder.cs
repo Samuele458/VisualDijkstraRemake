@@ -73,11 +73,11 @@ namespace VisualDijkstraRemake.Models
                 }
             }
 
-
+            /*
             foreach (GraphState s in states)
             {
                 s.logGraphState();
-            }
+            }*/
 
             return states;
         }

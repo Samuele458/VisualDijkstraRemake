@@ -337,6 +337,7 @@ const GraphBox = (props) => {
 
         setTimeout(() => {
           if (currentNode === d.name) {
+            clearRequests();
             longPress = true;
             nodeOnMouseOver = currentNode;
             d3.select("#edge-creation-line")
@@ -603,7 +604,7 @@ const GraphBox = (props) => {
       if (!holdGraph.nodes.find((n) => n.name === inputBoxInfo.text))
         holdGraph.nodes.find((node) => node.name === nodeUnderEdit.name).name =
           inputBoxInfo.text;
-      else addError("Node already exists");
+      //else addError("Node already exists");
     } else {
       holdGraph.edges.find(
         (edge) =>

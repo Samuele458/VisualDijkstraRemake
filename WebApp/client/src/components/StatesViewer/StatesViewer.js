@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import axios from "axios";
+import Lodash from "lodash";
 
 import useError from "../../hooks/useError";
 
@@ -65,6 +66,9 @@ const StatesViewer = (props) => {
             return (
               <button
                 key={i}
+                className={
+                  Lodash.isEqual(currentState, states[i]) ? "current-state" : ""
+                }
                 onClick={() => {
                   setCurrentState(states[i]);
                   props.setState(states[i]);
@@ -77,24 +81,30 @@ const StatesViewer = (props) => {
       </div>
       <div className="state-table-box">
         <table className="state-table">
-          <tr>
-            <th>Node</th>
-            <th>Previous</th>
-            <th>Distance</th>
-          </tr>
-          {currentState &&
-            currentState.NodesStates &&
-            currentState.NodesStates.map((s) => {
-              return (
-                <tr>
-                  <th>{s.Name}</th>
-                  <th>
-                    {s.Previous === "DEFAULT_PREVIOUS_NODE" ? "-" : s.Previous}
-                  </th>
-                  <th>{s.Distance === 999999999 ? "Inf" : s.Distance}</th>
-                </tr>
-              );
-            })}
+          <thead>
+            <tr>
+              <th>Node</th>
+              <th>Previous</th>
+              <th>Distance</th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentState &&
+              currentState.NodesStates &&
+              currentState.NodesStates.map((s) => {
+                return (
+                  <tr>
+                    <th>{s.Name}</th>
+                    <th>
+                      {s.Previous === "DEFAULT_PREVIOUS_NODE"
+                        ? "-"
+                        : s.Previous}
+                    </th>
+                    <th>{s.Distance === 999999999 ? "Inf" : s.Distance}</th>
+                  </tr>
+                );
+              })}
+          </tbody>
         </table>
       </div>
     </div>

@@ -1,5 +1,7 @@
 .graph-editor-box {
   position: absolute;
+  width: 100%;
+  height: 100%;
 
   .graph-editor {
     width: 100vw;
@@ -93,6 +95,7 @@
           font: bold 30px sans-serif;
           cursor: default;
           cursor: pointer;
+          pointer-events: none;
         }
 
         .edge {
@@ -255,13 +258,14 @@
 
 .graph-name-box {
   position: absolute;
-  top: 88vh;
+  bottom: 1rem;
   right: 1rem;
   display: flex;
   transition: all 0.5s ease-in-out;
   background-color: white;
   border-radius: 0.5rem;
   padding: 0.3rem;
+  z-index: 50;
 
   &:hover {
     -webkit-box-shadow: 0px 0px 21px -6px rgba(0, 0, 0, 0.69);
@@ -295,7 +299,7 @@
 .states-viewer {
   background-color: white;
   position: absolute;
-  width: 20rem;
+  width: 19rem;
   height: 30rem;
   z-index: 40;
   top: 10rem;
@@ -309,26 +313,83 @@
 
   .states-picker {
     background-color: white;
-    height: 30%;
+    height: 10rem;
     overflow-y: auto;
 
     button {
       width: 3rem;
       height: 3rem;
       float: left;
-      background: lightgray;
-      margin: 0.5rem;
+      background-color: rgba(26, 77, 245, 0.616);
+      border-radius: 0.5rem;
       border: none;
+
+      color: white;
+      margin: 0.5rem;
       font-size: 1.5rem;
+      transition: all 0.5s;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+
+    .current-state {
+      background-color: red;
+      border: 4px solid rgba(26, 77, 245, 0.616);
+      background: transparent;
+      color: rgba(26, 77, 245, 0.616);
     }
   }
 
   .state-table-box {
     background-color: rgb(255, 255, 255);
-    height: 70%;
-    border-top: 2px solid black;
+    height: 20rem;
+    display: block;
+
     .state-table {
       width: 100%;
+      border-spacing: 0px;
+
+      thead {
+        display: table; /* to take the same width as tr */
+        width: calc(100%); /* - 17px because of the scrollbar width */
+        height: 1rem;
+        background-color: rgb(32, 84, 255);
+        color: white;
+      }
+
+      tbody {
+        display: block; /* to enable vertical scrolling */
+        max-height: 17rem; /* e.g. */
+        overflow-y: scroll; /* keeps the scrollbar even if it doesn't need it; display purpose */
+        color: rgb(105, 105, 105);
+        tr:nth-child(even) {
+          background: rgba(235, 235, 235, 0.829);
+        }
+        tr:nth-child(odd) {
+          background: #fff;
+        }
+      }
+
+      th,
+      td {
+        width: 33.33%; /* to enable "word-break: break-all" */
+        padding: 5px;
+        word-break: break-all; /* 4. */
+      }
+
+      tr {
+        display: table; /* display purpose; th's border */
+        width: 100%;
+        box-sizing: border-box; /* because of the border (Chrome needs this line, but not FF) */
+      }
+
+      td {
+        text-align: center;
+        border-bottom: none;
+        border-left: none;
+      }
     }
   }
 }
@@ -337,7 +398,7 @@
   position: absolute;
   display: flex;
   flex-direction: row;
-  top: 88.5vh;
+  bottom: 1rem;
   left: 1rem;
 
   align-items: center;
