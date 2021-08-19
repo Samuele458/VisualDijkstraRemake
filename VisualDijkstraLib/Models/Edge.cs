@@ -137,7 +137,7 @@ namespace VisualDijkstraRemake.Models
     /// <summary>
     ///  Duplicated edge
     /// </summary>
-    class DuplicatedEdgeException : Exception
+    public class DuplicatedEdgeException : Exception
     {
         public DuplicatedEdgeException(string message) : base(message) { }
     }

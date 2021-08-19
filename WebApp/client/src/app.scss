@@ -1,0 +1,217 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+@for $i from 1 through 10 {
+  .zoom-#{$i} {
+    transition: transform 0.2s;
+
+    &:hover {
+      transform: scale(1 + $i / 10);
+    }
+  }
+}
+
+.hflex {
+  display: flex;
+  flex-direction: row;
+}
+
+.vflex {
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar {
+  background-color: rgb(32, 84, 255);
+  width: 100%;
+  display: flex;
+  height: 2.5rem;
+  -webkit-box-shadow: 0px 0px 29px -6px rgba(0, 0, 0, 0.35);
+  -moz-box-shadow: 0px 0px 29px -6px rgba(0, 0, 0, 0.35);
+  box-shadow: 0px 0px 29px -6px rgba(0, 0, 0, 0.35);
+  color: white;
+  position: fixed;
+  z-index: 100;
+
+  .nav-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    list-style: none;
+    width: 100%;
+    margin-left: 2rem;
+    margin-right: 2rem;
+
+    .nav-link {
+      padding-left: 1rem;
+      padding-right: 1rem;
+      cursor: pointer;
+    }
+  }
+}
+
+.dialog-box {
+  position: fixed;
+  z-index: 50;
+
+  width: 100%;
+  height: 100%;
+  display: block;
+  background-color: rgba(255, 255, 255, 0.753);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  top: 0;
+
+  .dialog {
+    background-color: rgb(255, 255, 255);
+    margin: auto;
+    padding: 3rem;
+    min-width: 30rem;
+    min-height: 20rem;
+    border-radius: 0.7rem;
+
+    -webkit-box-shadow: 0px 0px 29px -6px rgba(0, 0, 0, 0.35);
+    -moz-box-shadow: 0px 0px 29px -6px rgba(0, 0, 0, 0.35);
+    box-shadow: 0px 0px 29px -6px rgba(0, 0, 0, 0.35);
+    position: relative;
+
+    .close-dialog {
+      position: relative;
+      top: 0rem;
+      left: 90%;
+      width: 2rem;
+      height: 2rem;
+      display: block;
+      font-size: 27px;
+      cursor: pointer;
+    }
+  }
+}
+
+.form {
+  .form-item {
+    display: block;
+    margin-top: 2rem;
+
+    .form-item-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .form-label {
+      display: block;
+      padding-bottom: 0.5rem;
+    }
+
+    .form-error {
+      display: block;
+      font-size: 80%;
+      color: rgb(255, 47, 47);
+      text-align: right;
+      transition: 1s;
+      padding-right: 1rem;
+    }
+
+    .form-input {
+      display: inline-block;
+      width: 98%;
+      padding: 0.6rem;
+      transition: 0.2s;
+      border: none;
+      font-family: inherit;
+      border-bottom: 3px solid rgb(71, 68, 255);
+      outline: none;
+      background-color: whitesmoke;
+      padding-right: 0px;
+    }
+
+    .form-input:focus {
+      background-color: white;
+    }
+  }
+  .error {
+    color: rgb(247, 37, 37);
+  }
+}
+
+/* shadow */
+.shadow {
+  -webkit-box-shadow: 0px 0px 21px -6px rgba(0, 0, 0, 0.69);
+  -moz-box-shadow: 0px 0px 21px -6px rgba(0, 0, 0, 0.69);
+  box-shadow: 0px 0px 21px -6px rgba(0, 0, 0, 0.69);
+}
+
+/* button */
+
+.button {
+  background-color: white;
+  cursor: pointer;
+
+  border: none;
+  border-bottom: 3px solid rgb(71, 68, 255);
+  padding: 0.3rem;
+}
+
+/* --- Toolbar --- */
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.btn-icon {
+  @extend .zoom-3;
+  width: 30px !important;
+  height: 30px;
+  margin: 0.3rem;
+  display: block;
+  position: relative;
+  cursor: pointer;
+
+  &:active {
+    bottom: 0.15rem;
+  }
+}
+
+.standard-icon {
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+}
+
+.error-notification-box {
+  position: fixed;
+  background-color: #f28482;
+  padding: 0.7rem;
+  bottom: 2rem;
+  left: 2rem;
+  color: white;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  z-index: 80;
+
+  .btn-icon {
+    height: 1rem;
+    width: 1rem !important;
+    padding: 0rem;
+    align-self: flex-end;
+  }
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}

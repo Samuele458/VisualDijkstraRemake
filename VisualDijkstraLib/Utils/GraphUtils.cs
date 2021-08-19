@@ -11,7 +11,7 @@ namespace VisualDijkstraRemake.Utils
 {
 
 
-    class GraphUtils
+    public class GraphUtils
     {
 
         /// <summary>
@@ -21,8 +21,6 @@ namespace VisualDijkstraRemake.Utils
         /// <param name="filename">Filename of output XML file</param>
         public static void saveGraphToXMLFile(Graph graph, string filename)
         {
-            Logger.log.Info("Saving graph to \"" + filename + "\"");
-
 
             //XmlWriter writer = XmlWriter.Create(filename);
             XmlTextWriter writer = new XmlTextWriter(filename, null);
@@ -135,7 +133,6 @@ namespace VisualDijkstraRemake.Utils
         /// <returns>Graph object</returns>
         public static Graph loadGraphFromXMLFile(string filename)
         {
-            Logger.log.Info("Loading graph from \"" + filename + "\"");
 
             XmlReader reader = XmlReader.Create(filename);
             Graph graph = new Graph();
@@ -176,21 +173,15 @@ namespace VisualDijkstraRemake.Utils
             return graph;
         }
 
-        /// <summary>
-        ///  Deserialize graph from JSON file
-        /// </summary>
-        /// <param name="filename">Input filename</param>
-        /// <returns>Graph object</returns>
-        public static Graph loadGraphFromJSONFile(string filename)
+        public static Graph decodeGraphFromJSONString(string jsonString)
         {
-            Logger.log.Info("Loading graph from \"" + filename + "\"");
-
             Graph graph = new Graph();
 
             try
             {
-                string jsonString = File.ReadAllText(filename);
+
                 var graphObj = JsonConvert.DeserializeObject<dynamic>(jsonString);
+                System.Diagnostics.Debug.WriteLine(jsonString);
 
 
                 foreach (var node in graphObj.nodes)
@@ -202,8 +193,8 @@ namespace VisualDijkstraRemake.Utils
 
                 foreach (var edge in graphObj.edges)
                 {
-                    graph.CreateNewEdge(graph.GetNode((string)edge.a),
-                                        graph.GetNode((string)edge.b),
+                    graph.CreateNewEdge(graph.GetNode((string)edge.source),
+                                        graph.GetNode((string)edge.dest),
                                         (int)edge.weight);
                 }
             }
@@ -215,14 +206,8 @@ namespace VisualDijkstraRemake.Utils
             return graph;
         }
 
-        /// <summary>
-        ///  Serialize graph into JSON file
-        /// </summary>
-        /// <param name="graph">graph object to be serialized </param>
-        /// <param name="filename">Output JSON filename</param>
-        public static void saveGraphToJSONFile(Graph graph, string filename)
+        public static string encodeGraphToJSONString(Graph graph)
         {
-            Logger.log.Info("Saving graph to \"" + filename + "\"");
 
             //creating nodes
             var nodes = new[] { new { name = "name", x = 0, y = 0 } }.ToList();
@@ -233,11 +218,11 @@ namespace VisualDijkstraRemake.Utils
             }
 
             //creating edges
-            var edges = new[] { new { a = "a", b = "b", weight = 3 } }.ToList();
+            var edges = new[] { new { source = "a", dest = "b", weight = 3 } }.ToList();
             edges.Clear();
             foreach (Edge edge in graph.Edges)
             {
-                edges.Add(new { a = edge.NodeA.Name, b = edge.NodeB.Name, weight = edge.Weight });
+                edges.Add(new { source = edge.NodeA.Name, dest = edge.NodeB.Name, weight = edge.Weight });
             }
 
 
@@ -246,8 +231,34 @@ namespace VisualDijkstraRemake.Utils
 
             JsonSerializerOptions options = new JsonSerializerOptions();
             options.WriteIndented = false;
-            string jsonString = System.Text.Json.JsonSerializer.Serialize(graphObj, options);
-            File.WriteAllText(filename, jsonString);
+
+            return System.Text.Json.JsonSerializer.Serialize(graphObj, options);
+        }
+
+        /// <summary>
+        ///  Deserialize graph from JSON file
+        /// </summary>
+        /// <param name="filename">Input filename</param>
+        /// <returns>Graph object</returns>
+        public static Graph loadGraphFromJSONFile(string filename)
+        {
+
+            Graph graph = new Graph();
+
+            string jsonString = File.ReadAllText(filename);
+
+            return decodeGraphFromJSONString(jsonString);
+        }
+
+        /// <summary>
+        ///  Serialize graph into JSON file
+        /// </summary>
+        /// <param name="graph">graph object to be serialized </param>
+        /// <param name="filename">Output JSON filename</param>
+        public static void saveGraphToJSONFile(Graph graph, string filename)
+        {
+
+            File.WriteAllText(filename, encodeGraphToJSONString(graph));
         }
     }
 

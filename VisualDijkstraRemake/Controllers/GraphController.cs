@@ -76,7 +76,7 @@ namespace VisualDijkstraRemake.Controllers
                 Logger.log.Info("New edge between " + a.Name + " and " + b.Name + " added. Weight: " + weight);
             }
             catch (DuplicatedEdgeException) { }
-            catch (DuplicatedNodeException) { }
+
             _view.Invalidate();
             _saved = false;
         }

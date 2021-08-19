@@ -27,7 +27,7 @@ namespace VisualDijkstraRemake.Models
             Graph = graph;
         }
 
-        public List<GraphState> Solve(Node source, Node dest)
+        public List<GraphState> Solve(string source, string dest)
         {
             //list of states to be returned
             List<GraphState> states = new List<GraphState>();
@@ -35,8 +35,8 @@ namespace VisualDijkstraRemake.Models
 
             //init state
             GraphState state = new GraphState(Graph);
-            state.Source = source.Name;
-            state.Dest = dest.Name;
+            state.Source = source;
+            state.Dest = dest;
             state.setDistance(state.Source, 0);
             states.Add(state);
 
@@ -73,13 +73,18 @@ namespace VisualDijkstraRemake.Models
                 }
             }
 
-
+            /*
             foreach (GraphState s in states)
             {
                 s.logGraphState();
-            }
+            }*/
 
             return states;
+        }
+
+        public List<GraphState> Solve(Node source, Node dest)
+        {
+            return Solve(source.Name, dest.Name);
         }
     }
 }

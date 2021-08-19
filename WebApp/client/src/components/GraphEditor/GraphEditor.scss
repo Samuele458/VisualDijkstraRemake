@@ -1,0 +1,411 @@
+.graph-editor-box {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  .graph-editor {
+    width: 100vw;
+    margin: auto;
+    position: absolute;
+
+    .cloud-btn {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      width: 4rem;
+      height: 4rem;
+      position: absolute;
+      top: 3.5rem;
+      left: 1rem;
+      background-color: white;
+      -webkit-box-shadow: 0px 0px 29px -6px rgba(0, 0, 0, 0.19);
+      -moz-box-shadow: 0px 0px 29px -6px rgba(0, 0, 0, 0.19);
+      box-shadow: 0px 0px 29px -6px rgba(0, 0, 0, 0.19);
+      padding: 0.3rem;
+    }
+
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 4rem;
+      height: 10rem;
+      margin: auto;
+      position: absolute;
+      top: 30vh;
+      margin-left: auto;
+      margin-right: auto;
+      left: 1rem;
+
+      background-color: white;
+      -webkit-box-shadow: 0px 0px 29px -6px rgba(0, 0, 0, 0.19);
+      -moz-box-shadow: 0px 0px 29px -6px rgba(0, 0, 0, 0.19);
+      box-shadow: 0px 0px 29px -6px rgba(0, 0, 0, 0.19);
+      padding: 0.3rem;
+    }
+
+    .graph-box-wrapper {
+      .graph-toolbar {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        width: 20rem;
+        margin: auto;
+        position: absolute;
+        top: 3.5rem;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+
+        height: 4rem;
+        background-color: white;
+        -webkit-box-shadow: 0px 0px 29px -6px rgba(0, 0, 0, 0.19);
+        -moz-box-shadow: 0px 0px 29px -6px rgba(0, 0, 0, 0.19);
+        box-shadow: 0px 0px 29px -6px rgba(0, 0, 0, 0.19);
+        padding: 0.3rem;
+      }
+
+      .graph-svg {
+        width: 100%;
+        height: 100vh;
+        margin: auto;
+        display: block;
+        -webkit-box-shadow: 0px 0px 29px -6px rgba(0, 0, 0, 0.35);
+        -moz-box-shadow: 0px 0px 29px -6px rgba(0, 0, 0, 0.35);
+        box-shadow: 0px 0px 29px -6px rgba(0, 0, 0, 0.35);
+        z-index: -1;
+
+        .node {
+          stroke: rgb(0, 0, 0);
+          stroke-width: 8px;
+          fill: rgba(255, 255, 255, 0.712);
+          cursor: pointer;
+        }
+
+        .node-bg {
+          fill: white;
+          cursor: pointer;
+        }
+
+        .node-text {
+          font: bold 30px sans-serif;
+          cursor: default;
+          cursor: pointer;
+          pointer-events: none;
+        }
+
+        .edge {
+          stroke: rgb(0, 0, 0);
+          stroke-width: 8px;
+        }
+
+        .partial-path {
+          stroke: rgb(5, 84, 255);
+        }
+
+        .path {
+          stroke: rgb(255, 30, 30);
+        }
+
+        .first-node {
+          stroke: green;
+        }
+
+        .creating-edge {
+          stroke: rgb(255, 174, 0);
+        }
+      }
+    }
+  }
+
+  #weight-box {
+    position: fixed;
+    font-size: 12px;
+    text-align: center;
+    background-color: white;
+    border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+
+    z-index: 30;
+    border-radius: 5px;
+
+    justify-content: center;
+    align-items: center;
+
+    -webkit-box-shadow: 0px 0px 40px -6px rgba(0, 0, 0, 0.8);
+    -moz-box-shadow: 0px 0px 40px -6px rgba(0, 0, 0, 0.8);
+    box-shadow: 0px 0px 40px -6px rgba(0, 0, 0, 0.8);
+
+    .weight-input {
+      border: none;
+      outline: 0px;
+      border-radius: 5px;
+      display: block;
+      width: 40px;
+      padding: 0.4rem;
+      text-align: center;
+      font-size: 1.6rem;
+    }
+  }
+
+  #graph-input-box {
+    width: 60px;
+    height: 2rem;
+    position: fixed;
+    font-size: 12px;
+    text-align: center;
+    color: white;
+    background-color: white;
+    border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: row;
+    bottom: 50px;
+    z-index: 30;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 0px 40px -6px rgba(0, 0, 0, 0.8);
+    -moz-box-shadow: 0px 0px 40px -6px rgba(0, 0, 0, 0.8);
+    box-shadow: 0px 0px 40px -6px rgba(0, 0, 0, 0.8);
+    .input-text {
+      border: none;
+      outline: 0px;
+      border-radius: 5px;
+      display: block;
+      width: 40px;
+      padding: 0.4rem;
+      height: 2rem;
+    }
+
+    .btn-icon {
+      width: auto !important;
+      height: auto;
+      padding-right: 0.3rem;
+    }
+  }
+}
+
+.alert {
+  border: 2px solid rgb(255, 53, 53);
+}
+
+.graph-names-box {
+  display: flex;
+  flex-direction: column;
+  max-height: 50vh;
+  min-height: 20rem;
+  overflow-y: scroll;
+  overflow-x: auto;
+  padding: 1rem;
+  width: 30rem;
+  -webkit-box-shadow: 0px 17px 20px -16px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 17px 20px -16px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 17px 20px -16px rgba(0, 0, 0, 0.75);
+
+  .centered-text {
+    text-align: center;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    font-size: 1.4rem;
+  }
+
+  .graph-name-item {
+    background-color: rgb(255, 255, 255);
+    margin: 0.5rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s;
+
+    .graph-name-text-box {
+      position: relative;
+      .graph-name-text {
+        text-align: left;
+        cursor: pointer;
+      }
+
+      .update-date {
+        font-size: 0.8rem;
+      }
+    }
+
+    .graph-name-toolbar {
+      display: flex;
+    }
+  }
+
+  .graph-name-item:hover {
+    -webkit-box-shadow: 0px 0px 23px -10px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 23px -10px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 23px -10px rgba(0, 0, 0, 0.75);
+  }
+
+  .current {
+    border: 2px solid rgb(41, 73, 252);
+  }
+}
+
+.graph-name-box {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  display: flex;
+  transition: all 0.5s ease-in-out;
+  background-color: white;
+  border-radius: 0.5rem;
+  padding: 0.3rem;
+  z-index: 50;
+
+  &:hover {
+    -webkit-box-shadow: 0px 0px 21px -6px rgba(0, 0, 0, 0.69);
+    -moz-box-shadow: 0px 0px 21px -6px rgba(0, 0, 0, 0.69);
+    box-shadow: 0px 0px 21px -6px rgba(0, 0, 0, 0.69);
+  }
+
+  .graph-name-label {
+    border: none;
+    outline: 0px;
+    border-radius: 5px;
+    display: block;
+    transition: all 0.5s;
+    padding: 0.5rem;
+    font-size: 19px;
+    width: 10rem;
+  }
+
+  .graph-name-input {
+    border: none;
+    outline: 0px;
+    border-radius: 5px;
+    display: block;
+    transition: all 0.5s;
+    padding: 0.5rem;
+    font-size: 19px;
+    width: 10rem;
+  }
+}
+
+.states-viewer {
+  background-color: white;
+  position: absolute;
+  width: 18rem;
+  height: 30rem;
+  z-index: 40;
+  top: 10rem;
+  right: 1rem;
+  -webkit-box-shadow: 0px 0px 29px -6px rgba(0, 0, 0, 0.19);
+  -moz-box-shadow: 0px 0px 29px -6px rgba(0, 0, 0, 0.19);
+  box-shadow: 0px 0px 29px -6px rgba(0, 0, 0, 0.19);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  .states-picker {
+    background-color: white;
+    height: 10rem;
+    overflow-y: auto;
+
+    button {
+      width: 3rem;
+      height: 3rem;
+      float: left;
+      background-color: rgba(26, 77, 245, 0.616);
+      border-radius: 0.5rem;
+      border: none;
+
+      color: white;
+      margin: 0.5rem;
+      font-size: 1.5rem;
+      transition: all 0.5s;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+
+    .current-state {
+      background-color: red;
+      border: 4px solid rgba(26, 77, 245, 0.616);
+      background: transparent;
+      color: rgba(26, 77, 245, 0.616);
+    }
+  }
+
+  .state-table-box {
+    background-color: rgb(255, 255, 255);
+    height: 20rem;
+    display: block;
+
+    .state-table {
+      width: 100%;
+      border-spacing: 0px;
+
+      thead {
+        display: table; /* to take the same width as tr */
+        width: calc(100%); /* - 17px because of the scrollbar width */
+        height: 1rem;
+        background-color: rgb(32, 84, 255);
+        color: white;
+      }
+
+      tbody {
+        display: block; /* to enable vertical scrolling */
+        max-height: 17rem; /* e.g. */
+        overflow-y: scroll; /* keeps the scrollbar even if it doesn't need it; display purpose */
+        color: rgb(105, 105, 105);
+        tr:nth-child(even) {
+          background: rgba(235, 235, 235, 0.829);
+        }
+        tr:nth-child(odd) {
+          background: #fff;
+        }
+      }
+
+      th,
+      td {
+        width: 33.33%; /* to enable "word-break: break-all" */
+        padding: 5px;
+        word-break: break-all; /* 4. */
+      }
+
+      tr {
+        display: table; /* display purpose; th's border */
+        width: 100%;
+        box-sizing: border-box; /* because of the border (Chrome needs this line, but not FF) */
+      }
+
+      td {
+        text-align: center;
+        border-bottom: none;
+        border-left: none;
+      }
+    }
+  }
+}
+
+.saving-box {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  bottom: 1rem;
+  left: 1rem;
+
+  align-items: center;
+  justify-content: space-around;
+  height: 3rem;
+  color: rgba(66, 66, 66, 0.76);
+  p {
+    padding: 0.5rem;
+  }
+}

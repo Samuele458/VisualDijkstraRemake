@@ -84,8 +84,8 @@ namespace VisualDijkstraRemake
             // 
             this.mainSplitContainer.Panel2.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.mainSplitContainer.Panel2.Controls.Add(this.statesView1);
-            this.mainSplitContainer.Size = new System.Drawing.Size(937, 446);
-            this.mainSplitContainer.SplitterDistance = 553;
+            this.mainSplitContainer.Size = new System.Drawing.Size(1145, 553);
+            this.mainSplitContainer.SplitterDistance = 858;
             this.mainSplitContainer.TabIndex = 0;
             // 
             // scrollPanel1
@@ -94,7 +94,7 @@ namespace VisualDijkstraRemake
             this.scrollPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.scrollPanel1.Location = new System.Drawing.Point(0, 0);
             this.scrollPanel1.Name = "scrollPanel1";
-            this.scrollPanel1.Size = new System.Drawing.Size(551, 444);
+            this.scrollPanel1.Size = new System.Drawing.Size(856, 551);
             this.scrollPanel1.TabIndex = 0;
             // 
             // statesView1
@@ -104,7 +104,7 @@ namespace VisualDijkstraRemake
             this.statesView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.statesView1.Location = new System.Drawing.Point(0, 0);
             this.statesView1.Name = "statesView1";
-            this.statesView1.Size = new System.Drawing.Size(378, 444);
+            this.statesView1.Size = new System.Drawing.Size(281, 551);
             this.statesView1.TabIndex = 0;
             // 
             // toolbar
@@ -117,7 +117,7 @@ namespace VisualDijkstraRemake
             this.toolbar.Location = new System.Drawing.Point(0, 0);
             this.toolbar.Name = "toolbar";
             this.toolbar.SelectedIndex = 0;
-            this.toolbar.Size = new System.Drawing.Size(937, 125);
+            this.toolbar.Size = new System.Drawing.Size(1145, 125);
             this.toolbar.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.toolbar.TabIndex = 2;
             this.toolbar.TabStop = false;
@@ -131,7 +131,7 @@ namespace VisualDijkstraRemake
             this.fileTab.Location = new System.Drawing.Point(4, 24);
             this.fileTab.Name = "fileTab";
             this.fileTab.Padding = new System.Windows.Forms.Padding(3);
-            this.fileTab.Size = new System.Drawing.Size(929, 97);
+            this.fileTab.Size = new System.Drawing.Size(1137, 97);
             this.fileTab.TabIndex = 0;
             this.fileTab.Text = "File";
             this.fileTab.UseVisualStyleBackColor = true;
@@ -444,7 +444,7 @@ namespace VisualDijkstraRemake
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(937, 571);
+            this.ClientSize = new System.Drawing.Size(1145, 678);
             this.Controls.Add(this.mainSplitContainer);
             this.Controls.Add(this.toolbar);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
