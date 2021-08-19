@@ -295,7 +295,6 @@ const GraphEditor = () => {
                 setCurrentName(name);
                 setAlreadyUploaded(false);
                 setDisplayGraphs(false);
-                console.log(e.target.result);
               };
             }}
           />

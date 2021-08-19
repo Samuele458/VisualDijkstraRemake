@@ -34,7 +34,7 @@ const LoginForm = () => {
       .catch((error) => {
         if (error.response.status === 404)
           setErrorMessage("Invalid credentials");
-        else addError("Login error");
+        else addError("Server error");
         setOnLoading(false);
       });
   };

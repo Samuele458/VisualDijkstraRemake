@@ -113,8 +113,6 @@ const GraphBox = (props) => {
 
     //if both graph and graphBox exist
     if (graph && graphGroup /*&& !Lodash.isEqual(graph, renderedGraph)*/) {
-      //setRenderedGraph(Lodash.cloneDeep(graph));
-
       props.handleGraphChange(graph);
       //removing all previous elements
       d3.select(graphGroup.current).selectAll("*").remove();
@@ -557,31 +555,31 @@ const GraphBox = (props) => {
           y: previous.y + event.dy,
         }));
       }
-    }
 
-    function bgDragEnded(e) {}
+      function bgDragEnded(e) {}
 
-    function bgDoubleClick(e, d) {
-      if (GraphUtils.onBackground(e.target)) {
-        clearRequests();
-        if (graph.nodes.filter((n) => n.name === "").length === 0) {
-          let holdGraph = Lodash.cloneDeep(graph);
-          holdGraph.nodes.push({
-            x: (e.x - transformPos.x) * (1 / scale),
-            y: (e.y - transformPos.y) * (1 / scale),
-            name: "",
-          });
-          setGraph(holdGraph);
+      function bgDoubleClick(e, d) {
+        if (GraphUtils.onBackground(e.target)) {
+          clearRequests();
+          if (graph.nodes.filter((n) => n.name === "").length === 0) {
+            let holdGraph = Lodash.cloneDeep(graph);
+            holdGraph.nodes.push({
+              x: (e.x - transformPos.x) * (1 / scale),
+              y: (e.y - transformPos.y) * (1 / scale),
+              name: "",
+            });
+            setGraph(holdGraph);
 
-          let node = holdGraph.nodes.find((n) => n.name === "");
-          setNodeUnderEdit(node);
-          setInputBoxInfo({
-            text: "",
-            x: e.x,
-            y: e.y + 60,
-          });
+            let node = holdGraph.nodes.find((n) => n.name === "");
+            setNodeUnderEdit(node);
+            setInputBoxInfo({
+              text: "",
+              x: e.x,
+              y: e.y + 60,
+            });
 
-          setInputFocus();
+            setInputFocus();
+          }
         }
       }
     }

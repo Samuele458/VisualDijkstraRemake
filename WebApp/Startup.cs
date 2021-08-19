@@ -58,6 +58,7 @@ namespace WebApp
             services.AddScoped<IGraphRepository, GraphRepository>();
             services.AddScoped<JwtService>();
 
+
             services.Configure<JwtOptions>(Configuration.GetSection("JwtConfig"));
         }
 
@@ -76,7 +77,7 @@ namespace WebApp
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            //app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
