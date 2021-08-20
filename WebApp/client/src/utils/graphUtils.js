@@ -163,3 +163,70 @@ export const deltaPos = (basePos, currentPos) => {
     y: basePos.y - currentPos.y,
   };
 };
+
+export const isNodeNameValid = (name) => {};
+
+/**
+ * Check if a given graph in string format is valid or not
+ * @param {string} graphString - Graph string in which graph is stored
+ * @returns {boolean} True if graph is valid, false otherwise
+ */
+export const isGraphValid = (graphString) => {
+  try {
+    //checking if is valid json
+    let graphObj = JSON.parse(graphString);
+
+    //checking if nodes and edges arrays exist
+    if (
+      Object.keys(graphObj).length !== 2 ||
+      !Array.isArray(graphObj.nodes) | !Array.isArray(graphObj.edges)
+    )
+      return false;
+
+    //checking for nodes fields
+    for (let i = 0; i < graphObj.nodes.length; i++) {
+      let node = graphObj.nodes[i];
+      if (
+        Object.keys(node).length !== 3 ||
+        typeof node.name !== "string" ||
+        typeof node.x !== "number" ||
+        typeof node.y !== "number"
+      )
+        return false;
+    }
+
+    //checking for duplicates
+    let nodeNames = graphObj.nodes.map((n) => n.name);
+    if (new Set(nodeNames).size !== nodeNames.length) return false;
+
+    //checking for edges fields
+    for (let i = 0; i < graphObj.edges.length; i++) {
+      let edge = graphObj.edges[i];
+      if (
+        Object.keys(edge).length !== 3 ||
+        typeof edge.source !== "string" ||
+        typeof edge.dest !== "string" ||
+        typeof edge.weight !== "number"
+      )
+        return false;
+
+      //checking for edges names
+      if (
+        nodeNames.indexOf(edge.source) > 0 &&
+        nodeNames.indexOf(edge.dest) > 0 &&
+        graphObj.edges.filter((e) => {
+          return (
+            (e.source === edge.source && e.dest === edge.dest) ||
+            (e.source === edge.dest && e.dest === edge.source)
+          );
+        }).length > 1
+      )
+        return false;
+    }
+  } catch (e) {
+    return false;
+  }
+
+  //edge is valid
+  return true;
+};

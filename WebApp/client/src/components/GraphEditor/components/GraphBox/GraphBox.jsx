@@ -43,9 +43,6 @@ const GraphBox = (props) => {
   //current graph model
   const [graph, setGraph] = useState({ nodes: [], edges: [] });
 
-  //error handling
-  const { addError } = useError();
-
   //requests
   const [nodeCreationRequested, setNodeCreationRequested] = useState(false);
   const [pathRequested, setPathRequested] = useState(false);
@@ -545,10 +542,12 @@ const GraphBox = (props) => {
       }
 
       function bgOnDrag(event) {
-        setTransformPos((previous) => ({
-          x: previous.x + event.dx,
-          y: previous.y + event.dy,
-        }));
+        setTransformPos((previous) => {
+          previous.x += event.dx;
+          previous.y += event.dy;
+
+          return previous;
+        });
 
         setInputBoxInfo((previous) => ({
           x: previous.x + event.dx,

@@ -286,15 +286,19 @@ const GraphEditor = () => {
 
               fileReader.readAsText(e.target.files[0], "UTF-8");
               fileReader.onload = (e) => {
-                setCurrentGraph(
-                  GraphUtils.encodeGraphReferences(JSON.parse(e.target.result))
-                );
+                if (GraphUtils.isGraphValid(e.target.result)) {
+                  setCurrentGraph(
+                    GraphUtils.encodeGraphReferences(
+                      JSON.parse(e.target.result)
+                    )
+                  );
 
-                setCurrentId(null);
-                setSavedGraph(null);
-                setCurrentName(name);
-                setAlreadyUploaded(false);
-                setDisplayGraphs(false);
+                  setCurrentId(null);
+                  setSavedGraph(null);
+                  setCurrentName(name);
+                  setAlreadyUploaded(false);
+                  setDisplayGraphs(false);
+                } else addError("Invalid graph");
               };
             }}
           />
