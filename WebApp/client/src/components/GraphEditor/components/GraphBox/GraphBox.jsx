@@ -87,6 +87,7 @@ const GraphBox = (props) => {
   useEffect(() => {
     //removing inputbox when zoomin/zoomout
     setNodeUnderEdit(null);
+    setTransformPos((previous) => ({ x: previous.x, y: previous.y }));
   }, [scale]);
 
   useEffect(() => {
@@ -832,7 +833,7 @@ const GraphBox = (props) => {
           onChange={(e) => {
             setInputBoxInfo((previous) => ({
               ...previous,
-              text: e.target.value.toUpperCase().match(/^[A-Z0-9]{0,2}$/g)
+              text: GraphUtils.isNodeNameValid(e.target.value.toUpperCase())
                 ? e.target.value.toUpperCase()
                 : previous.text,
             }));

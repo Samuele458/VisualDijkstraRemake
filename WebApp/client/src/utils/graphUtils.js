@@ -164,7 +164,23 @@ export const deltaPos = (basePos, currentPos) => {
   };
 };
 
-export const isNodeNameValid = (name) => {};
+/**
+ * Chekc if a given node name is valid or not
+ * @param {string} name - Node name
+ * @returns {boolean} True if name is valid, false otherwise
+ */
+export const isNodeNameValid = (name) => {
+  return name.match(/^[A-Z0-9]{0,3}$/g);
+};
+
+/**
+ * Check if a given graph name is valid or not
+ * @param {string} name - Graph name
+ * @returns {boolean} True if name is valid, false otherwise
+ */
+export const isGraphNameValid = (name) => {
+  return name.match(/^[A-Za-z0-9\s]*$/g);
+};
 
 /**
  * Check if a given graph in string format is valid or not

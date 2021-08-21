@@ -199,7 +199,7 @@ const GraphEditor = () => {
             type: "application/json;charset=utf-8",
           }
         );
-        FileSaver.saveAs(blob, `${currentName}.txt`);
+        FileSaver.saveAs(blob, `${currentName}.json`);
       },
       requireAuth: true,
     },
@@ -241,7 +241,7 @@ const GraphEditor = () => {
                 className="graph-name-input"
                 value={tempName}
                 onChange={(e) => {
-                  if (e.target.value.match(/^[A-Za-z0-9\s]*$/g))
+                  if (GraphUtils.isGraphNameValid(e.target.value))
                     setTempName(e.target.value);
                 }}
                 onKeyDown={(e) => {
