@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using VisualDijkstraRemake.Utils;
 using WebApp.Models;
 
 namespace WebApp.Data
@@ -20,6 +21,10 @@ namespace WebApp.Data
 
             graph.CreatedOn = DateTime.UtcNow;
             graph.UpdatedOn = DateTime.UtcNow;
+
+
+            //checking if provided graph is valid or not. If not, exception thrown.
+            GraphUtils.decodeGraphFromJSONString(graph.Data);
 
             user.Graphs.Add(graph);
             _context.Graphs.Add(graph);
@@ -43,6 +48,9 @@ namespace WebApp.Data
 
             if (graph != default(GraphModel))
             {
+                //checking if provided graph is valid or not. If not, exception thrown.
+                GraphUtils.decodeGraphFromJSONString(graph.Data);
+
                 graph.UpdatedOn = DateTime.UtcNow;
                 graph.Data = newData;
                 _context.SaveChanges();

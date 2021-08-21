@@ -115,8 +115,16 @@ namespace WebApp.Controllers
 
             if (!string.IsNullOrEmpty(dto.Data))
             {
-                graph = _graphRepository.UpdateGraphData(user, dto.Id, dto.Data);
+                try
+                {
+                    graph = _graphRepository.UpdateGraphData(user, dto.Id, dto.Data);
+                }
+                catch (InvalidSaveFileFormat e)
+                {
+                    return BadRequest();
+                }
             }
+
             else if (!string.IsNullOrEmpty(dto.Name))
             {
                 graph = _graphRepository.UpdateGraphName(user, dto.Id, dto.Name);

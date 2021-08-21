@@ -260,12 +260,13 @@ namespace VisualDijkstraRemake.Utils
 
             File.WriteAllText(filename, encodeGraphToJSONString(graph));
         }
+
     }
 
 
 
 
-    class InvalidSaveFileFormat : Exception
+    public class InvalidSaveFileFormat : Exception
     {
         public InvalidSaveFileFormat(string message = "Invalid file format") : base(message) { }
     }
