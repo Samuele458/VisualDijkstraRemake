@@ -440,7 +440,7 @@ const GraphBox = (props) => {
             setGraph(holdGraph);
           }
         }
-        props.handleGraphChange(holdGraph);
+        props.handleGraphChange(Lodash.cloneDeep(holdGraph));
 
         longPress = null;
         currentNode = null;

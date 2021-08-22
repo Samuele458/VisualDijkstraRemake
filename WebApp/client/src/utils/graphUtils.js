@@ -170,7 +170,7 @@ export const deltaPos = (basePos, currentPos) => {
  * @returns {boolean} True if name is valid, false otherwise
  */
 export const isNodeNameValid = (name) => {
-  return name.match(/^[A-Z0-9]{0,3}$/g);
+  return name.match(/^[A-Z0-9]{0,2}$/g);
 };
 
 /**

@@ -36,6 +36,11 @@ const GraphEditor = () => {
   const [displayGraphs, setDisplayGraphs] = useState(false);
   const [graphNames, setGraphNames] = useState([]);
   const [nameUnderEdit, setNameUnderEdit] = useState(false);
+
+  const [handleGraphChange, setHandleGraphChange] = useState({
+    callback: () => {},
+  });
+
   const [tempName, setTempName] = useState();
   const inputFile = useRef(null);
 
@@ -81,7 +86,7 @@ const GraphEditor = () => {
             currentGraph
           ) &&
           currentId !== null
-        )
+        ) {
           axios
             .put("/api/graph", {
               id: currentId,
@@ -99,6 +104,9 @@ const GraphEditor = () => {
               addError("Server error");
               setShowIsSaving(savingStates.ERROR);
             });
+        } else {
+          setShowIsSaving(savingStates.NONE);
+        }
       } else if (savedGraph.nodes.length > 0) {
         axios
           .post("/api/graph", {
@@ -159,11 +167,38 @@ const GraphEditor = () => {
       setCurrentGraph({ nodes: [], edges: [] });
       setCurrentName("Untitled");
       setAlreadyUploaded(false);
+      setHandleGraphChange((previous) => {
+        if (previous) {
+          previous.callback = () => {};
+          return previous;
+        }
+      });
+      setShowIsSaving(savingStates.NONE);
+    } else {
+      setHandleGraphChange((previous) => {
+        if (previous) {
+          previous.callback = (graph) => {
+            if (
+              graph &&
+              !Lodash.isEqual(graph, savedGraph) &&
+              !graph.nodes.find((n) => n.name.length === 0)
+            ) {
+              setSavedGraph(Lodash.cloneDeep(graph));
+            }
+          };
+          return previous;
+        }
+      });
     }
   }, [Auth.loggedUser]);
 
-  const handleGraphChange = (graph) => {
+  const handleGraphChangeFunction = (graph) => {
+    if (handleGraphChange && handleGraphChange.callback)
+      handleGraphChange.callback(graph);
+
+    /*
     if (Auth.loggedUser) {
+      console.log("Handling change");
       if (
         !Lodash.isEqual(graph, savedGraph) &&
         !graph.nodes.find((n) => n.name.length === 0)
@@ -171,6 +206,7 @@ const GraphEditor = () => {
         setSavedGraph(Lodash.cloneDeep(graph));
       }
     }
+    */
   };
 
   let sidebarButtons = [
@@ -323,7 +359,7 @@ const GraphEditor = () => {
           <GraphBox
             graph={currentGraph}
             name={currentName}
-            handleGraphChange={handleGraphChange}
+            handleGraphChange={handleGraphChangeFunction}
             id={currentId}
             externalButtons={[]}
           />
