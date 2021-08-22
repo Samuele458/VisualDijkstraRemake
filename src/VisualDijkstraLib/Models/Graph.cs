@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace DesktopApp.Models
+namespace VisualDijkstraLib.Models
 {
     /// <summary>
     ///  Model for handling a graph

@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\VisualDijkstraRemake\DesktopApp.csproj" />
+    <ProjectReference Include="..\..\src\VisualDijkstraLib\VisualDijkstraLib.csproj" />
   </ItemGroup>
 
 </Project>

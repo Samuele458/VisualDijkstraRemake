@@ -2,8 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using DesktopApp.Models;
-using DesktopApp.Utils;
+using VisualDijkstraLib.Models;
+using VisualDijkstraLib.Utils;
 using WebApp.Data;
 using WebApp.Dtos;
 using WebApp.Models;

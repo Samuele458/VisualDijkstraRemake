@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DesktopApp.Models
+namespace VisualDijkstraLib.Models
 {
     public interface IPathFinder
     {

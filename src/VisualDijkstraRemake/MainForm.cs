@@ -5,7 +5,7 @@ using DesktopApp.Views;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-
+using VisualDijkstraLib.Models;
 
 namespace DesktopApp
 {

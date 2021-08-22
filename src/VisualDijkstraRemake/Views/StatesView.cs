@@ -1,11 +1,11 @@
-﻿using System;
+﻿using DesktopApp.Controllers;
+using DesktopApp.Controls;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
-using DesktopApp.Controllers;
-using DesktopApp.Controls;
-using DesktopApp.Models;
+using VisualDijkstraLib.Models;
 
 namespace DesktopApp.Views
 {

@@ -1,7 +1,7 @@
-﻿using System;
+﻿using DesktopApp.Views;
+using System;
 using System.Collections.Generic;
-using DesktopApp.Models;
-using DesktopApp.Views;
+using VisualDijkstraLib.Models;
 
 namespace DesktopApp.Controllers
 {

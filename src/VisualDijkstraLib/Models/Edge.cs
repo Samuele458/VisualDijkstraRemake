@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
-namespace DesktopApp.Models
+namespace VisualDijkstraLib.Models
 {
 
     /// <summary>

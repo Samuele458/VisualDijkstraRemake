@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Drawing;
+using VisualDijkstraLib.Models;
 
 namespace DesktopApp.Models.Tests
 {
