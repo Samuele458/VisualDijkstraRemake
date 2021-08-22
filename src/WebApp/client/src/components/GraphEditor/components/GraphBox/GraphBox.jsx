@@ -812,7 +812,16 @@ const GraphBox = (props) => {
           src={CheckIcon}
           className="submit btn-icon"
           alt=""
-          onClick={() => {
+          onClick={(e) => {
+            e.preventDefault();
+            setTimeout(() => {
+              if (window.getSelection) {
+                window.getSelection().removeAllRanges();
+              } else if (document.selection) {
+                document.selection.empty();
+              }
+            }, 10);
+
             setWeightValue();
           }}
         />{" "}
