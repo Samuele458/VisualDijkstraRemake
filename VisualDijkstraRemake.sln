@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualDijkstraRemake", "VisualDijkstraRemake\VisualDijkstraRemake.csproj", "{CED8470F-958F-4534-A9B7-DC9538E82E5D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DesktopApp", "VisualDijkstraRemake\DesktopApp.csproj", "{CED8470F-958F-4534-A9B7-DC9538E82E5D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualDijkstraRemakeTests", "VisualDijkstraRemakeTests\VisualDijkstraRemakeTests.csproj", "{6168A1C3-3A4C-451D-A668-B2351528BF24}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp", "WebApp\WebApp.csproj", "{64529996-216B-4162-B763-F191D436287D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualDijkstraLib", "VisualDijkstraLib\VisualDijkstraLib.csproj", "{17150681-37BE-4546-9657-7DA128CFCFFF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualDijkstraLib", "VisualDijkstraLib\VisualDijkstraLib.csproj", "{17150681-37BE-4546-9657-7DA128CFCFFF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

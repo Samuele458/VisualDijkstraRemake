@@ -1,8 +1,8 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
-using VisualDijkstraRemake.Views;
+using DesktopApp.Views;
 
-namespace VisualDijkstraRemake.Controls
+namespace DesktopApp.Controls
 {
     public class ScrollPanel : FlowLayoutPanel
     {

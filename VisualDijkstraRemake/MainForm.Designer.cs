@@ -1,5 +1,5 @@
 ﻿
-namespace VisualDijkstraRemake
+namespace DesktopApp
 {
     partial class MainForm
     {
@@ -31,20 +31,20 @@ namespace VisualDijkstraRemake
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.mainSplitContainer = new System.Windows.Forms.SplitContainer();
-            this.scrollPanel1 = new VisualDijkstraRemake.Controls.ScrollPanel();
-            this.statesView1 = new VisualDijkstraRemake.Views.StatesView();
+            this.scrollPanel1 = new DesktopApp.Controls.ScrollPanel();
+            this.statesView1 = new DesktopApp.Views.StatesView();
             this.toolbar = new System.Windows.Forms.TabControl();
             this.fileTab = new System.Windows.Forms.TabPage();
-            this.saveAsButton = new VisualDijkstraRemake.Controls.FlatButton();
-            this.saveButton = new VisualDijkstraRemake.Controls.FlatButton();
-            this.openButton = new VisualDijkstraRemake.Controls.FlatButton();
-            this.exitButton = new VisualDijkstraRemake.Controls.FlatButton();
+            this.saveAsButton = new DesktopApp.Controls.FlatButton();
+            this.saveButton = new DesktopApp.Controls.FlatButton();
+            this.openButton = new DesktopApp.Controls.FlatButton();
+            this.exitButton = new DesktopApp.Controls.FlatButton();
             this.graphTab = new System.Windows.Forms.TabPage();
-            this.solvePathButton = new VisualDijkstraRemake.Controls.FlatButton();
-            this.newGraphButton = new VisualDijkstraRemake.Controls.FlatButton();
-            this.addEdgeButton = new VisualDijkstraRemake.Controls.FlatButton();
-            this.deleteNodeButton = new VisualDijkstraRemake.Controls.FlatButton();
-            this.addNodeButton = new VisualDijkstraRemake.Controls.FlatButton();
+            this.solvePathButton = new DesktopApp.Controls.FlatButton();
+            this.newGraphButton = new DesktopApp.Controls.FlatButton();
+            this.addEdgeButton = new DesktopApp.Controls.FlatButton();
+            this.deleteNodeButton = new DesktopApp.Controls.FlatButton();
+            this.addNodeButton = new DesktopApp.Controls.FlatButton();
             this.styleTab = new System.Windows.Forms.TabPage();
             this.gridSlimRadioButton = new System.Windows.Forms.RadioButton();
             this.gridDarkRadioButton = new System.Windows.Forms.RadioButton();
@@ -53,8 +53,8 @@ namespace VisualDijkstraRemake
             this.gridNoneRadioButton = new System.Windows.Forms.RadioButton();
             this.label1 = new System.Windows.Forms.Label();
             this.zoomTrackbar = new System.Windows.Forms.TrackBar();
-            this.zoomOutButton = new VisualDijkstraRemake.Controls.FlatButton();
-            this.zoomInButton = new VisualDijkstraRemake.Controls.FlatButton();
+            this.zoomOutButton = new DesktopApp.Controls.FlatButton();
+            this.zoomInButton = new DesktopApp.Controls.FlatButton();
             ((System.ComponentModel.ISupportInitialize)(this.mainSplitContainer)).BeginInit();
             this.mainSplitContainer.Panel1.SuspendLayout();
             this.mainSplitContainer.Panel2.SuspendLayout();
@@ -142,7 +142,7 @@ namespace VisualDijkstraRemake
             this.saveAsButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.saveAsButton.FlatAppearance.BorderSize = 0;
             this.saveAsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.saveAsButton.Image = global::VisualDijkstraRemake.Properties.Resources.saveas;
+            this.saveAsButton.Image = global::DesktopApp.Properties.Resources.saveas;
             this.saveAsButton.Location = new System.Drawing.Point(231, 6);
             this.saveAsButton.Name = "saveAsButton";
             this.saveAsButton.Size = new System.Drawing.Size(70, 88);
@@ -159,7 +159,7 @@ namespace VisualDijkstraRemake
             this.saveButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.saveButton.FlatAppearance.BorderSize = 0;
             this.saveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.saveButton.Image = global::VisualDijkstraRemake.Properties.Resources.save;
+            this.saveButton.Image = global::DesktopApp.Properties.Resources.save;
             this.saveButton.Location = new System.Drawing.Point(155, 6);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(70, 88);
@@ -175,7 +175,7 @@ namespace VisualDijkstraRemake
             this.openButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.openButton.FlatAppearance.BorderSize = 0;
             this.openButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.openButton.Image = global::VisualDijkstraRemake.Properties.Resources.folder;
+            this.openButton.Image = global::DesktopApp.Properties.Resources.folder;
             this.openButton.Location = new System.Drawing.Point(79, 6);
             this.openButton.Name = "openButton";
             this.openButton.Size = new System.Drawing.Size(70, 88);
@@ -191,7 +191,7 @@ namespace VisualDijkstraRemake
             this.exitButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.exitButton.FlatAppearance.BorderSize = 0;
             this.exitButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.exitButton.Image = global::VisualDijkstraRemake.Properties.Resources.logout;
+            this.exitButton.Image = global::DesktopApp.Properties.Resources.logout;
             this.exitButton.Location = new System.Drawing.Point(3, 6);
             this.exitButton.Name = "exitButton";
             this.exitButton.Size = new System.Drawing.Size(70, 88);
@@ -222,7 +222,7 @@ namespace VisualDijkstraRemake
             this.solvePathButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.solvePathButton.FlatAppearance.BorderSize = 0;
             this.solvePathButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.solvePathButton.Image = global::VisualDijkstraRemake.Properties.Resources.path;
+            this.solvePathButton.Image = global::DesktopApp.Properties.Resources.path;
             this.solvePathButton.Location = new System.Drawing.Point(332, 6);
             this.solvePathButton.Name = "solvePathButton";
             this.solvePathButton.Size = new System.Drawing.Size(88, 88);
@@ -239,7 +239,7 @@ namespace VisualDijkstraRemake
             this.newGraphButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.newGraphButton.FlatAppearance.BorderSize = 0;
             this.newGraphButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.newGraphButton.Image = global::VisualDijkstraRemake.Properties.Resources._new;
+            this.newGraphButton.Image = global::DesktopApp.Properties.Resources._new;
             this.newGraphButton.Location = new System.Drawing.Point(3, 3);
             this.newGraphButton.Name = "newGraphButton";
             this.newGraphButton.Size = new System.Drawing.Size(75, 88);
@@ -255,7 +255,7 @@ namespace VisualDijkstraRemake
             this.addEdgeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.addEdgeButton.FlatAppearance.BorderSize = 0;
             this.addEdgeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.addEdgeButton.Image = global::VisualDijkstraRemake.Properties.Resources.route;
+            this.addEdgeButton.Image = global::DesktopApp.Properties.Resources.route;
             this.addEdgeButton.Location = new System.Drawing.Point(246, 6);
             this.addEdgeButton.Name = "addEdgeButton";
             this.addEdgeButton.Size = new System.Drawing.Size(80, 88);
@@ -271,7 +271,7 @@ namespace VisualDijkstraRemake
             this.deleteNodeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.deleteNodeButton.FlatAppearance.BorderSize = 0;
             this.deleteNodeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.deleteNodeButton.Image = global::VisualDijkstraRemake.Properties.Resources.delete;
+            this.deleteNodeButton.Image = global::DesktopApp.Properties.Resources.delete;
             this.deleteNodeButton.Location = new System.Drawing.Point(160, 6);
             this.deleteNodeButton.Name = "deleteNodeButton";
             this.deleteNodeButton.Size = new System.Drawing.Size(80, 88);
@@ -287,7 +287,7 @@ namespace VisualDijkstraRemake
             this.addNodeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.addNodeButton.FlatAppearance.BorderSize = 0;
             this.addNodeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.addNodeButton.Image = global::VisualDijkstraRemake.Properties.Resources.add;
+            this.addNodeButton.Image = global::DesktopApp.Properties.Resources.add;
             this.addNodeButton.Location = new System.Drawing.Point(84, 6);
             this.addNodeButton.Name = "addNodeButton";
             this.addNodeButton.Size = new System.Drawing.Size(70, 88);
@@ -321,7 +321,7 @@ namespace VisualDijkstraRemake
             // 
             this.gridSlimRadioButton.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.gridSlimRadioButton.FlatAppearance.BorderSize = 0;
-            this.gridSlimRadioButton.Image = global::VisualDijkstraRemake.Properties.Resources.preview_grid_3;
+            this.gridSlimRadioButton.Image = global::DesktopApp.Properties.Resources.preview_grid_3;
             this.gridSlimRadioButton.Location = new System.Drawing.Point(291, 47);
             this.gridSlimRadioButton.Name = "gridSlimRadioButton";
             this.gridSlimRadioButton.Size = new System.Drawing.Size(65, 52);
@@ -337,7 +337,7 @@ namespace VisualDijkstraRemake
             // 
             this.gridDarkRadioButton.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.gridDarkRadioButton.FlatAppearance.BorderSize = 0;
-            this.gridDarkRadioButton.Image = global::VisualDijkstraRemake.Properties.Resources.preview_grid_2;
+            this.gridDarkRadioButton.Image = global::DesktopApp.Properties.Resources.preview_grid_2;
             this.gridDarkRadioButton.Location = new System.Drawing.Point(220, 47);
             this.gridDarkRadioButton.Name = "gridDarkRadioButton";
             this.gridDarkRadioButton.Size = new System.Drawing.Size(65, 52);
@@ -353,7 +353,7 @@ namespace VisualDijkstraRemake
             // 
             this.gridLightRadioButton.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.gridLightRadioButton.FlatAppearance.BorderSize = 0;
-            this.gridLightRadioButton.Image = global::VisualDijkstraRemake.Properties.Resources.preview_grid_1;
+            this.gridLightRadioButton.Image = global::DesktopApp.Properties.Resources.preview_grid_1;
             this.gridLightRadioButton.Location = new System.Drawing.Point(148, 47);
             this.gridLightRadioButton.Name = "gridLightRadioButton";
             this.gridLightRadioButton.Size = new System.Drawing.Size(65, 52);
@@ -379,7 +379,7 @@ namespace VisualDijkstraRemake
             // 
             this.gridNoneRadioButton.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.gridNoneRadioButton.FlatAppearance.BorderSize = 0;
-            this.gridNoneRadioButton.Image = global::VisualDijkstraRemake.Properties.Resources.none;
+            this.gridNoneRadioButton.Image = global::DesktopApp.Properties.Resources.none;
             this.gridNoneRadioButton.Location = new System.Drawing.Point(77, 47);
             this.gridNoneRadioButton.Name = "gridNoneRadioButton";
             this.gridNoneRadioButton.Size = new System.Drawing.Size(65, 52);
@@ -417,7 +417,7 @@ namespace VisualDijkstraRemake
             // 
             this.zoomOutButton.FlatAppearance.BorderSize = 0;
             this.zoomOutButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.zoomOutButton.Image = global::VisualDijkstraRemake.Properties.Resources.zoom_out;
+            this.zoomOutButton.Image = global::DesktopApp.Properties.Resources.zoom_out;
             this.zoomOutButton.Location = new System.Drawing.Point(12, 6);
             this.zoomOutButton.Name = "zoomOutButton";
             this.zoomOutButton.Size = new System.Drawing.Size(44, 40);
@@ -430,7 +430,7 @@ namespace VisualDijkstraRemake
             // 
             this.zoomInButton.FlatAppearance.BorderSize = 0;
             this.zoomInButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.zoomInButton.Image = global::VisualDijkstraRemake.Properties.Resources.zoom_in;
+            this.zoomInButton.Image = global::DesktopApp.Properties.Resources.zoom_in;
             this.zoomInButton.Location = new System.Drawing.Point(305, 6);
             this.zoomInButton.Name = "zoomInButton";
             this.zoomInButton.Size = new System.Drawing.Size(44, 40);

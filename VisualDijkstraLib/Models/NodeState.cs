@@ -1,4 +1,4 @@
-﻿namespace VisualDijkstraRemake.Models
+﻿namespace DesktopApp.Models
 {
     public class NodeState
     {

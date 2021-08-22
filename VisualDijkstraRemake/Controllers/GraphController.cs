@@ -2,11 +2,11 @@
 using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using VisualDijkstraRemake.Models;
-using VisualDijkstraRemake.Utils;
-using VisualDijkstraRemake.Views;
+using DesktopApp.Models;
+using DesktopApp.Utils;
+using DesktopApp.Views;
 
-namespace VisualDijkstraRemake.Controllers
+namespace DesktopApp.Controllers
 {
 
     public interface IGraphController

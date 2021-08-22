@@ -2,7 +2,7 @@
 using System;
 using System.Drawing;
 
-namespace VisualDijkstraRemake.Models.Tests
+namespace DesktopApp.Models.Tests
 {
     [TestClass()]
     public class NodeTests

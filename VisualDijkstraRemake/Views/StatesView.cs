@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
-using VisualDijkstraRemake.Controllers;
-using VisualDijkstraRemake.Controls;
-using VisualDijkstraRemake.Models;
+using DesktopApp.Controllers;
+using DesktopApp.Controls;
+using DesktopApp.Models;
 
-namespace VisualDijkstraRemake.Views
+namespace DesktopApp.Views
 {
     public partial class StatesView : UserControl
     {

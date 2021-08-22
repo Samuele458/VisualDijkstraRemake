@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using VisualDijkstraRemake.Models;
-using VisualDijkstraRemake.Views;
+using DesktopApp.Models;
+using DesktopApp.Views;
 
-namespace VisualDijkstraRemake.Controllers
+namespace DesktopApp.Controllers
 {
 
     public interface IStatesController

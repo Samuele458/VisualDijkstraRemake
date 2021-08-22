@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace VisualDijkstraRemake.Models.Tests
+namespace DesktopApp.Models.Tests
 {
     [TestClass()]
     public class GraphTests

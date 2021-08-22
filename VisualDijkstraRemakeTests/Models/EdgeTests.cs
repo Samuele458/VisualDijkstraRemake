@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Drawing;
 
-namespace VisualDijkstraRemake.Models.Tests
+namespace DesktopApp.Models.Tests
 {
     [TestClass()]
     public class EdgeTests

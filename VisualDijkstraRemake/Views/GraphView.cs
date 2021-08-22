@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using VisualDijkstraRemake.Controllers;
-using VisualDijkstraRemake.Controls;
-using VisualDijkstraRemake.Models;
+using DesktopApp.Controllers;
+using DesktopApp.Controls;
+using DesktopApp.Models;
 
 
-namespace VisualDijkstraRemake.Views
+namespace DesktopApp.Views
 {
     public class GraphView : PictureBox
     {
@@ -53,13 +53,13 @@ namespace VisualDijkstraRemake.Views
                         this.BackgroundImage = null;
                         break;
                     case GridType.Light:
-                        this.BackgroundImage = global::VisualDijkstraRemake.Properties.Resources.grid100_w4_28o;
+                        this.BackgroundImage = global::DesktopApp.Properties.Resources.grid100_w4_28o;
                         break;
                     case GridType.Dark:
-                        this.BackgroundImage = global::VisualDijkstraRemake.Properties.Resources.grid100_w4_64o;
+                        this.BackgroundImage = global::DesktopApp.Properties.Resources.grid100_w4_64o;
                         break;
                     case GridType.Slim:
-                        this.BackgroundImage = global::VisualDijkstraRemake.Properties.Resources.grid100;
+                        this.BackgroundImage = global::DesktopApp.Properties.Resources.grid100;
                         break;
                 }
 

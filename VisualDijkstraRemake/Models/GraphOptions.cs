@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace VisualDijkstraRemake.Models
+namespace DesktopApp.Models
 {
 
 

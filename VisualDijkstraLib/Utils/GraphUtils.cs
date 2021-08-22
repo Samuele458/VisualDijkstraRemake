@@ -5,9 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Xml;
-using VisualDijkstraRemake.Models;
+using DesktopApp.Models;
 
-namespace VisualDijkstraRemake.Utils
+namespace DesktopApp.Utils
 {
 
 

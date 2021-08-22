@@ -1,5 +1,5 @@
 ﻿
-namespace VisualDijkstraRemake.Views
+namespace DesktopApp.Views
 {
     partial class StatesView
     {
@@ -32,7 +32,7 @@ namespace VisualDijkstraRemake.Views
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.scrollPanel1 = new VisualDijkstraRemake.Controls.ScrollPanel();
+            this.scrollPanel1 = new DesktopApp.Controls.ScrollPanel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();

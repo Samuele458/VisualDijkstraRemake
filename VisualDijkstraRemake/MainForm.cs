@@ -1,13 +1,13 @@
-﻿using System;
+﻿using DesktopApp.Controllers;
+using DesktopApp.Models;
+using DesktopApp.Utils;
+using DesktopApp.Views;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using VisualDijkstraRemake.Controllers;
-using VisualDijkstraRemake.Models;
-using VisualDijkstraRemake.Utils;
-using VisualDijkstraRemake.Views;
 
 
-namespace VisualDijkstraRemake
+namespace DesktopApp
 {
     public partial class MainForm : Form
     {

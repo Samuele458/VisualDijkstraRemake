@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace VisualDijkstraRemake.Controls
+namespace DesktopApp.Controls
 {
     class FlatButton : Button
     {

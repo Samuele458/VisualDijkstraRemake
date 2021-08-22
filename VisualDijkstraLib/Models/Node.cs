@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
-namespace VisualDijkstraRemake.Models
+namespace DesktopApp.Models
 {
     public interface IPath
     {

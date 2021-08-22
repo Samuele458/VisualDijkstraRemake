@@ -1,4 +1,4 @@
-﻿namespace VisualDijkstraRemake.Utils
+﻿namespace DesktopApp.Utils
 {
     class Logger
     {

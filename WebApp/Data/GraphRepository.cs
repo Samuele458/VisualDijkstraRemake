@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using VisualDijkstraRemake.Utils;
+using DesktopApp.Utils;
 using WebApp.Models;
 
 namespace WebApp.Data

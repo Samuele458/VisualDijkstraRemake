@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
-namespace VisualDijkstraRemake.Models
+namespace DesktopApp.Models
 {
 
     /// <summary>
