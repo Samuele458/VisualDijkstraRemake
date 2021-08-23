@@ -316,7 +316,12 @@ const GraphEditor = () => {
               e.stopPropagation();
               e.preventDefault();
 
-              let name = e.target.files[0].name;
+              let name = e.target.files[0].name
+                .split(".")
+                .slice(0, -1)
+                .join(".");
+
+              if (!GraphUtils.isGraphNameValid(name)) name = "Untitled";
 
               const fileReader = new FileReader();
 
