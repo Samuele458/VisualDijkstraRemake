@@ -7,8 +7,14 @@ namespace VisualDijkstraLib.Models
 {
     public interface IPath
     {
+        /// <summary>
+        ///  Indicates if this item should be marked as part of path between source to dest
+        /// </summary>
         public bool IsInPath { get; set; }
 
+        /// <summary>
+        ///  Indicates if this item should be marked as part of partial path
+        /// </summary>
         public bool IsInPartialPath { get; set; }
     }
 
@@ -27,8 +33,11 @@ namespace VisualDijkstraLib.Models
         //node name
         private string _name;
 
+
         [JsonIgnore]
         public bool IsInPath { get; set; }
+
+
         public bool IsInPartialPath { get; set; }
 
 
@@ -37,7 +46,6 @@ namespace VisualDijkstraLib.Models
             get { return _location; }
             set { _location = new Point(value.X - SizeLength / 2, value.Y - SizeLength / 2); }
         }
-
 
 
         public string Name
