@@ -2,11 +2,17 @@ import React, { useContext } from "react";
 
 import AuthApi from "../../AuthApi";
 
+import Logo from "./logo.png";
+
 const Navbar = (props) => {
   const Auth = useContext(AuthApi);
 
   return (
     <nav className="navbar">
+      <div className="logo-box">
+        <img src={Logo} alt="" srcset="" className="logo-img" />
+        <h3 className="logo-text">Visual Dijkstra</h3>
+      </div>
       <ul className="nav-list">
         {Auth.loggedUser == null ? (
           <>

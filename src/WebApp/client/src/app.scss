@@ -36,6 +36,22 @@
   position: fixed;
   z-index: 100;
 
+  .logo-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .logo-img {
+      padding: 0.5rem;
+      height: 100%;
+      display: block;
+    }
+
+    .logo-text {
+      color: white;
+    }
+  }
+
   .nav-list {
     display: flex;
     flex-direction: row;
