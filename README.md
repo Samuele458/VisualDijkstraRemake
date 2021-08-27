@@ -3,6 +3,11 @@
     <img alt="Visual Dijkstra" src="https://raw.githubusercontent.com/Samuele458/visual-dijkstra/main/img/visual-dijkstra-logo.png" width="300">
   </a>
 </p>
+
+
+<p align="center">
+	<img alt="GitHub" src="https://img.shields.io/github/license/Samuele458/VisualDijkstraRemake?color=00ee00" align="center">
+</p>
 <h1 align="center">
 	Visual Dijkstra
 </h1>
