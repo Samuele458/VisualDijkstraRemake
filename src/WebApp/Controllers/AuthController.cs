@@ -2,6 +2,7 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net.Mail;
 using WebApp.Data;
 using WebApp.Dtos;
 using WebApp.Models;
@@ -14,12 +15,22 @@ namespace WebApp.Controllers
     public class AuthController : Controller
     {
         private readonly IUserRepository _repository;
+        private readonly IVerificationRepository _verificationRepository;
         private readonly JwtService _jwtService;
+        private SmtpClient _smtpClient;
 
-        public AuthController(IUserRepository repository, JwtService jwtService)
+        public AuthController(IUserRepository repository, IVerificationRepository verificactionRepository, JwtService jwtService, SmtpClient smtpClient)
         {
             _repository = repository;
             _jwtService = jwtService;
+            _verificationRepository = verificactionRepository;
+            _smtpClient = smtpClient;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _smtpClient.Dispose();
+            base.Dispose(disposing);
         }
 
         [HttpPost("register")]
@@ -32,7 +43,31 @@ namespace WebApp.Controllers
                 Password = BCrypt.Net.BCrypt.HashPassword(dto.Password)
             };
 
-            return Created("success", _repository.Create(user));
+            User responseUser = null;
+
+            try
+            {
+                responseUser = _repository.Create(user);
+            }
+            catch (DuplicatedUserException)
+            {
+                return BadRequest(new { message = "User already exists" });
+            }
+
+            Verification verification = _verificationRepository.CreateVerification(user);
+
+            MailMessage mail = new MailMessage();
+
+            mail.Body = "We are happy you signed up for VisualDIjkstra. To start using VisualDijkstra please verify your email";
+            mail.Subject = "Confirmation";
+            mail.From = new MailAddress("support@visualdijkstra.com", "Visual Dijkstra");
+            mail.To.Add(new MailAddress("samuele.girgenti458@gmail.com"));
+            _smtpClient.Send(mail);
+
+            System.Diagnostics.Debug.WriteLine(_smtpClient.Host + _smtpClient.Port);
+            System.Diagnostics.Debug.WriteLine(_smtpClient.Credentials);
+
+            return Created("success", responseUser);
         }
 
         [HttpPost("login")]

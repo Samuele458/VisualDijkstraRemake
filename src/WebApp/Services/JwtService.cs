@@ -6,21 +6,39 @@ using System.Text;
 
 namespace WebApp.Services
 {
+
+    /// <summary>
+    ///  JWT authentication options
+    /// </summary>
     public class JwtOptions
     {
+        /// <summary>
+        ///  Jwt secret string
+        /// </summary>
         public string Secret { get; set; }
     }
 
     public class JwtService
     {
-
+        /// <summary>
+        ///  Options loaded in dependency injection
+        /// </summary>
         private readonly JwtOptions _options;
 
+        /// <summary>
+        ///  Constructs JwtService by providing options
+        /// </summary>
+        /// <param name="jwtOptions">JWT options</param>
         public JwtService(IOptions<JwtOptions> jwtOptions)
         {
             _options = jwtOptions.Value;
         }
 
+        /// <summary>
+        ///  Generate JWT
+        /// </summary>
+        /// <param name="id">User ID</param>
+        /// <returns>JWT in url-encoded base64 format</returns>
         public string Generate(int id)
         {
             SymmetricSecurityKey symKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Secret));
@@ -34,6 +52,11 @@ namespace WebApp.Services
 
         }
 
+        /// <summary>
+        ///  Validate a JWT token
+        /// </summary>
+        /// <param name="jwt">JWT token string</param>
+        /// <returns>Validated JWT token</returns>
         public JwtSecurityToken Verify(string jwt)
         {
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();

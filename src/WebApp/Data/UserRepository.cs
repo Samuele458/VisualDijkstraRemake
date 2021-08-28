@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using WebApp.Models;
 
@@ -15,9 +16,16 @@ namespace WebApp.Data
 
         public User Create(User user)
         {
-
             _context.Users.Add(user);
-            user.Id = _context.SaveChanges();
+
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException e)
+            {
+                throw new DuplicatedUserException();
+            }
 
             return user;
         }
@@ -37,5 +45,11 @@ namespace WebApp.Data
         }
 
 
+    }
+
+
+    public class DuplicatedUserException : Exception
+    {
+        public DuplicatedUserException(string message = "") : base(message) { }
     }
 }

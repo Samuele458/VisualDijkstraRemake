@@ -9,8 +9,8 @@ using WebApp.Data;
 namespace WebApp.Migrations
 {
     [DbContext(typeof(UserContext))]
-    [Migration("20210731081202_update")]
-    partial class update
+    [Migration("20210731104836_graphsUpdate")]
+    partial class graphsUpdate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,12 +31,16 @@ namespace WebApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasFilter("[Name] IS NOT NULL");
 
                     b.HasIndex("UserId");
 
