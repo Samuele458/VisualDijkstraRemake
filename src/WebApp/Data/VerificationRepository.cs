@@ -55,7 +55,7 @@ namespace WebApp.Data
             {
                 throw new VerificationNotFoundException();
             }
-            //_context.Verifications.fi
+
         }
     }
 

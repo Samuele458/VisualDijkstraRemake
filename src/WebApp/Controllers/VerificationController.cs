@@ -22,6 +22,17 @@ namespace WebApp.Controllers
             _verificationRepository = verificactionRepository;
         }
 
-
+        [HttpGet]
+        public IActionResult Verify(string token)
+        {
+            try
+            {
+                _verificationRepository.Verify(token);
+            }
+            catch (Exception)
+            {
+                return NotFound("Invalid token");
+            }
+        }
     }
 }
