@@ -58,7 +58,6 @@ namespace WebApp.Controllers
 
             MailMessage mail = new MailMessage();
 
-            //Setting From , To and CC
             mail.Body = "We are happy you signed up for VisualDIjkstra. To start using VisualDijkstra please verify your email";
             mail.Subject = "Confirmation";
             mail.From = new MailAddress("support@visualdijkstra.com", "Visual Dijkstra");
