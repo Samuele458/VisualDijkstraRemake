@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApp.Data;
+using WebApp.Models;
 using WebApp.Services;
 
 namespace WebApp.Controllers
@@ -8,16 +9,16 @@ namespace WebApp.Controllers
     [ApiController]
     public class VerificationController : Controller
     {
-        private readonly IUserRepository _repository;
+        private readonly IUserRepository _userRepository;
         private readonly IVerificationRepository _verificationRepository;
         private readonly JwtService _jwtService;
 
         public VerificationController(
-            IUserRepository repository,
+            IUserRepository userRepository,
             IVerificationRepository verificactionRepository,
             JwtService jwtService)
         {
-            _repository = repository;
+            _userRepository = userRepository;
             _jwtService = jwtService;
             _verificationRepository = verificactionRepository;
         }
@@ -25,14 +26,29 @@ namespace WebApp.Controllers
         [HttpGet]
         public IActionResult Verify(string token)
         {
+            Verification verification = null;
+
+            System.Diagnostics.Debug.WriteLine("Token:" + token);
+
             try
             {
-                _verificationRepository.Verify(token);
+                verification = _verificationRepository.Verify(token);
             }
-            catch (Exception)
+            catch (VerificationNotFoundException)
             {
                 return NotFound("Invalid token");
             }
+            catch (VerificationTokenExpiredException)
+            {
+                if (verification != null)
+                {
+                    _userRepository.DeleteUser(verification.UserId.Value);
+                }
+
+                return BadRequest("Token expired");
+            }
+
+            return Ok();
         }
     }
 }

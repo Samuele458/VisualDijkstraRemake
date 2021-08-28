@@ -44,6 +44,21 @@ namespace WebApp.Data
 
         }
 
+        public void DeleteUser(int id)
+        {
+            User user = GetById(id);
+
+            if (user != default(User))
+            {
+                _context
+                    .Users
+                    .Remove(user);
+            }
+            else
+            {
+                throw new UserNotFoundException();
+            }
+        }
 
     }
 
@@ -51,5 +66,10 @@ namespace WebApp.Data
     public class DuplicatedUserException : Exception
     {
         public DuplicatedUserException(string message = "") : base(message) { }
+    }
+
+    public class UserNotFoundException : Exception
+    {
+        public UserNotFoundException(string message = "") : base(message) { }
     }
 }

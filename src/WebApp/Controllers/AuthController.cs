@@ -64,9 +64,13 @@ namespace WebApp.Controllers
             Verification verification = _verificationRepository.CreateVerification(user);
 
             MailMessage mail = new MailMessage();
-            mail.Body = "We are happy you signed up for VisualDIjkstra. To start using VisualDijkstra please verify your email";
+            mail.Body = String.Format("We are happy you signed up for VisualDijkstra.\nTo start using VisualDijkstra please verify your email:\n{0}",
+                                      "https://visualdijkstra.com/api/verification?token=" + verification.Token);
+
+
             mail.Subject = "Confirmation";
-            mail.To.Add(new MailAddress("samuele.girgenti458@gmail.com"));
+            mail.To.Add(new MailAddress(user.Email));
+            mail.IsBodyHtml = true;
             _emailHandler.SendEmail(mail);
 
             return Created("success", responseUser);

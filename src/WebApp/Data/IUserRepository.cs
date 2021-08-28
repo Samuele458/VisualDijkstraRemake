@@ -10,7 +10,7 @@ namespace WebApp.Data
 
         User GetById(int id);
 
-
+        void DeleteUser(int id);
 
     }
 }
