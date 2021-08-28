@@ -7,6 +7,7 @@ using WebApp.Data;
 using WebApp.Dtos;
 using WebApp.Models;
 using WebApp.Services;
+using WebApp.Utils;
 
 namespace WebApp.Controllers
 {
@@ -17,21 +18,27 @@ namespace WebApp.Controllers
         private readonly IUserRepository _repository;
         private readonly IVerificationRepository _verificationRepository;
         private readonly JwtService _jwtService;
-        private SmtpClient _smtpClient;
+        private readonly IEmailHandler _emailHandler;
 
-        public AuthController(IUserRepository repository, IVerificationRepository verificactionRepository, JwtService jwtService, SmtpClient smtpClient)
+        public AuthController(
+            IUserRepository repository,
+            IVerificationRepository verificactionRepository,
+            JwtService jwtService,
+            IEmailHandler emailHandler)
         {
             _repository = repository;
             _jwtService = jwtService;
             _verificationRepository = verificactionRepository;
-            _smtpClient = smtpClient;
+            _emailHandler = emailHandler;
         }
 
+        //TODO: implement IDisposable in EmailHandler
+        /*
         protected override void Dispose(bool disposing)
         {
-            _smtpClient.Dispose();
+            _emailHandler.Dispose();
             base.Dispose(disposing);
-        }
+        }*/
 
         [HttpPost("register")]
         public IActionResult Register(RegisterDto dto)
@@ -57,15 +64,10 @@ namespace WebApp.Controllers
             Verification verification = _verificationRepository.CreateVerification(user);
 
             MailMessage mail = new MailMessage();
-
             mail.Body = "We are happy you signed up for VisualDIjkstra. To start using VisualDijkstra please verify your email";
             mail.Subject = "Confirmation";
-            mail.From = new MailAddress("support@visualdijkstra.com", "Visual Dijkstra");
             mail.To.Add(new MailAddress("samuele.girgenti458@gmail.com"));
-            _smtpClient.Send(mail);
-
-            System.Diagnostics.Debug.WriteLine(_smtpClient.Host + _smtpClient.Port);
-            System.Diagnostics.Debug.WriteLine(_smtpClient.Credentials);
+            _emailHandler.SendEmail(mail);
 
             return Created("success", responseUser);
         }
