@@ -22,6 +22,8 @@ namespace WebApp.Models
         /// </summary>
         public virtual IList<GraphModel> Graphs { get; set; }
 
+        public virtual Verification Verification { get; set; }
+
         public User()
         {
             Graphs = new List<GraphModel>();

@@ -2,7 +2,7 @@
 
 namespace WebApp.Migrations
 {
-    public partial class update2 : Migration
+    public partial class graphsUpdate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
