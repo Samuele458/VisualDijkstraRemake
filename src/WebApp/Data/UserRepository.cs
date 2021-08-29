@@ -53,6 +53,7 @@ namespace WebApp.Data
                 _context
                     .Users
                     .Remove(user);
+                _context.SaveChanges();
             }
             else
             {

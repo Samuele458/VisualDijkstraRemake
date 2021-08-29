@@ -25,14 +25,24 @@ namespace WebApp.Data
                 entity
                     .HasOne(u => u.Verification)
                     .WithOne(v => v.User)
+                    .OnDelete(DeleteBehavior.ClientCascade)
                     .IsRequired(false)
                     .HasForeignKey<Verification>(v => v.UserId);
+
+                entity
+                    .HasMany(u => u.Graphs)
+                    .WithOne(g => g.User)
+                    .OnDelete(DeleteBehavior.ClientCascade)
+                    .IsRequired();
+
+
             });
 
+            /*
             modelBuilder.Entity<GraphModel>()
                 .HasOne(g => g.User)
                 .WithMany(u => u.Graphs)
-                .IsRequired();
+                .IsRequired();*/
 
             //modelBuilder.Entity<Verification>(entity => { entity.HasIndex(e => e.Token).IsUnique(); });
             /*

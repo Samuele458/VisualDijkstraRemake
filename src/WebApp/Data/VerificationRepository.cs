@@ -77,7 +77,7 @@ namespace WebApp.Data
             if (verification != default(Verification))
             {
 
-                if ((DateTime.UtcNow - verification.CreatedOn).TotalSeconds < 900)
+                if ((DateTime.UtcNow - verification.CreatedOn).TotalSeconds < 30)
                 {
                     DeleteVerification(verification);
                 }

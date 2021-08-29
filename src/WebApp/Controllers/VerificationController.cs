@@ -28,8 +28,6 @@ namespace WebApp.Controllers
         {
             Verification verification = null;
 
-            System.Diagnostics.Debug.WriteLine("Token:" + token);
-
             try
             {
                 verification = _verificationRepository.Verify(token);
@@ -40,10 +38,9 @@ namespace WebApp.Controllers
             }
             catch (VerificationTokenExpiredException)
             {
-                if (verification != null)
-                {
-                    _userRepository.DeleteUser(verification.UserId.Value);
-                }
+
+                verification = _verificationRepository.ReadVerification(token);
+                _userRepository.DeleteUser(verification.UserId.Value);
 
                 return BadRequest("Token expired");
             }

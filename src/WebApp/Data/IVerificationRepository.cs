@@ -39,6 +39,6 @@ namespace WebApp.Data
         ///  Deletes verification
         /// </summary>
         /// <param name="verification">Verification object to be deleted</param>
-        void DeleteVerification(Verification verification)
+        void DeleteVerification(Verification verification);
     }
 }
