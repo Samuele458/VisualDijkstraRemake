@@ -14,6 +14,7 @@ namespace WebApp.Data
             _context = context;
         }
 
+        /// <inheritdoc/>
         public Verification CreateVerification(User user)
         {
 
@@ -35,6 +36,7 @@ namespace WebApp.Data
 
         }
 
+        /// <inheritdoc/>
         public Verification ReadVerification(string token)
         {
             return _context
@@ -42,6 +44,7 @@ namespace WebApp.Data
                         .FirstOrDefault(v => v.Token == token);
         }
 
+        /// <inheritdoc/>
         public void DeleteVerification(string token)
         {
             Verification verification = ReadVerification(token);
@@ -56,6 +59,7 @@ namespace WebApp.Data
             }
         }
 
+        /// <inheritdoc/>
         public void DeleteVerification(Verification verification)
         {
             _context
@@ -64,6 +68,7 @@ namespace WebApp.Data
             _context.SaveChanges();
         }
 
+        /// <inheritdoc/>
         public Verification Verify(string token)
         {
 
