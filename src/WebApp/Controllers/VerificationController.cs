@@ -1,28 +1,37 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApp.Data;
 using WebApp.Models;
-using WebApp.Services;
 
 namespace WebApp.Controllers
 {
+    /// <summary>
+    ///  Email verification controller
+    /// </summary>
     [Route("api/verification")]
     [ApiController]
     public class VerificationController : Controller
     {
         private readonly IUserRepository _userRepository;
         private readonly IVerificationRepository _verificationRepository;
-        private readonly JwtService _jwtService;
 
+        /// <summary>
+        ///  Controller contrustor, used in dependency injection
+        /// </summary>
+        /// <param name="userRepository">IUserRepository object</param>
+        /// <param name="verificactionRepository">IVerificationRepository object</param>
         public VerificationController(
             IUserRepository userRepository,
-            IVerificationRepository verificactionRepository,
-            JwtService jwtService)
+            IVerificationRepository verificactionRepository)
         {
             _userRepository = userRepository;
-            _jwtService = jwtService;
             _verificationRepository = verificactionRepository;
         }
 
+        /// <summary>
+        ///  GET endpoint for verifying tokens
+        /// </summary>
+        /// <param name="token">Verification token string</param>
+        /// <returns>Response to client</returns>
         [HttpGet]
         public IActionResult Verify(string token)
         {

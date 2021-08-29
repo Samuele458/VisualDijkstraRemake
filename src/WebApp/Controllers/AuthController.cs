@@ -11,6 +11,9 @@ using WebApp.Utils;
 
 namespace WebApp.Controllers
 {
+    /// <summary>
+    ///  Authentication controller
+    /// </summary>
     [Route("api")]
     [ApiController]
     public class AuthController : Controller
@@ -20,6 +23,13 @@ namespace WebApp.Controllers
         private readonly JwtService _jwtService;
         private readonly IEmailHandler _emailHandler;
 
+        /// <summary>
+        ///  Controller constructor used in dependency injection
+        /// </summary>
+        /// <param name="repository">IUserRepository for handling users</param>
+        /// <param name="verificactionRepository">IVerification repository for handling issuing verification</param>
+        /// <param name="jwtService">JwtService for handling JWT</param>
+        /// <param name="emailHandler">EmailHandler, for sending emails</param>
         public AuthController(
             IUserRepository repository,
             IVerificationRepository verificactionRepository,
@@ -40,6 +50,11 @@ namespace WebApp.Controllers
             base.Dispose(disposing);
         }*/
 
+        /// <summary>
+        ///  POST endpoint for registering new users
+        /// </summary>
+        /// <param name="dto">DTO for registration</param>
+        /// <returns>Response to client</returns>
         [HttpPost("register")]
         public IActionResult Register(RegisterDto dto)
         {
@@ -76,6 +91,11 @@ namespace WebApp.Controllers
             return Created("success", responseUser);
         }
 
+        /// <summary>
+        ///  POST endpoint for handling user login
+        /// </summary>
+        /// <param name="dto">DTO for login</param>
+        /// <returns>Response to client</returns>
         [HttpPost("login")]
         public IActionResult Login(LoginDto dto)
         {
@@ -105,6 +125,10 @@ namespace WebApp.Controllers
         }
 
 
+        /// <summary>
+        ///  Returns details of authenticated user
+        /// </summary>
+        /// <returns>Response with user details</returns>
         [HttpGet("user")]
         public IActionResult User()
         {
@@ -133,7 +157,10 @@ namespace WebApp.Controllers
             }
         }
 
-
+        /// <summary>
+        ///  User logout
+        /// </summary>
+        /// <returns>Response to client</returns>
         [HttpPost("logout")]
         public IActionResult Logout()
         {

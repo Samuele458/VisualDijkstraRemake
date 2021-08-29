@@ -11,6 +11,9 @@ using WebApp.Services;
 
 namespace WebApp.Controllers
 {
+    /// <summary>
+    ///  Graph controller
+    /// </summary>
     [Route("api")]
     [ApiController]
     public class GraphController : Controller
@@ -19,6 +22,12 @@ namespace WebApp.Controllers
         private readonly IUserRepository _userRepository;
         private readonly JwtService _jwtService;
 
+        /// <summary>
+        ///  Controller constructor used in dependency injection
+        /// </summary>
+        /// <param name="userRepository">IUserRepository for handling users</param>
+        /// <param name="graphRepository">IGraphRepository for handling graphs</param>
+        /// <param name="jwtService">JwtService for handling JWT</param>
         public GraphController(IGraphRepository graphRepository, IUserRepository userRepository, JwtService jwtService)
         {
             _graphRepository = graphRepository;
@@ -26,6 +35,11 @@ namespace WebApp.Controllers
             _jwtService = jwtService;
         }
 
+        /// <summary>
+        ///  POST endpoint for creating graphs
+        /// </summary>
+        /// <param name="dto">DTO for graph creation</param>
+        /// <returns>Created graph in response</returns>
         [HttpPost("graph")]
         public IActionResult CreateGraph(CreateGraphDto dto)
         {
@@ -60,6 +74,12 @@ namespace WebApp.Controllers
             return Created("success", graph);
         }
 
+
+        /// <summary>
+        ///  GET endpoint for reading an existing graph
+        /// </summary>
+        /// <param name="id">Graph id</param>
+        /// <returns>Graph data in response</returns>
         [HttpGet("graph")]
         public IActionResult ReadGraph(int id)
         {
@@ -93,7 +113,11 @@ namespace WebApp.Controllers
             }
         }
 
-
+        /// <summary>
+        ///  PUT request for updating graph data
+        /// </summary>
+        /// <param name="dto">DTO for updating graph</param>
+        /// <returns>Data of updated graph in response</returns>
         [HttpPut("graph")]
         public IActionResult UpdateGraph(CreateGraphDto dto)
         {
@@ -142,6 +166,12 @@ namespace WebApp.Controllers
             }
         }
 
+
+        /// <summary>
+        ///  DELETE endpoint for deleting graph
+        /// </summary>
+        /// <param name="id">Graph id</param>
+        /// <returns>Deleted graph data in response</returns>
         [HttpDelete("graph")]
         public IActionResult DeleteGraph(int id)
         {
@@ -170,6 +200,13 @@ namespace WebApp.Controllers
             }
         }
 
+        /// <summary>
+        ///  GET request for solving graph
+        /// </summary>
+        /// <param name="id">Graph id</param>
+        /// <param name="source">Source node name</param>
+        /// <param name="dest">Destination node name</param>
+        /// <returns>Dijkstra solution step-by-step in response</returns>
         [HttpGet("graph/solve")]
         public IActionResult Solve(int id, string source, string dest)
         {
