@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import GraphEditor from "./components/GraphEditor";
 import Navbar from "./components/Navbar";
@@ -59,25 +60,30 @@ function App() {
     <div>
       <AuthApi.Provider value={{ loggedUser, setLoggedUser }}>
         <ErrorProvider>
-          <ErrorNotification />
-          <Navbar
-            toggleLoginBox={toggleLoginBox}
-            toggleSignupBox={toggleSignupBox}
-            handleLogout={handleLogout}
-          />
-          {displaySignup && (
-            <Dialog handleClose={toggleSignupBox}>
-              <SignupForm />
-            </Dialog>
-          )}
+          <Router>
+            <ErrorNotification />
+            <Navbar
+              toggleLoginBox={toggleLoginBox}
+              toggleSignupBox={toggleSignupBox}
+              handleLogout={handleLogout}
+            />
+            {displaySignup && (
+              <Dialog handleClose={toggleSignupBox}>
+                <SignupForm />
+              </Dialog>
+            )}
 
-          {displayLogin && (
-            <Dialog handleClose={toggleLoginBox}>
-              <LoginForm />
-            </Dialog>
-          )}
+            {displayLogin && (
+              <Dialog handleClose={toggleLoginBox}>
+                <LoginForm />
+              </Dialog>
+            )}
 
-          <GraphEditor />
+            <Switch>
+              <Route path="/" exact component={() => <h1>Title</h1>} />
+              <Route path="/app" exact component={() => <GraphEditor />} />
+            </Switch>
+          </Router>
         </ErrorProvider>
       </AuthApi.Provider>
     </div>

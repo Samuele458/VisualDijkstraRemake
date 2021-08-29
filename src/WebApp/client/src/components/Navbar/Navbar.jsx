@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { HashLink, HashLink as Link } from "react-router-hash-link";
 
 import AuthApi from "../../AuthApi";
 
@@ -14,6 +15,16 @@ const Navbar = (props) => {
         <h3 className="logo-text">Visual Dijkstra</h3>
       </div>
       <ul className="nav-list">
+        <li className="nav-list-element">
+          <Link className="nav-link" to="/home">
+            Home
+          </Link>
+        </li>
+        <li className="nav-list-element">
+          <Link className="nav-link" to="/app">
+            App
+          </Link>
+        </li>
         {Auth.loggedUser == null ? (
           <>
             <li className="nav-list-element">
