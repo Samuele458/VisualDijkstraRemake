@@ -38,6 +38,16 @@ function App() {
       });
   };
 
+  const handleLoginButtonClick = (e) => {
+    setDisplayLogin(true);
+    setDisplaySignup(false);
+  };
+
+  const handleSignupButtonClick = (e) => {
+    setDisplayLogin(false);
+    setDisplaySignup(true);
+  };
+
   useEffect(() => {
     if (loggedUser != null) {
       setDisplayLogin(false);
@@ -69,13 +79,13 @@ function App() {
             />
             {displaySignup && (
               <Dialog handleClose={toggleSignupBox}>
-                <SignupForm />
+                <SignupForm handleLoginButtonClick={handleLoginButtonClick} />
               </Dialog>
             )}
 
             {displayLogin && (
               <Dialog handleClose={toggleLoginBox}>
-                <LoginForm />
+                <LoginForm handleSignupButtonClick={handleSignupButtonClick} />
               </Dialog>
             )}
 

@@ -14,6 +14,18 @@
   }
 }
 
+a {
+  text-decoration: none;
+}
+
+.small-text {
+  font-size: 0.85rem;
+}
+
+.center-text {
+  text-align: center;
+}
+
 .hflex {
   display: flex;
   flex-direction: row;
@@ -22,6 +34,14 @@
 .vflex {
   display: flex;
   flex-direction: column;
+}
+
+.flex-align-center {
+  align-items: center;
+}
+
+.flex-justify-center {
+  justify-content: center;
 }
 
 .navbar {
@@ -74,7 +94,7 @@
 
 .dialog-box {
   position: fixed;
-  z-index: 50;
+  z-index: 110;
 
   width: 100%;
   height: 100%;
@@ -108,6 +128,21 @@
       font-size: 27px;
       cursor: pointer;
     }
+  }
+}
+
+.verify-email {
+  max-width: 25rem;
+
+  color: rgb(46, 46, 46);
+  p {
+    margin-top: 1rem;
+    color: inherit;
+  }
+
+  .content {
+    padding: 1rem;
+    padding-bottom: 3rem;
   }
 }
 
@@ -168,12 +203,22 @@
 /* button */
 
 .button {
+  @extend .zoom-1;
+
   background-color: white;
   cursor: pointer;
 
   border: none;
   border-bottom: 3px solid rgb(71, 68, 255);
-  padding: 0.3rem;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  transition: all 0.5s;
+  font-size: 1rem;
+
+  &:hover {
+    background-color: rgb(71, 68, 255);
+    color: white;
+    border-radius: 0.5rem;
+  }
 }
 
 /* --- Toolbar --- */

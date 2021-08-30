@@ -7,7 +7,7 @@ import useError from "../../hooks/useError";
 
 import Loading from "../Loading";
 
-const LoginForm = () => {
+const LoginForm = (props) => {
   const Auth = useContext(AuthApi);
   const { addError } = useError();
   const [onLoading, setOnLoading] = useState(false);
@@ -44,7 +44,7 @@ const LoginForm = () => {
       <h2>Login</h2>
       <div className="form-item">
         <div className="form-item-header">
-          <label htmlFor="username" className="form-label">
+          <label htmlFor="email" className="form-label">
             Email
           </label>
           {errors.email && <p className="form-error">Email required</p>}
@@ -86,6 +86,13 @@ const LoginForm = () => {
         {onLoading && <Loading />}
         <p className="error">{errorMessage}</p>
       </div>
+      <p className="small-text center-text">
+        Do not have an account?{" "}
+        <a href="#" onClick={props.handleSignupButtonClick}>
+          Click here to sign up
+        </a>
+        .
+      </p>
     </form>
   );
 };
