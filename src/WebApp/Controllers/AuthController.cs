@@ -101,7 +101,9 @@ namespace WebApp.Controllers
         {
             User user = _repository.GetByEmail(dto.Email);
 
-            if (user == null)
+            System.Diagnostics.Debug.WriteLine("Ver: " + (user.Verification == null));
+
+            if (user == null || user.Verification != null)
             {
                 return NotFound(new { message = "Invalid credentials" });
             }

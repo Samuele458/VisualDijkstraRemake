@@ -37,7 +37,10 @@ namespace WebApp.Data
         /// <inheritdoc/>
         public User GetByEmail(string email)
         {
-            return _context.Users.FirstOrDefault(u => u.Email == email);
+            return _context
+                        .Users
+                        .Include(u => u.Verification)
+                        .FirstOrDefault(u => u.Email == email);
         }
 
         /// <inheritdoc/>
