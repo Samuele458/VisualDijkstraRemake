@@ -131,6 +131,32 @@ a {
   }
 }
 
+.signup-verification-page-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+
+  .signup-verification-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .text-content {
+      padding: 1rem;
+      text-align: center;
+      width: 40rem;
+
+      .title {
+        font-size: 3rem;
+        padding: 1rem;
+      }
+    }
+  }
+}
+
 .verify-email {
   max-width: 25rem;
 
@@ -247,6 +273,16 @@ a {
 .standard-icon {
   width: 1.5rem !important;
   height: 1.5rem !important;
+}
+
+.large-icon {
+  width: 7rem !important;
+  height: 7rem !important;
+}
+
+.extra-large-icon {
+  width: 12rem !important;
+  height: 12rem !important;
 }
 
 .error-notification-box {

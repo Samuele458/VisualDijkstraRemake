@@ -80,7 +80,7 @@ namespace WebApp.Controllers
 
             MailMessage mail = new MailMessage();
             mail.Body = String.Format("We are happy you signed up for VisualDijkstra.\nTo start using VisualDijkstra please verify your email:\n{0}",
-                                      "https://visualdijkstra.com/api/verification?token=" + verification.Token);
+                                      "https://visualdijkstra.com/verify/" + verification.Token);
 
 
             mail.Subject = "Confirmation";

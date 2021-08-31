@@ -13,6 +13,7 @@ import "./app.scss";
 
 import AuthApi from "./AuthApi";
 import ErrorProvider from "./providers/ErrorProvider";
+import SignupVerificationPage from "./pages/SignupVerificationPage";
 
 function App() {
   const [displayLogin, setDisplayLogin] = useState(false);
@@ -92,6 +93,7 @@ function App() {
             <Switch>
               <Route path="/" exact component={() => <h1>Title</h1>} />
               <Route path="/app" exact component={() => <GraphEditor />} />
+              <Route path="/verify/:token" component={SignupVerificationPage} />
             </Switch>
           </Router>
         </ErrorProvider>

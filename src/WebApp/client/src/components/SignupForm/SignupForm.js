@@ -76,7 +76,7 @@ const SignupForm = (props) => {
             />
             <div className="text-section">
               <p>
-                We have sent an email to <b>samuele.girgenti458@gmail.com</b>
+                We have sent an email to <b>{email}</b>
               </p>
               <p>
                 Please click on the link we sent to your email in order to

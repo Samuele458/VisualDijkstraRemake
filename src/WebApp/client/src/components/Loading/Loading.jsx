@@ -6,7 +6,7 @@ const Loading = (props) => {
     <FontAwesomeIcon
       icon={faSpinner}
       spin
-      className="standard-icon"
+      className={props.dimension ? props.dimension : "standard-icon"}
       style={{
         visibility:
           typeof props.show === "undefined"
