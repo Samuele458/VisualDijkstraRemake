@@ -68,7 +68,7 @@ namespace WebApp
             services.AddScoped<IEmailHandler, EmailHandler>((serviceProvider) =>
             {
                 IConfiguration config = serviceProvider.GetRequiredService<IConfiguration>();
-
+                System.Diagnostics.Debug.WriteLine("Sender email: " + config.GetValue<String>("EmailConfig:SenderEmail"));
                 return new EmailHandler(
                     config.GetValue<String>("EmailConfig:Host"),
                     config.GetValue<int>("EmailConfig:Port"),

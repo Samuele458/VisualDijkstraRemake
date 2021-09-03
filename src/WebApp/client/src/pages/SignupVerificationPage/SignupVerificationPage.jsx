@@ -4,12 +4,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router";
-
 import axios from "axios";
 
 import Loading from "../../components/Loading";
+
+import AuthApi from "../../AuthApi";
 
 const SignupVerificationPage = () => {
   const verifyingStates = {
@@ -18,20 +19,34 @@ const SignupVerificationPage = () => {
     ERROR: 2,
   };
 
+  const Auth = useContext(AuthApi);
+
   const { token } = useParams();
 
   const [currentState, setCurrentState] = useState(verifyingStates.LOADING);
+
+  const redirect = () => {
+    setTimeout(() => {
+      window.location.href = "/";
+    }, 5000);
+  };
 
   useEffect(() => {
     axios
       .get("/api/verification?token=" + token, {})
       .then((response) => {
         setCurrentState(verifyingStates.VERIFIED);
+        redirect();
       })
       .catch((error) => {
         setCurrentState(verifyingStates.ERROR);
+        redirect();
       });
   }, []);
+
+  if (Auth.loggedUser) {
+    redirect();
+  }
 
   return (
     <div className="signup-verification-page-wrapper">

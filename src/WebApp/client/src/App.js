@@ -14,6 +14,7 @@ import "./app.scss";
 import AuthApi from "./AuthApi";
 import ErrorProvider from "./providers/ErrorProvider";
 import SignupVerificationPage from "./pages/SignupVerificationPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   const [displayLogin, setDisplayLogin] = useState(false);
@@ -94,6 +95,7 @@ function App() {
               <Route path="/" exact component={() => <h1>Title</h1>} />
               <Route path="/app" exact component={() => <GraphEditor />} />
               <Route path="/verify/:token" component={SignupVerificationPage} />
+              <Route component={NotFoundPage} />
             </Switch>
           </Router>
         </ErrorProvider>
