@@ -14,6 +14,12 @@
   }
 }
 
+@for $i from 1 to 12 {
+  .text-#{$i} {
+    font-size: $i * 1rem;
+  }
+}
+
 a {
   text-decoration: none;
 }
@@ -154,6 +160,21 @@ a {
         padding: 1rem;
       }
     }
+  }
+}
+
+.not-found-page-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+
+  .not-found-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 }
 
