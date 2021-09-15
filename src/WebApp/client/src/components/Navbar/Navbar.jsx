@@ -16,7 +16,7 @@ const Navbar = (props) => {
       </div>
       <ul className="nav-list">
         <li className="nav-list-element">
-          <Link className="nav-link" to="/home">
+          <Link className="nav-link" to="/">
             Home
           </Link>
         </li>

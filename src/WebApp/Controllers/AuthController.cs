@@ -101,7 +101,6 @@ namespace WebApp.Controllers
         {
             User user = _repository.GetByEmail(dto.Email);
 
-            System.Diagnostics.Debug.WriteLine("Ver: " + (user.Verification == null));
 
             if (user == null || user.Verification != null)
             {
