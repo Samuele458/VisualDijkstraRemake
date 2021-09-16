@@ -21,20 +21,20 @@ const Home = () => {
       </MetaTags>
       <section className="header-section" id="home">
         <div className="hflex-responsive">
-          <div className="vflex intro-box">
+          <div className="vflex-center intro-box">
             <img src={Logo} alt="" className="logo zoom-3" />
             <h1 className="title-light">Visual Dijkstra</h1>
             <h2 className="text-light">Free and Open Source graph editor.</h2>
             <div className="btn-group">
               <Link to="/download" className="btn-light zoom-2">
-                <FontAwesomeIcon icon={faDownload} className="btn-icon" />
+                <FontAwesomeIcon icon={faDownload} className="btn-image" />
                 Download
               </Link>
               <a
                 href="https://github.com/samuele458/visual-dijkstra"
                 className="btn-black zoom-2"
               >
-                <FontAwesomeIcon icon={faGithub} className="btn-icon" />
+                <FontAwesomeIcon icon={faGithub} className="btn-image" />
                 Github
               </a>
             </div>

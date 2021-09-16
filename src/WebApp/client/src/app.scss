@@ -301,6 +301,44 @@ a {
   margin-top: 2rem;
 }
 
+/* ---- Buttons and text ---- */
+
+$color-styles: (
+  "light": rgb(255, 255, 255),
+  "dark": rgb(0, 110, 255),
+  "black": black,
+);
+
+.btn {
+  border: 2px solid;
+  border-radius: 5px;
+  padding: 0.4rem 0.6rem 0.4rem 0.6rem;
+  margin: 0.5rem;
+
+  color: white;
+  text-decoration: none;
+  transition: 0.5s;
+  justify-content: center;
+  align-items: center;
+
+  display: inline-block;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.371);
+  }
+
+  .btn-image {
+    padding-left: 0.3rem;
+    padding-right: 0.3rem;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
+
+.btn-group {
+  @extend .hflex-responsive;
+}
+
 .btn-icon {
   @extend .zoom-3;
   width: 30px !important;
@@ -347,6 +385,26 @@ a {
     width: 1rem !important;
     padding: 0rem;
     align-self: flex-end;
+  }
+}
+
+@each $name, $color in $color-styles {
+  .btn-#{$name} {
+    @extend .btn;
+    color: $color;
+
+    &:hover {
+      background-color: rgba($color, 0.2);
+    }
+  }
+
+  .title-#{$name} {
+    @extend .title;
+    color: $color;
+  }
+
+  .text-#{$name} {
+    color: $color;
   }
 }
 
