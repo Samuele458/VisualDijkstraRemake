@@ -3,6 +3,7 @@ import Screen001 from "./screen001.png";
 import Logo from "../../logo.png";
 import Feature from "./components/Feature/Feature";
 import featureslist from "./featureslist";
+import Footer from "../../components/Footer/Footer";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
@@ -22,7 +23,7 @@ const Home = () => {
       <section className="header-section" id="home">
         <div className="hflex-responsive">
           <div className="vflex-center intro-box">
-            <img src={Logo} alt="" className="logo zoom-3" />
+            <img src={Logo} alt="" className="logo zoom-1" />
             <h1 className="title-light">Visual Dijkstra</h1>
             <h2 className="text-light">Free and Open Source graph editor.</h2>
             <div className="btn-group">
@@ -90,6 +91,7 @@ const Home = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </>
   );
 };
