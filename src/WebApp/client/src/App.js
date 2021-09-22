@@ -9,6 +9,7 @@ import SignupForm from "./components/SignupForm";
 import LoginForm from "./components/LoginForm";
 import ErrorNotification from "./components/ErrorNotification";
 import Policy from "./pages/Policy/Policy";
+import Download from "./pages/Download/Download";
 
 import "./app.scss";
 
@@ -97,6 +98,7 @@ function App() {
               <Route path="/" exact component={() => <Home />} />
               <Route path="/app" exact component={() => <GraphEditor />} />
               <Route path="/verify/:token" component={SignupVerificationPage} />
+              <Route path="/download" component={Download} />
               <Route
                 path="/privacy-policy"
                 exact

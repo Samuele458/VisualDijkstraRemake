@@ -7,7 +7,7 @@ import Footer from "../../components/Footer/Footer";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
-import { faDownload } from "@fortawesome/free-solid-svg-icons";
+import { faDownload, faRoute } from "@fortawesome/free-solid-svg-icons";
 
 import { HashLink as Link } from "react-router-hash-link";
 
@@ -27,6 +27,10 @@ const Home = () => {
             <h1 className="title-light">Visual Dijkstra</h1>
             <h2 className="text-light">Free and Open Source graph editor.</h2>
             <div className="btn-group">
+              <Link to="/app" className="btn-white zoom-2">
+                <FontAwesomeIcon icon={faRoute} className="btn-image" />
+                WebApp
+              </Link>
               <Link to="/download" className="btn-light zoom-2">
                 <FontAwesomeIcon icon={faDownload} className="btn-image" />
                 Download

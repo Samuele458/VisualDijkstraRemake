@@ -22,7 +22,12 @@ const Navbar = (props) => {
         </li>
         <li className="nav-list-element">
           <Link className="nav-link" to="/app">
-            App
+            WebApp
+          </Link>
+        </li>
+        <li className="nav-list-element">
+          <Link className="nav-link" to="/download">
+            Download
           </Link>
         </li>
         {Auth.loggedUser == null ? (
