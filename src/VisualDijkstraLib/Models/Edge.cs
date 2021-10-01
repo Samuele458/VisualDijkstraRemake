@@ -28,6 +28,9 @@ namespace VisualDijkstraLib.Models
             set { _nodeB = value; }
         }
 
+        /// <summary>
+        ///  edge weight
+        /// </summary>
         public int Weight
         {
             get { return _weight; }

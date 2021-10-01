@@ -263,9 +263,6 @@ namespace VisualDijkstraLib.Utils
 
     }
 
-
-
-
     public class InvalidSaveFileFormat : Exception
     {
         public InvalidSaveFileFormat(string message = "Invalid file format") : base(message) { }

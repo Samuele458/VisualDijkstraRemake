@@ -2,6 +2,9 @@
 
 namespace VisualDijkstraLib.Models
 {
+    /// <summary>
+    ///  Handles a single graph step, used to represents Dijkstra's algorithm step-by-step
+    /// </summary>
     public class GraphState
     {
 
@@ -18,6 +21,10 @@ namespace VisualDijkstraLib.Models
             get { return _nodesStates; }
         }
 
+        /// <summary>
+        ///  Constructs GraphState by taking a list of nodes
+        /// </summary>
+        /// <param name="nodes">List of nodes</param>
         public GraphState(List<Node> nodes)
         {
             _nodesStates = new List<NodeState>();
@@ -34,6 +41,10 @@ namespace VisualDijkstraLib.Models
 
         }
 
+        /// <summary>
+        ///  Set nodes to GraphState
+        /// </summary>
+        /// <param name="nodes">List of nodes</param>
         public void setNodes(List<Node> nodes)
         {
             _nodesStates = nodes.ConvertAll(
@@ -43,6 +54,12 @@ namespace VisualDijkstraLib.Models
             );
         }
 
+
+        /// <summary>
+        ///  Set distance value of a specified node
+        /// </summary>
+        /// <param name="nodeName">Name of node to edit</param>
+        /// <param name="distance">Distance value to set</param>
         public void setDistance(string nodeName, int distance)
         {
             NodeState node = _nodesStates.Find(n => n.Name == nodeName);
@@ -52,6 +69,11 @@ namespace VisualDijkstraLib.Models
             }
         }
 
+        /// <summary>
+        ///  Mark a node as processed (or not processed)
+        /// </summary>
+        /// <param name="nodeName">Name of node to edit</param>
+        /// <param name="processed">State to set (true if processed, false otherwise)</param>
         public void setProcessed(string nodeName, bool processed)
         {
             NodeState node = _nodesStates.Find(n => n.Name == nodeName);
@@ -61,6 +83,12 @@ namespace VisualDijkstraLib.Models
             }
         }
 
+
+        /// <summary>
+        ///  Set the previous node of a specified node
+        /// </summary>
+        /// <param name="nodeName">Name of node to edit</param>
+        /// <param name="previous">Previous node name</param>
         public void setPrevious(string nodeName, string previous)
         {
             NodeState node = _nodesStates.Find(n => n.Name == nodeName);
@@ -70,6 +98,10 @@ namespace VisualDijkstraLib.Models
             }
         }
 
+        /// <summary>
+        ///  Create a deep clone of current GraphState object
+        /// </summary>
+        /// <returns>Deep copy of GraphState object</returns>
         public GraphState Copy()
         {
             List<NodeState> newNodeStates = new List<NodeState>();
@@ -88,6 +120,9 @@ namespace VisualDijkstraLib.Models
             return newState;
         }
 
+        /// <summary>
+        ///  Log GraphState to Debug console
+        /// </summary>
         public void logGraphState()
         {
             foreach (NodeState state in _nodesStates)
@@ -117,7 +152,11 @@ namespace VisualDijkstraLib.Models
             return notProcessed[minIndex].Name;
         }
 
-
+        /// <summary>
+        ///  Get NodeState object, based on its name
+        /// </summary>
+        /// <param name="nodeName">Node name</param>
+        /// <returns>NodeState object</returns>
         public NodeState GetNode(string nodeName)
         {
             return _nodesStates.Find(node => node.Name == nodeName);
