@@ -7,9 +7,13 @@ using WebApp.Data;
 using WebApp.Dtos;
 using WebApp.Models;
 using WebApp.Services;
+using WebApp.Utils;
 
 namespace WebApp.Controllers
 {
+    /// <summary>
+    ///  Authentication controller
+    /// </summary>
     [Route("api")]
     [ApiController]
     public class AuthController : Controller
@@ -17,22 +21,40 @@ namespace WebApp.Controllers
         private readonly IUserRepository _repository;
         private readonly IVerificationRepository _verificationRepository;
         private readonly JwtService _jwtService;
-        private SmtpClient _smtpClient;
+        private readonly IEmailHandler _emailHandler;
 
-        public AuthController(IUserRepository repository, IVerificationRepository verificactionRepository, JwtService jwtService, SmtpClient smtpClient)
+        /// <summary>
+        ///  Controller constructor used in dependency injection
+        /// </summary>
+        /// <param name="repository">IUserRepository for handling users</param>
+        /// <param name="verificactionRepository">IVerification repository for handling issuing verification</param>
+        /// <param name="jwtService">JwtService for handling JWT</param>
+        /// <param name="emailHandler">EmailHandler, for sending emails</param>
+        public AuthController(
+            IUserRepository repository,
+            IVerificationRepository verificactionRepository,
+            JwtService jwtService,
+            IEmailHandler emailHandler)
         {
             _repository = repository;
             _jwtService = jwtService;
             _verificationRepository = verificactionRepository;
-            _smtpClient = smtpClient;
+            _emailHandler = emailHandler;
         }
 
+        //TODO: implement IDisposable in EmailHandler
+        /*
         protected override void Dispose(bool disposing)
         {
-            _smtpClient.Dispose();
+            _emailHandler.Dispose();
             base.Dispose(disposing);
-        }
+        }*/
 
+        /// <summary>
+        ///  POST endpoint for registering new users
+        /// </summary>
+        /// <param name="dto">DTO for registration</param>
+        /// <returns>Response to client</returns>
         [HttpPost("register")]
         public IActionResult Register(RegisterDto dto)
         {
@@ -57,25 +79,30 @@ namespace WebApp.Controllers
             Verification verification = _verificationRepository.CreateVerification(user);
 
             MailMessage mail = new MailMessage();
+            mail.Body = String.Format("We are happy you signed up for VisualDijkstra.\nTo start using VisualDijkstra please verify your email:\n{0}",
+                                      "https://visualdijkstra.com/verify/" + verification.Token);
 
-            mail.Body = "We are happy you signed up for VisualDIjkstra. To start using VisualDijkstra please verify your email";
+
             mail.Subject = "Confirmation";
-            mail.From = new MailAddress("support@visualdijkstra.com", "Visual Dijkstra");
-            mail.To.Add(new MailAddress("samuele.girgenti458@gmail.com"));
-            _smtpClient.Send(mail);
-
-            System.Diagnostics.Debug.WriteLine(_smtpClient.Host + _smtpClient.Port);
-            System.Diagnostics.Debug.WriteLine(_smtpClient.Credentials);
+            mail.To.Add(new MailAddress(user.Email));
+            mail.IsBodyHtml = true;
+            _emailHandler.SendEmail(mail);
 
             return Created("success", responseUser);
         }
 
+        /// <summary>
+        ///  POST endpoint for handling user login
+        /// </summary>
+        /// <param name="dto">DTO for login</param>
+        /// <returns>Response to client</returns>
         [HttpPost("login")]
         public IActionResult Login(LoginDto dto)
         {
             User user = _repository.GetByEmail(dto.Email);
 
-            if (user == null)
+
+            if (user == null || user.Verification != null)
             {
                 return NotFound(new { message = "Invalid credentials" });
             }
@@ -99,6 +126,10 @@ namespace WebApp.Controllers
         }
 
 
+        /// <summary>
+        ///  Returns details of authenticated user
+        /// </summary>
+        /// <returns>Response with user details</returns>
         [HttpGet("user")]
         public IActionResult User()
         {
@@ -127,7 +158,10 @@ namespace WebApp.Controllers
             }
         }
 
-
+        /// <summary>
+        ///  User logout
+        /// </summary>
+        /// <returns>Response to client</returns>
         [HttpPost("logout")]
         public IActionResult Logout()
         {

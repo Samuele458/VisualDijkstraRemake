@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
 
 namespace WebApp.Utils
@@ -23,7 +23,7 @@ namespace WebApp.Utils
             rng.GetBytes(buff);
 
             //Returns base64 string
-            return Convert.ToBase64String(buff);
+            return Base64UrlEncoder.Encode(buff);
         }
     }
 }

@@ -5,6 +5,9 @@ using WebApp.Models;
 
 namespace WebApp.Data
 {
+    /// <summary>
+    ///  Graph repository class
+    /// </summary>
     public class GraphRepository : IGraphRepository
     {
 
@@ -15,6 +18,7 @@ namespace WebApp.Data
             _context = context;
         }
 
+        /// <inheritdoc/>
         public GraphModel CreateGraph(User user, GraphModel graph)
         {
             graph.User = user;
@@ -33,6 +37,7 @@ namespace WebApp.Data
             return graph;
         }
 
+        /// <inheritdoc/>
         public GraphModel ReadGraph(int graphId, User user)
         {
             return _context
@@ -40,6 +45,7 @@ namespace WebApp.Data
                         .FirstOrDefault(g => g.UserId == user.Id && g.Id == graphId);
         }
 
+        /// <inheritdoc/>
         public GraphModel UpdateGraphData(User user, int graphId, string newData)
         {
             GraphModel graph = _context
@@ -59,6 +65,7 @@ namespace WebApp.Data
             return graph;
         }
 
+        /// <inheritdoc/>
         public GraphModel UpdateGraphName(User user, int graphId, string newName)
         {
             GraphModel graph = _context
@@ -75,6 +82,7 @@ namespace WebApp.Data
             return graph;
         }
 
+        /// <inheritdoc/>
         public GraphModel DeleteGraph(int id, User user)
         {
             GraphModel graph = ReadGraph(id, user);

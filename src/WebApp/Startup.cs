@@ -6,10 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
 using System;
-using System.Net;
-using System.Net.Mail;
 using WebApp.Data;
 using WebApp.Services;
+using WebApp.Utils;
 
 namespace WebApp
 {
@@ -64,27 +63,21 @@ namespace WebApp
 
             //loading settings from appsettings
             services.Configure<JwtOptions>(Configuration.GetSection("JwtConfig"));
-            services.AddScoped<SmtpClient>((serviceProvider) =>
+
+            //loading smtp config
+            services.AddScoped<IEmailHandler, EmailHandler>((serviceProvider) =>
             {
                 IConfiguration config = serviceProvider.GetRequiredService<IConfiguration>();
-
-                SmtpClient smtpClient = new SmtpClient()
-                {
-                    Host = config.GetValue<String>("EmailConfig:Host"),
-                    Port = config.GetValue<int>("EmailConfig:Port"),
-                    Credentials = new NetworkCredential(
-                        config.GetValue<String>("EmailConfig:SmtpUsername"),
-                        config.GetValue<String>("EmailConfig:SmtpPassword")
-                    )
-                };
-
-                smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
-                smtpClient.EnableSsl = true;
-
-                return smtpClient;
+                System.Diagnostics.Debug.WriteLine("Sender email: " + config.GetValue<String>("EmailConfig:SenderEmail"));
+                return new EmailHandler(
+                    config.GetValue<String>("EmailConfig:Host"),
+                    config.GetValue<int>("EmailConfig:Port"),
+                    config.GetValue<String>("EmailConfig:SmtpUsername"),
+                    config.GetValue<String>("EmailConfig:SmtpPassword"),
+                    config.GetValue<String>("EmailConfig:SenderEmail"),
+                    config.GetValue<String>("EmailConfig:SenderName")
+                );
             });
-
-            System.Diagnostics.Debug.WriteLine(Configuration.GetSection("EmailConfig").ToString());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

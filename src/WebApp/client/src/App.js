@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import GraphEditor from "./components/GraphEditor";
 import Navbar from "./components/Navbar";
@@ -7,11 +8,16 @@ import Dialog from "./components/Dialog";
 import SignupForm from "./components/SignupForm";
 import LoginForm from "./components/LoginForm";
 import ErrorNotification from "./components/ErrorNotification";
+import Policy from "./pages/Policy";
+import Download from "./pages/Download";
 
 import "./app.scss";
 
 import AuthApi from "./AuthApi";
 import ErrorProvider from "./providers/ErrorProvider";
+import SignupVerificationPage from "./pages/SignupVerificationPage";
+import NotFoundPage from "./pages/NotFoundPage";
+import Home from "./pages/Home";
 
 function App() {
   const [displayLogin, setDisplayLogin] = useState(false);
@@ -37,6 +43,16 @@ function App() {
       });
   };
 
+  const handleLoginButtonClick = (e) => {
+    setDisplayLogin(true);
+    setDisplaySignup(false);
+  };
+
+  const handleSignupButtonClick = (e) => {
+    setDisplayLogin(false);
+    setDisplaySignup(true);
+  };
+
   useEffect(() => {
     if (loggedUser != null) {
       setDisplayLogin(false);
@@ -59,25 +75,54 @@ function App() {
     <div>
       <AuthApi.Provider value={{ loggedUser, setLoggedUser }}>
         <ErrorProvider>
-          <ErrorNotification />
-          <Navbar
-            toggleLoginBox={toggleLoginBox}
-            toggleSignupBox={toggleSignupBox}
-            handleLogout={handleLogout}
-          />
-          {displaySignup && (
-            <Dialog handleClose={toggleSignupBox}>
-              <SignupForm />
-            </Dialog>
-          )}
+          <Router>
+            <ErrorNotification />
+            <Navbar
+              toggleLoginBox={toggleLoginBox}
+              toggleSignupBox={toggleSignupBox}
+              handleLogout={handleLogout}
+            />
+            {displaySignup && (
+              <Dialog handleClose={toggleSignupBox}>
+                <SignupForm handleLoginButtonClick={handleLoginButtonClick} />
+              </Dialog>
+            )}
 
-          {displayLogin && (
-            <Dialog handleClose={toggleLoginBox}>
-              <LoginForm />
-            </Dialog>
-          )}
+            {displayLogin && (
+              <Dialog handleClose={toggleLoginBox}>
+                <LoginForm handleSignupButtonClick={handleSignupButtonClick} />
+              </Dialog>
+            )}
 
-          <GraphEditor />
+            <Switch>
+              <Route path="/" exact component={() => <Home />} />
+              <Route path="/app" exact component={() => <GraphEditor />} />
+              <Route path="/verify/:token" component={SignupVerificationPage} />
+              <Route path="/download" component={Download} />
+              <Route
+                path="/privacy-policy"
+                exact
+                component={() => (
+                  <Policy filePath="assets/policies/privacy-policy.md" />
+                )}
+              />
+              <Route
+                path="/cookies-policy"
+                exact
+                component={() => (
+                  <Policy filePath="assets/policies/cookies-policy.md" />
+                )}
+              />
+              <Route
+                path="/terms-and-conditions"
+                exact
+                component={() => (
+                  <Policy filePath="assets/policies/terms-and-conditions.md" />
+                )}
+              />
+              <Route component={NotFoundPage} />
+            </Switch>
+          </Router>
         </ErrorProvider>
       </AuthApi.Provider>
     </div>

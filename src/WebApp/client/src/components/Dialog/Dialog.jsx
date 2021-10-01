@@ -5,7 +5,7 @@ const Dialog = (props) => {
   return (
     <div className="dialog-box">
       <div className="dialog">
-        <p className="close-dialog" onClick={props.handleClose}>
+        <p className="close-dialog zoom-2" onClick={props.handleClose}>
           <FontAwesomeIcon icon={faTimes} />
         </p>
         {props.children}
