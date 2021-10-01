@@ -1,9 +1,9 @@
 import React from "react";
 
-import Releases from "./components/Releases/Releases";
+import Releases from "./components/Releases";
 
 import Logo from "../../logo.png";
-import Footer from "../../components/Footer/Footer";
+import Footer from "../../components/Footer";
 import MetaTags from "react-meta-tags";
 
 const DownloadPage = () => {
