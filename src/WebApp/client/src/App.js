@@ -8,8 +8,8 @@ import Dialog from "./components/Dialog";
 import SignupForm from "./components/SignupForm";
 import LoginForm from "./components/LoginForm";
 import ErrorNotification from "./components/ErrorNotification";
-import Policy from "./pages/Policy/Policy";
-import Download from "./pages/Download/Download";
+import Policy from "./pages/Policy";
+import Download from "./pages/Download";
 
 import "./app.scss";
 
@@ -17,7 +17,7 @@ import AuthApi from "./AuthApi";
 import ErrorProvider from "./providers/ErrorProvider";
 import SignupVerificationPage from "./pages/SignupVerificationPage";
 import NotFoundPage from "./pages/NotFoundPage";
-import Home from "./pages/Home/Home";
+import Home from "./pages/Home";
 
 function App() {
   const [displayLogin, setDisplayLogin] = useState(false);

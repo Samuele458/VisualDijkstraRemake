@@ -3,21 +3,26 @@ const footerlinks = [
     title: "Visual Dijkstra",
     links: [
       {
+        title: "WebApp",
+        url: "/app",
+      },
+      {
         title: "Github",
-        url: "https://github.com/samuele458/visual-dijkstra",
+        url: "https://github.com/samuele458/visualdijkstraremake",
       },
       {
         title: "License",
-        url: "https://github.com/Samuele458/visual-dijkstra/blob/main/LICENSE",
+        url: "https://github.com/Samuele458/VisualDijkstraRemake/blob/master/LICENSE",
       },
       {
         title: "Download",
         url: "/download",
       },
+      /*
       {
         title: "Contacts",
         url: "/contacts",
-      },
+      },*/
     ],
   },
   {
@@ -34,10 +39,6 @@ const footerlinks = [
       {
         title: "Terms and conditions",
         url: "/terms-and-conditions",
-      },
-      {
-        title: "Website source code",
-        url: "https://github.com/Samuele458/visual-dijkstra-website",
       },
     ],
   },

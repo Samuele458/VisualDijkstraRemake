@@ -36,7 +36,7 @@ const Home = () => {
                 Download
               </Link>
               <a
-                href="https://github.com/samuele458/visual-dijkstra"
+                href="https://github.com/samuele458/visualdijkstraremake"
                 className="btn-black zoom-2"
               >
                 <FontAwesomeIcon icon={faGithub} className="btn-image" />

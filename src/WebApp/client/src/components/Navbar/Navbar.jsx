@@ -10,10 +10,10 @@ const Navbar = (props) => {
 
   return (
     <nav className="navbar">
-      <div className="logo-box">
+      <Link className="logo-box" to="/">
         <img src={Logo} alt="" srcset="" className="logo-img" />
         <h3 className="logo-text">Visual Dijkstra</h3>
-      </div>
+      </Link>
       <ul className="nav-list">
         <li className="nav-list-element">
           <Link className="nav-link" to="/">
