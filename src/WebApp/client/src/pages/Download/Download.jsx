@@ -1,6 +1,6 @@
 import React from "react";
 
-import Releases from "./components/Releases";
+import Releases from "./components/ReleasesWidget";
 
 import Logo from "../../logo.png";
 import Footer from "../../components/Footer";
