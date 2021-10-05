@@ -394,6 +394,12 @@
   }
 }
 
+@media screen and (max-width: 1368px) {
+  .states-viewer {
+    top: 3.5rem;
+  }
+}
+
 .saving-box {
   position: absolute;
   display: flex;
