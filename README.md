@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://visualdijkstra.com/">
-    <img alt="Visual Dijkstra" src="https://raw.githubusercontent.com/Samuele458/visual-dijkstra/main/img/visual-dijkstra-logo.png" width="300">
+    <img alt="Visual Dijkstra" src="https://raw.githubusercontent.com/Samuele458/visualdijkstraremake/master/docs/images/visual-dijkstra-logo.png" width="300">
   </a>
 </p>
 

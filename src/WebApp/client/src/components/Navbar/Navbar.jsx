@@ -3,7 +3,7 @@ import { HashLink, HashLink as Link } from "react-router-hash-link";
 
 import AuthApi from "../../AuthApi";
 
-import Logo from "../../logo.png";
+import Logo from "../../logo-light.png";
 
 const Navbar = (props) => {
   const Auth = useContext(AuthApi);
